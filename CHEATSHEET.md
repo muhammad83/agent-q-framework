@@ -33,7 +33,9 @@ If it answers all three correctly, Phase 1 is done.
 
 ---
 
-## PHASE 2: PLANNING
+## PHASE 2A: PLANNING (GREENFIELD)
+
+Use this when starting a new project from scratch.
 
 ### Step 1 — Enter Plan Mode
 Press: Shift+Tab
@@ -68,6 +70,22 @@ Press: Shift+Tab
 ```
 Read workflows/build-plan.md and build everything exactly as
 specified in the plan.
+```
+
+---
+
+## PHASE 2B: CODE REVIEW (EXISTING CODE)
+
+Use this after Phase 3 (build) is complete, before deployment.
+Full prompt and instructions are in `workflows/code-review.md`.
+
+### Quick version:
+1. Enter Plan Mode: `Shift+Tab`
+2. Open and paste the prompt from `workflows/code-review.md`
+3. Choose BIG CHANGE (4 issues per section) or SMALL CHANGE (1 per section)
+4. Work through: Architecture → Code Quality → Tests → Performance
+5. Approve changes, exit Plan Mode: `Shift+Tab`
+6. Tell Claude: `Execute all the changes we agreed on in the review.`
 ```
 
 ---
