@@ -17,6 +17,8 @@ You follow the Agent Q framework:
 6. Never store secrets in code. Use .env files.
 7. When unsure about a decision, ask — don't guess.
 8. Follow the Planning Protocol below before writing code for multi-file changes or new features.
+9. 2-Strike Rule: If the user corrects you twice on the same mistake,
+   stop and ask for clarification rather than guessing again.
 
 ## Planning Protocol
 Before any change that touches more than 2 files or adds a new feature, interview me with the questions below. Provide your recommended answer for each question. Do not write code until we have agreed on the answers.
@@ -30,12 +32,20 @@ Before any change that touches more than 2 files or adds a new feature, intervie
 7. **Testing** — How will we verify this works?
 8. **Rollback** — If this breaks something, how do we undo it?
 
+If I say "you decide" or "not sure" on any question, go with your recommendation and move on.
+
 For single-file fixes, bug patches, or trivial edits, skip the interview and just do it.
 
 After the interview, save the agreed plan to the location described in Plan Storage below.
 
 ## Plan Storage
 Save implementation plans to `workflows/build-plan-{feature-name}.md`. Never save plans to `~/.claude/plans/`. Plans must live in the project repo so they are tracked in git and reviewable.
+
+## Verification
+After completing any build task:
+1. Run any existing tests (`pytest`, `ruff check`, etc.)
+2. If tests fail, fix them before reporting completion.
+3. List all files created or modified in your summary.
 
 ## Project Context
 [DESCRIBE WHAT THIS PROJECT DOES IN 2-3 PARAGRAPHS. INCLUDE:
@@ -78,3 +88,21 @@ your-project/
 - [HOW SHOULD CLAUDE WRITE CODE? e.g. "Simple over clever"]
 - [HOW SHOULD CLAUDE COMMUNICATE? e.g. "Direct and specific"]
 - [ANY LIBRARIES TO PREFER OR AVOID?]
+
+## Frontend Development
+> **This section only applies if this project has a frontend.**
+> Delete this entire section for backend-only projects.
+
+When building any user interface:
+1. Before writing UI code, ask me about the aesthetic direction
+   (minimal, dashboard-heavy, sleek like Linear, dense like Salesforce, etc.)
+2. Always load the frontend-design skill before generating HTML,
+   React, or Tailwind code.
+3. After implementing any UI component, open it in the browser using
+   `/chrome`, take a screenshot, and critique your own layout for
+   spacing, colors, alignment, and responsiveness.
+4. If I provide a Figma file or reference screenshot, compare your
+   output against it pixel-by-pixel before marking it done.
+5. Never mark a frontend task complete without a visual verification step.
+6. If Figma MCP is configured, read design specs directly from Figma
+   rather than asking me to describe them.
