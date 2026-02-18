@@ -64,8 +64,8 @@ before writing the plan.
 ### Step 3 — After answering all questions, say:
 ```
 Write a detailed implementation plan based on everything we
-discussed. Save it as workflows/build-plan.md. Include every
-decision we made and every edge case we covered.
+discussed. Save it as workflows/build-plan-{feature-name}.md.
+Include every decision we made and every edge case we covered.
 ```
 
 ### Step 4 — Review the plan

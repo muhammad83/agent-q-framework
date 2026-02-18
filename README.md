@@ -43,7 +43,7 @@ your-project/
 - [ ] Enter Plan Mode: `Shift+Tab`
 - [ ] Paste the Reverse Elicitation Prompt (see below)
 - [ ] Answer all of Claude's questions
-- [ ] Tell Claude to write the plan file
+- [ ] Tell Claude to write the plan file to `workflows/build-plan-{feature-name}.md`
 - [ ] Review plan with `Ctrl+G`
 - [ ] Edit anything you disagree with
 - [ ] Exit Plan Mode: `Shift+Tab`

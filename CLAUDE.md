@@ -10,8 +10,8 @@ You follow the Agent Q framework:
 ## Rules
 1. Before starting any task, read todo.md for current project state.
 2. After completing any task, update todo.md with what was done.
-3. Never edit CLAUDE.md manually. If I correct a behavior during a
-   session, update this file yourself to prevent recurrence.
+3. You (Claude) are expected to edit all files in this project, including CLAUDE.md.
+   If the user corrects a behavior during a session, update CLAUDE.md yourself to prevent recurrence.
 4. Keep all workflow instructions in /workflows as .md files.
 5. Keep all executable scripts in /tools.
 6. Never store secrets in code. Use .env files.
