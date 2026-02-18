@@ -39,9 +39,22 @@ claude
 Press Shift+Tab (Plan Mode), then paste:
 ```
 Read CLAUDE.md and all files in /workflows.
-[Describe your project in 2-3 sentences.]
-Interview me in detail about technical decisions,
-edge cases, and trade-offs. Do not write any code yet.
+
+[YOUR 2-3 SENTENCE PROJECT DESCRIPTION HERE]
+
+Interview me in detail about technical decisions, implementation
+details, edge cases, UI/UX concerns, and trade-offs. Do not write
+any code. Just ask me questions until you fully understand what
+to build.
+
+For each question:
+- Give me your recommended answer and why.
+- Then ask if I agree or want something different.
+- If I say "you decide" or "not sure", go with your recommendation
+  and move on.
+
+After all questions are answered, summarize every decision we made
+before writing the plan.
 ```
 
 ## Done.
