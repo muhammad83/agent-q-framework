@@ -9,9 +9,8 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 
 1. Clone this repo: `git clone https://github.com/safqore/agent-q-framework.git my-project-name`
 2. Reset git: `cd my-project-name && rm -rf .git && git init`
-3. Open `CLAUDE.md` and fill in the `[PLACEHOLDERS]`
-4. Open `todo.md` and fill in your project name and first goal
-5. Follow the Phase 1 and Phase 2 checklists below
+3. Start Claude (`claude`) and describe your project — Claude fills in `CLAUDE.md` and `todo.md` for you
+4. Follow the Phase 1 and Phase 2 checklists below
 
 ### Folder Structure
 
@@ -31,8 +30,7 @@ your-project/
 ### Phase 1 Checklist (Setup)
 
 - [ ] Clone this repo and rename folder
-- [ ] Fill in CLAUDE.md with project role, rules, and frameworks
-- [ ] Fill in todo.md with first goal
+- [ ] Start Claude and describe your project — Claude fills in CLAUDE.md and todo.md
 - [ ] Add your API keys to .env
 - [ ] Create your first workflow file in /workflows
 - [ ] Verify: run `claude` and ask it to read CLAUDE.md and describe its role

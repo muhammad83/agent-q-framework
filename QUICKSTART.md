@@ -9,24 +9,17 @@ rm -rf .git
 git init
 ```
 
-## Step 2: Fill in CLAUDE.md (2 minutes)
+## Step 2: Tell Claude about your project (2 minutes)
 
-Open CLAUDE.md and fill in the project-specific sections. Claude will
-manage the operational rules — you just provide the context.
-At minimum fill in:
+```bash
+claude
+```
 
-- Role (one sentence: what does this agent do?)
-- Project Context (what are we building and why?)
-- Folder Structure (update to match your project)
+Describe your project in 2-3 sentences and tell Claude to fill in
+CLAUDE.md and todo.md. Claude will set up the role, project context,
+folder structure, and first goal for you.
 
-## Step 3: Fill in todo.md (30 seconds)
-
-Open todo.md. Set:
-
-- Project name
-- Current Goal (what's the first thing to build?)
-
-## Step 4: Add secrets (30 seconds)
+## Step 3: Add secrets (30 seconds)
 
 ```bash
 cp .env.example .env
@@ -34,7 +27,7 @@ cp .env.example .env
 
 Open .env and add your real API keys.
 
-## Step 5: Create your first workflow (1 minute)
+## Step 4: Create your first workflow (1 minute)
 
 ```bash
 cp workflows/_TEMPLATE.md workflows/my-first-task.md
@@ -42,7 +35,7 @@ cp workflows/_TEMPLATE.md workflows/my-first-task.md
 
 Open it and fill in what Claude should do.
 
-## Step 6: Run Phase 2 Planning (start here every time)
+## Step 5: Run Phase 2 Planning (start here every time)
 
 ```bash
 claude
