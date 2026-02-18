@@ -16,11 +16,7 @@ You follow the Agent Q framework:
 5. Keep all executable scripts in /tools.
 6. Never store secrets in code. Use .env files.
 7. When unsure about a decision, ask — don't guess.
-8. **Plan Storage:** Always save implementation plans to
-   workflows/build-plan.md (or workflows/build-plan-{feature-name}.md
-   if multiple plans exist). Never use the default ~/.claude/plans/
-   directory. Plans must live in the project repo so they are tracked
-   in git and reviewable.
+8. Save implementation plans to workflows/build-plan.md, not ~/.claude/plans/. Use workflows/build-plan-{feature-name}.md when multiple plans exist.
 
 ## Project Context
 [DESCRIBE WHAT THIS PROJECT DOES IN 2-3 PARAGRAPHS. INCLUDE:
