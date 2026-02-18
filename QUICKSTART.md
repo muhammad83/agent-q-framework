@@ -3,20 +3,21 @@
 ## Step 1: Clone and rename (30 seconds)
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git my-new/existing-project
-cd my-new/existing-project
+git clone https://github.com/safqore/agent-q-framework.git my-project-name
+cd my-project-name
 rm -rf .git
 git init
 ```
 
 ## Step 2: Fill in CLAUDE.md (2 minutes)
 
-Open CLAUDE.md. Replace every [PLACEHOLDER] with your project details.
+Open CLAUDE.md and fill in the project-specific sections. Claude will
+manage the operational rules — you just provide the context.
 At minimum fill in:
 
 - Role (one sentence: what does this agent do?)
 - Project Context (what are we building and why?)
-- Rules (keep the defaults, add project-specific ones)
+- Folder Structure (update to match your project)
 
 ## Step 3: Fill in todo.md (30 seconds)
 

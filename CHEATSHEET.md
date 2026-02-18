@@ -72,8 +72,8 @@ Press: Shift+Tab
 
 ### Step 6 — Execute
 ```
-Read workflows/build-plan.md and build everything exactly as
-specified in the plan.
+Read workflows/build-plan-{feature-name}.md and build everything
+exactly as specified in the plan.
 ```
 
 ---
@@ -102,7 +102,7 @@ claude -dangerously-skip-permissions
 ```
 Then:
 ```
-Read workflows/build-plan.md and execute it fully.
+Read workflows/build-plan-{feature-name}.md and execute it fully.
 ```
 
 ### Terminal Tab 2 — Verifier
