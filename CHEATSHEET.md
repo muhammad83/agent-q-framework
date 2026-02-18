@@ -9,15 +9,10 @@ and prompts you use at each phase.
 
 ### Terminal Commands (run once per project)
 ```bash
-# Option A: Use the setup script
-chmod +x setup.sh
-./setup.sh my-project-name
-
-# Option B: Manual setup
-mkdir my-project-name
+git clone https://github.com/safqore/agent-q-framework.git my-project-name
 cd my-project-name
-mkdir workflows tools templates
-touch CLAUDE.md todo.md .env .gitignore
+rm -rf .git
+git init
 ```
 
 ### Verification Prompt

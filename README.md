@@ -7,8 +7,8 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 
 ### Starting a New Project
 
-1. Clone this repo
-2. Rename the folder to your project name
+1. Clone this repo: `git clone https://github.com/safqore/agent-q-framework.git my-project-name`
+2. Reset git: `cd my-project-name && rm -rf .git && git init`
 3. Open `CLAUDE.md` and fill in the `[PLACEHOLDERS]`
 4. Open `todo.md` and fill in your project name and first goal
 5. Follow the Phase 1 and Phase 2 checklists below
