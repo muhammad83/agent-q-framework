@@ -5,6 +5,31 @@ and prompts you use at each phase.
 
 ---
 
+## VOICE PROMPTING (SPEED MULTIPLIER)
+
+Dictate your prompts instead of typing. You'll move 3-5x faster.
+Only type for terminal commands.
+
+**macOS (free, built-in):**
+Press 🌐 (Globe key) twice or Fn twice to toggle dictation.
+Works in any text field including terminal input.
+
+**SuperWhisper (recommended, macOS):**
+Always-on, faster than Apple dictation, better accuracy.
+https://superwhisper.com
+
+**Whisper (free, cross-platform):**
+OpenAI's speech-to-text model. Run locally or via API.
+https://github.com/openai/whisper
+
+**Tips:**
+- Use a walkie-talkie style: hold button → speak → release
+- Speak in full sentences, not keywords
+- Say punctuation: "comma" "period" "new line"
+- Lost your voice? You're doing it right. Take breaks.
+
+---
+
 ## PHASE 1: SETUP
 
 ### Terminal Commands (run once per project)
@@ -126,6 +151,50 @@ If you correct Claude twice on the same mistake:
 2. Update todo.md with what went wrong
 3. Start a new session: `claude`
 4. It reads todo.md and picks up with fresh context
+
+### Conversation Steering (Phase 3)
+
+Don't just paste prompts and hope. Steer the conversation.
+
+**Prevent premature building:**
+- "Discuss this first. Don't write code yet."
+- "Give me 3 options before you pick one."
+- "What are the trade-offs?"
+
+**When agent asks questions it could answer itself:**
+- "Read more code to answer your own questions."
+- "Check the existing tests before asking me."
+
+**When you're ready to execute:**
+- "Build it."
+- "Okay, do it."
+- "Ship it."
+
+**When agent seems rushed or sloppy:**
+- "Take your time."
+- "Slow down. Read the full file first."
+
+**When something breaks:**
+- Don't revert. Fix forward.
+- "That's wrong. Fix it and keep going."
+- Commit when the outcome is good, not when every line is perfect.
+
+---
+
+## POST-BUILD REFACTOR (AFTER PHASE 3, BEFORE PHASE 4)
+
+After every feature or PR merge, ask these four questions:
+
+1. "Now that you built it, what would you have done differently?"
+2. "What can we refactor to make this cleaner?"
+3. "Do we have enough tests? What's missing?"
+4. "Update documentation for what changed."
+
+Why this works: The agent discovers pain points during building,
+just like humans do. Ask afterwards because that's when it knows
+where things didn't work on the first try.
+
+Don't skip this. The 10 minutes here save hours of tech debt later.
 
 ---
 

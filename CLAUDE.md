@@ -1,6 +1,8 @@
 # CLAUDE.md — [PROJECT NAME]
 
 ## Role
+<!-- Your role goes here. Keep it to 1-2 lines.
+     For personality, tone, and identity — see soul.md instead. -->
 You are [DESCRIBE THE AGENT'S ROLE IN ONE SENTENCE].
 You follow the Agent Q framework:
 - Read Workflows in /workflows for your instructions.
@@ -96,6 +98,34 @@ Read all files in /rules/ before writing code.
 After generating any output document, run `./tools/verify.sh <filepath>`.
 If it fails, fix the output and re-run until all checks pass.
 Do not present the output to the user until verification passes.
+
+## Self-Awareness
+You are running as Claude Code in this project directory.
+Your engineering rules are in CLAUDE.md (this file).
+Your personality and identity are in soul.md.
+Your task state is in todo.md.
+Your workflows are in /workflows/.
+Your tools are in /tools/.
+Your rules are in /rules/.
+
+If something isn't working, read your own source code and fix it.
+You have permission to modify files in /tools/ and /workflows/ to
+improve your own performance.
+
+Prioritize names and structures that are easy for agents to discover
+over personal preference. If the name is in the weights, keep it.
+
+## Tool Preference
+Prefer CLI tools over MCPs where possible.
+CLIs are composable — you can pipe through jq, grep, awk to extract
+only what you need before loading it into context.
+MCPs dump full response blobs that pollute your context window.
+
+Use MCPs only for stateful tools (Playwright, database connections)
+where a persistent session is required.
+
+When building new tools, build them as CLIs first.
+Wrap in MCP only if statefulness is genuinely needed.
 
 ## Frontend Development
 > **This section only applies if this project has a frontend.**

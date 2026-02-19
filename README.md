@@ -17,12 +17,17 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 ```
 your-project/
 ├── CLAUDE.md              ← Agent configuration (the brain)
+├── soul.md                ← Agent personality & identity (agent writes its own)
 ├── todo.md                ← Project state tracker (the memory)
 ├── .env                   ← Secrets (never commit this)
 ├── .gitignore             ← Keeps secrets and junk out of git
 ├── workflows/             ← Step-by-step instructions (SOPs)
 │   └── _TEMPLATE.md       ← Copy this for every new workflow
 ├── tools/                 ← Executable scripts (Python, JS, etc)
+│   ├── verify.sh          ← Boolean pass/fail checks on output files
+│   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
+├── rules/                 ← Engineering rules for Claude
+│   └── _TEMPLATE.md       ← Copy this for every new rule
 ├── clients/               ← Per-client data (if applicable)
 └── templates/             ← Reusable templates for docs/trackers
 ```

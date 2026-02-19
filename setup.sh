@@ -133,6 +133,19 @@ if [ -f "../tools/verify.sh" ]; then
     echo "✓ Copied tools/verify.sh"
 fi
 
+# Soul — agent personality (agent writes its own)
+if [ -f "../soul.md" ]; then
+    cp ../soul.md ./soul.md
+    echo "✓ Copied soul.md"
+fi
+
+# Heartbeat — proactive monitoring (optional)
+if [ -f "../tools/heartbeat.sh" ]; then
+    cp ../tools/heartbeat.sh ./tools/heartbeat.sh
+    chmod +x ./tools/heartbeat.sh
+    echo "✓ Copied tools/heartbeat.sh"
+fi
+
 # Step 6: Create frontend workflow (if applicable)
 if [ "$HAS_FRONTEND" = "y" ] || [ "$HAS_FRONTEND" = "Y" ]; then
     cat > workflows/frontend-build.md << 'EOF'
