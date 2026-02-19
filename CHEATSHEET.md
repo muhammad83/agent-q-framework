@@ -162,6 +162,30 @@ tools/server.py to Railway.
 
 ---
 
+## VERIFICATION SCRIPT
+
+The verify script runs boolean pass/fail checks on any output file.
+
+### Customize checks
+Open `tools/verify.sh` and edit the CHECKS array.
+Each check is a label and a grep pattern: `"Label:::pattern"`
+
+### Run it
+```bash
+./tools/verify.sh path/to/output.md
+```
+
+### Example checks for a sales call analysis
+```
+"Has Value Equation section:::## Value Equation\|value equation"
+"Has emotional state identified:::emotional state\|State:"
+"Has upfront contract:::upfront contract\|next steps"
+"Has specific next action:::Action:\|- \[ \]"
+"Has objections listed:::objection\|pushback\|concern"
+```
+
+---
+
 ## EMERGENCY COMMANDS
 
 ### Claude is stuck or looping

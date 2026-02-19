@@ -30,7 +30,8 @@ mkdir -p workflows
 mkdir -p tools
 mkdir -p templates
 mkdir -p clients
-echo "✓ Created folders: workflows/ tools/ templates/ clients/"
+mkdir -p rules
+echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/"
 
 # Step 3: Copy CLAUDE.md from the framework repo
 # If CLAUDE.md exists in parent (cloned from repo), copy it
@@ -120,6 +121,17 @@ Before running, make sure you have:
 - [WHAT SHOULD CLAUDE DO IF X HAPPENS?]
 EOF
 echo "✓ Created workflow template"
+
+# Step 5b: Copy rules template and verify script from framework repo
+if [ -f "../rules/_TEMPLATE.md" ]; then
+    cp ../rules/_TEMPLATE.md ./rules/_TEMPLATE.md
+    echo "✓ Copied rules/_TEMPLATE.md"
+fi
+if [ -f "../tools/verify.sh" ]; then
+    cp ../tools/verify.sh ./tools/verify.sh
+    chmod +x ./tools/verify.sh
+    echo "✓ Copied tools/verify.sh"
+fi
 
 # Step 6: Create frontend workflow (if applicable)
 if [ "$HAS_FRONTEND" = "y" ] || [ "$HAS_FRONTEND" = "Y" ]; then
@@ -292,6 +304,7 @@ echo "    CLAUDE.md          — Agent brain (edit the [PLACEHOLDERS])"
 echo "    todo.md            — Project state tracker"
 echo "    workflows/         — Step-by-step instructions"
 echo "    tools/             — Executable scripts"
+echo "    rules/             — Engineering rules for Claude"
 echo "    clients/           — Per-client data"
 echo "    templates/         — Reusable templates"
 echo "    .env.example       — API key template"

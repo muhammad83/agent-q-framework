@@ -89,6 +89,14 @@ your-project/
 - [HOW SHOULD CLAUDE COMMUNICATE? e.g. "Direct and specific"]
 - [ANY LIBRARIES TO PREFER OR AVOID?]
 
+## Engineering Rules
+Read all files in /rules/ before writing code.
+
+## Verification
+After generating any output document, run `./tools/verify.sh <filepath>`.
+If it fails, fix the output and re-run until all checks pass.
+Do not present the output to the user until verification passes.
+
 ## Frontend Development
 > **This section only applies if this project has a frontend.**
 > Delete this entire section for backend-only projects.
