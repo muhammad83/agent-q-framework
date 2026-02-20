@@ -2,10 +2,14 @@
 
 ## When to Use
 
-Run this in **Plan Mode (Shift+Tab)** after Phase 3 (build) is complete,
-before moving to Phase 4 (verification & deployment). This is for reviewing
-existing code — not for greenfield planning (use the Reverse Elicitation
-Prompt for that).
+Run this in **Plan Mode (Shift+Tab)** to review any existing code. Use it in two scenarios:
+
+1. **After Phase 3 (build):** Review code Claude just built before deploying.
+2. **Onboarding an existing project:** Review a pre-existing codebase to understand
+   architecture, find issues, and plan improvements.
+
+This is for reviewing existing code — not for greenfield planning (use the Reverse
+Elicitation Prompt for that).
 
 
 ## How to Use
@@ -114,7 +118,7 @@ After the review is complete and you've approved all changes:
 
 Phase 1: Setup            ← file structure, CLAUDE.md, todo.md
 Phase 2A: Build Plan      ← reverse elicitation (greenfield projects)
-Phase 2B: Code Review     ← THIS WORKFLOW (existing code)
+Phase 2B: Code Review     ← THIS WORKFLOW (post-build or existing project onboarding)
 Phase 3: Build            ← auto-accept, execute plan
 Phase 4: Verify & Deploy  ← chrome testing, Modal deploy
 

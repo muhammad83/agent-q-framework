@@ -9,21 +9,42 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 
 1. Clone this repo: `git clone https://github.com/safqore/agent-q-framework.git my-project-name`
 2. Reset git: `cd my-project-name && rm -rf .git && git init`
-3. Start Claude (`claude`) and describe your project — Claude fills in `CLAUDE.md` and `todo.md` for you
-4. Follow the Phase 1 and Phase 2 checklists below
+3. Copy `.env.example` to `.env` and add your API keys
+4. Start Claude (`claude`) and describe your project — Claude fills in `CLAUDE.md` and `todo.md` for you
+5. Follow the Phase 1 and Phase 2 checklists below
+
+### Adding to an Existing Project
+
+1. Clone this repo somewhere temporary: `git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q`
+2. Copy the framework files into your project:
+   ```bash
+   cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
+   cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
+   cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
+   cp /tmp/agent-q/.env.example your-project/
+   ```
+3. Copy `.env.example` to `.env` and add your API keys
+4. Start Claude (`claude`) and tell it: "This is an existing project. Read the codebase and fill in CLAUDE.md and todo.md based on what already exists."
+5. Use Phase 2B (Code Review) to review your existing code, or Phase 2A to plan new features
 
 ### Folder Structure
 
 ```
 your-project/
-├── CLAUDE.md              ← Agent configuration (the brain)
-├── soul.md                ← Agent personality & identity (agent writes its own)
+├── CLAUDE.md              ← Agent rules & config (the brain)
+├── CHEATSHEET.md          ← Prompts & commands for every phase
+├── QUICKSTART.md          ← 5-minute new project guide
+├── README.md              ← This file
+├── soul.md                ← Agent personality (the agent writes its own)
 ├── todo.md                ← Project state tracker (the memory)
-├── .env                   ← Secrets (never commit this)
+├── setup.sh               ← New project setup script
+├── .env.example           ← API key template (copy to .env)
 ├── .gitignore             ← Keeps secrets and junk out of git
 ├── workflows/             ← Step-by-step instructions (SOPs)
-│   └── _TEMPLATE.md       ← Copy this for every new workflow
-├── tools/                 ← Executable scripts (Python, JS, etc)
+│   ├── _TEMPLATE.md       ← Copy this for every new workflow
+│   ├── code-review.md     ← Phase 2B code review workflow
+│   └── starcraft-workflow.md ← Parallel execution workflow
+├── tools/                 ← Executable scripts
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
 │   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
 ├── rules/                 ← Engineering rules for Claude
@@ -34,9 +55,9 @@ your-project/
 
 ### Phase 1 Checklist (Setup)
 
-- [ ] Clone this repo and rename folder
+- [ ] Clone this repo and rename folder (or copy framework files into existing project)
+- [ ] Copy `.env.example` to `.env` and add your API keys
 - [ ] Start Claude and describe your project — Claude fills in CLAUDE.md and todo.md
-- [ ] Add your API keys to .env
 - [ ] Create your first workflow file in /workflows
 - [ ] Verify: run `claude` and ask it to read CLAUDE.md and describe its role
 

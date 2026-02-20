@@ -32,16 +32,35 @@ https://github.com/openai/whisper
 
 ## PHASE 1: SETUP
 
-### Terminal Commands (run once per project)
+### New Project
 ```bash
 git clone https://github.com/safqore/agent-q-framework.git my-project-name
 cd my-project-name
 rm -rf .git
 git init
+cp .env.example .env   # add your real API keys
+```
+
+### Existing Project
+```bash
+# Copy framework files into your project
+git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q
+cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
+cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
+cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
+cp /tmp/agent-q/.env.example your-project/
+cd your-project && cp .env.example .env   # add your real API keys
+```
+
+### First Claude Session
+Start Claude Code and describe your project:
+```
+Read CLAUDE.md and the entire project structure.
+[Describe your project in 2-3 sentences.]
+Fill in CLAUDE.md and todo.md based on what you see.
 ```
 
 ### Verification Prompt
-Start Claude Code and paste this:
 ```
 Read CLAUDE.md and the entire project structure.
 Tell me:
@@ -105,7 +124,8 @@ exactly as specified in the plan.
 
 ## PHASE 2B: CODE REVIEW (EXISTING CODE)
 
-Use this after Phase 3 (build) is complete, before deployment.
+Use this to review any existing code — either after Phase 3 (build) or
+when onboarding a pre-existing codebase.
 Full prompt and instructions are in `workflows/code-review.md`.
 
 ### Quick version:
@@ -178,6 +198,51 @@ Don't just paste prompts and hope. Steer the conversation.
 - Don't revert. Fix forward.
 - "That's wrong. Fix it and keep going."
 - Commit when the outcome is good, not when every line is perfect.
+
+---
+
+## PHASE 3+: STARCRAFT (PARALLEL EXECUTION)
+
+Full workflow: `workflows/starcraft-workflow.md`
+
+Use when you have 2+ projects past planning with things to build.
+
+### Model Alias (add to ~/.zshrc)
+```bash
+alias opusplan="claude --model claude-opus-4-6"
+```
+
+### Cost Rule
+```
+Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
+```
+
+### Quick Start
+1. Finalize build plans for 2+ projects
+2. `tmux new-session -s starcraft`
+3. Open a window per project, start `claude --dangerously-skip-permissions`
+4. Kick off each: `Read workflows/build-plan-{feature}.md and execute it fully.`
+5. Rotate every 5-10 min — glance, steer, unblock, move on
+6. Verify each with `opusplan` when done
+7. Merge branches, clean up worktrees, `tmux kill-session -t starcraft`
+
+### Scaling
+| Projects | Strategy |
+|----------|----------|
+| 1 | Don't use this. Build normally. |
+| 2-4 | tmux panes. Split screen. |
+| 5-8 | tmux named windows (`Ctrl+B` + number). |
+| 8+ | Cloud sessions with `&` prefix. |
+
+### Mobile
+- `& claude` → cloud session, open URL from any device
+- Happy Coder app → chat interface to sessions from phone
+
+### If an Instance Goes Off-Track
+```
+Stop. Read workflows/build-plan-{feature}.md again.
+You're off-plan. The current task is: [specific task]. Do only that.
+```
 
 ---
 

@@ -20,8 +20,8 @@ fi
 # Each check is "Label:::grep_pattern"
 CHECKS=(
   "Has Next Steps section:::## Next Steps"
-  "Has specific dates or deadlines:::[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\|deadline\|due date"
-  "Has at least one action item:::- \[ \]\|Action:"
+  "Has specific dates or deadlines:::[0-9]{4}-[0-9]{2}-[0-9]{2}|deadline|due date"
+  "Has at least one action item:::- \[ \]|Action:"
 )
 
 PASS=0

@@ -162,7 +162,7 @@ Before running, make sure you have:
 
 ## Steps
 1. Read todo.md for current project state.
-2. Interview user about aesthetic direction and UI style preferences.
+2. Check brand_assets/ for reference screenshots and CSS files. If present, use those as the design source. If not, ask the user for a reference site URL or aesthetic direction.
 3. Load the frontend-design skill.
 4. Build the component or page.
 5. Open in browser using /chrome and take a screenshot.
@@ -174,7 +174,7 @@ Before running, make sure you have:
 
 ## Tools Used
 - /chrome (visual verification)
-- Figma MCP (if configured, for reading design specs)
+- Reference screenshots and CSS from brand_assets/
 
 ## Output
 - UI component files (HTML/React/etc.)
@@ -192,6 +192,18 @@ Before running, make sure you have:
 - If user says "you decide" on aesthetics, default to clean/minimal
 EOF
     echo "✓ Created workflows/frontend-build.md"
+
+    # Create brand_assets/ folder for design references
+    mkdir -p brand_assets
+    touch brand_assets/.gitkeep
+    cat > brand_assets/README.md << 'EOF'
+Drop these files here before building UI:
+- Your logo (PNG/SVG)
+- Brand guidelines PDF (colors, typography, spacing)
+- Reference screenshots of sites you want to match
+- CSS copied from reference site dev tools (save as reference-styles.css)
+EOF
+    echo "✓ Created brand_assets/ with README"
 fi
 
 # Step 7: Set up .env.example
@@ -255,50 +267,8 @@ Thumbs.db
 EOF
 echo "✓ Set up .gitignore"
 
-# Step 9: Set up Figma MCP (if frontend project)
-if [ "$HAS_FRONTEND" = "y" ] || [ "$HAS_FRONTEND" = "Y" ]; then
-    echo ""
-    echo "--- Figma MCP Setup (Optional) ---"
-    read -p "Do you have a Figma API token to set up now? (y/n): " HAS_FIGMA
-
-    if [ "$HAS_FIGMA" = "y" ] || [ "$HAS_FIGMA" = "Y" ]; then
-        read -p "Enter your Figma API token: " FIGMA_TOKEN
-
-        # Create or update ~/.claude/mcp.json
-        MCP_FILE="$HOME/.claude/mcp.json"
-        mkdir -p "$HOME/.claude"
-
-        if [ -f "$MCP_FILE" ]; then
-            if grep -q "figma" "$MCP_FILE" 2>/dev/null; then
-                echo "✓ Figma MCP already configured in $MCP_FILE"
-            else
-                echo ""
-                echo "⚠ MCP config already exists at $MCP_FILE"
-                echo "  Please manually add this under mcpServers:"
-                echo ""
-                echo '    "figma": {'
-                echo '      "command": "npx",'
-                echo "      \"args\": [\"-y\", \"figma-developer-mcp\", \"--figma-api-key=$FIGMA_TOKEN\"]"
-                echo '    }'
-                echo ""
-            fi
-        else
-            cat > "$MCP_FILE" << MCPEOF
-{
-  "mcpServers": {
-    "figma": {
-      "command": "npx",
-      "args": ["-y", "figma-developer-mcp", "--figma-api-key=$FIGMA_TOKEN"]
-    }
-  }
-}
-MCPEOF
-            echo "✓ Created $MCP_FILE with Figma MCP"
-        fi
-    else
-        echo "✓ Skipped Figma setup — add it later with: claude mcp add figma"
-    fi
-fi
+# Optional: If you use Figma, add MCP manually:
+# claude mcp add figma -- npx -y figma-developer-mcp --figma-api-key=YOUR_KEY
 
 # Step 10: Initialize git
 git init
@@ -313,7 +283,7 @@ echo "  SETUP COMPLETE"
 echo "=========================================="
 echo ""
 echo "  Project structure:"
-echo "    CLAUDE.md          — Agent brain (edit the [PLACEHOLDERS])"
+echo "    CLAUDE.md          — Agent brain (Claude fills this in)"
 echo "    todo.md            — Project state tracker"
 echo "    workflows/         — Step-by-step instructions"
 echo "    tools/             — Executable scripts"
@@ -327,11 +297,7 @@ if [ "$HAS_FRONTEND" = "y" ] || [ "$HAS_FRONTEND" = "Y" ]; then
     echo ""
     echo "  Frontend:            ENABLED"
     echo "  Frontend workflow:   workflows/frontend-build.md"
-    if [ "$HAS_FIGMA" = "y" ] || [ "$HAS_FIGMA" = "Y" ]; then
-        echo "  Figma MCP:           CONFIGURED"
-    else
-        echo "  Figma MCP:           SKIPPED (add later)"
-    fi
+    echo "  Brand assets:        brand_assets/"
 else
     echo ""
     echo "  Frontend:            DISABLED (backend-only)"
@@ -340,8 +306,8 @@ fi
 echo ""
 echo "  Next steps:"
 echo "  1. cd $PROJECT_NAME"
-echo "  2. Open CLAUDE.md and fill in the [PLACEHOLDERS]"
-echo "  3. Open todo.md and set your first goal"
-echo "  4. cp .env.example .env and add your real keys"
-echo "  5. Run 'claude' to start Phase 2 (Planning)"
+echo "  2. cp .env.example .env and add your real keys"
+echo "  3. Run 'claude' and describe your project"
+echo "     Claude will fill in CLAUDE.md and todo.md for you"
+echo "  4. Follow QUICKSTART.md or CHEATSHEET.md from there"
 echo ""

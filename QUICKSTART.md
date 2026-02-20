@@ -1,4 +1,4 @@
-# QUICKSTART — New Project in 5 Minutes
+# QUICKSTART — Up and Running in 5 Minutes
 
 ## Step 1: Clone and rename (30 seconds)
 
@@ -63,6 +63,15 @@ After all questions are answered, summarize every decision we made
 before writing the plan. Save the plan as
 workflows/build-plan-{feature-name}.md.
 ```
+
+## Step 6: Verify setup
+
+Ask Claude:
+```
+What is your role? What workflows do you have?
+What is the current project state in todo.md?
+```
+If it answers all three correctly, you're ready to build.
 
 ## Done.
 
