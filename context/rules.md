@@ -24,3 +24,16 @@ After completing any build task:
    If it fails, fix the output and re-run until all checks pass.
    Do not present the output to the user until verification passes.
 4. List all files created or modified in your summary.
+
+## Documentation
+After completing any build task that adds, removes, or changes:
+- A public API endpoint or CLI command → update the relevant docs
+  (README.md, API.md, or usage section)
+- A file in tools/ or workflows/ → update its header comment and
+  the file map in README.md
+- The folder structure → update the directory tree in README.md
+- A configuration option or env variable → update .env.example
+  and any setup docs
+
+Never mark a task complete without checking if documentation
+needs updating. When in doubt, update the docs.
