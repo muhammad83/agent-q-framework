@@ -31,29 +31,52 @@ mkdir -p tools
 mkdir -p templates
 mkdir -p clients
 mkdir -p rules
-echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/"
+mkdir -p context
+mkdir -p shared_context
+mkdir -p .github
+echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/ shared_context/ .github/"
 
-# Step 3: Copy CLAUDE.md from the framework repo
-# If CLAUDE.md exists in parent (cloned from repo), copy it
+# Step 3: Copy framework files
+# Copy context files from the framework repo
+if [ -d "../context" ]; then
+    cp ../context/rules.md ./context/rules.md
+    cp ../context/planning-protocol.md ./context/planning-protocol.md
+    cp ../context/engineering-preferences.md ./context/engineering-preferences.md
+    cp ../context/frontend.md ./context/frontend.md
+    echo "✓ Copied context/ files (rules, planning, preferences, frontend)"
+fi
+
+# Copy CLAUDE.md
 if [ -f "../CLAUDE.md" ]; then
     cp ../CLAUDE.md ./CLAUDE.md
 else
     touch CLAUDE.md
 fi
+echo "✓ CLAUDE.md ready (fill in the [PLACEHOLDERS])"
 
-# If backend-only, strip the Frontend Development section
-if [ "$HAS_FRONTEND" != "y" ] && [ "$HAS_FRONTEND" != "Y" ]; then
-    if [ -s "CLAUDE.md" ]; then
-        # Remove everything from "## Frontend Development" to end of file
-        sed -i.bak '/^## Frontend Development$/,$d' CLAUDE.md
-        rm -f CLAUDE.md.bak
-        echo "✓ CLAUDE.md ready (backend-only, frontend section removed)"
-    else
-        echo "✓ CLAUDE.md ready (fill in the [PLACEHOLDERS])"
-    fi
-else
-    echo "✓ CLAUDE.md ready (with frontend rules)"
+# Copy agent.md (OpenAI Codex)
+if [ -f "../agent.md" ]; then
+    cp ../agent.md ./agent.md
+    echo "✓ Copied agent.md (OpenAI Codex)"
 fi
+
+# Copy .github/copilot-instructions.md (GitHub Copilot)
+if [ -f "../.github/copilot-instructions.md" ]; then
+    cp ../.github/copilot-instructions.md ./.github/copilot-instructions.md
+    echo "✓ Copied .github/copilot-instructions.md (GitHub Copilot)"
+fi
+
+# If backend-only, delete context/frontend.md
+if [ "$HAS_FRONTEND" != "y" ] && [ "$HAS_FRONTEND" != "Y" ]; then
+    rm -f context/frontend.md
+    echo "✓ Removed context/frontend.md (backend-only project)"
+fi
+
+# Create shared_context/README.md
+cat > shared_context/README.md << 'EOF'
+Put your project-specific domain knowledge here (personas, frameworks, domain rules). These are referenced by all AI tools but are specific to THIS project, not the Agent Q framework.
+EOF
+echo "✓ Created shared_context/README.md"
 
 # Step 4: Create todo.md
 cat > todo.md << 'EOF'
@@ -283,11 +306,15 @@ echo "  SETUP COMPLETE"
 echo "=========================================="
 echo ""
 echo "  Project structure:"
-echo "    CLAUDE.md          — Agent brain (Claude fills this in)"
+echo "    CLAUDE.md          — Claude Code config (thin pointer)"
+echo "    agent.md           — OpenAI Codex config (thin pointer)"
+echo "    .github/copilot-instructions.md — GitHub Copilot config"
+echo "    context/           — Framework rules & preferences (shared)"
+echo "    shared_context/    — Project-specific domain knowledge"
 echo "    todo.md            — Project state tracker"
 echo "    workflows/         — Step-by-step instructions"
 echo "    tools/             — Executable scripts"
-echo "    rules/             — Engineering rules for Claude"
+echo "    rules/             — Engineering rules"
 echo "    clients/           — Per-client data"
 echo "    templates/         — Reusable templates"
 echo "    .env.example       — API key template"
@@ -297,6 +324,7 @@ if [ "$HAS_FRONTEND" = "y" ] || [ "$HAS_FRONTEND" = "Y" ]; then
     echo ""
     echo "  Frontend:            ENABLED"
     echo "  Frontend workflow:   workflows/frontend-build.md"
+    echo "  Frontend rules:      context/frontend.md"
     echo "  Brand assets:        brand_assets/"
 else
     echo ""

@@ -1,7 +1,47 @@
-# Agent Q Framework — Repeatable Claude Code Project Starter
+# Agent Q Framework — Repeatable AI-Assisted Project Starter
 
-A deterministic, repeatable framework for building projects with Claude Code.
+A deterministic, repeatable, tool-agnostic framework for building projects with AI coding agents.
 Based on the Agent Q methodology (Workflows, Agents, Tools).
+
+Works with **Claude Code**, **OpenAI Codex**, **GitHub Copilot**, and any future AI tool that reads markdown instructions.
+
+## Architecture: Pass by Reference
+
+Agent Q uses a two-tier "pass by reference" architecture. Instead of duplicating rules inside each tool's config file, all tools point to the same shared context:
+
+```
+┌─────────────┐  ┌─────────────┐  ┌──────────────────────────┐
+│  CLAUDE.md  │  │  agent.md   │  │ .github/copilot-         │
+│ (Claude Code)│  │ (OpenAI     │  │  instructions.md         │
+│             │  │  Codex)     │  │ (GitHub Copilot)         │
+└──────┬──────┘  └──────┬──────┘  └────────────┬─────────────┘
+       │                │                      │
+       └────────────────┼──────────────────────┘
+                        │
+                        ▼
+              ┌─────────────────┐
+              │    context/     │  ← Framework rules (same for every project)
+              │  rules.md       │
+              │  planning-      │
+              │   protocol.md   │
+              │  engineering-   │
+              │   preferences.md│
+              │  frontend.md    │
+              └─────────────────┘
+              ┌─────────────────┐
+              │ shared_context/ │  ← Project-specific domain knowledge
+              │  (personas,     │    (unique to THIS project)
+              │   frameworks,   │
+              │   domain rules) │
+              └─────────────────┘
+              ┌─────────────────┐
+              │   workflows/    │  ← Operational workflows & build plans
+              └─────────────────┘
+```
+
+**context/** contains framework-level rules that apply to every Agent Q project: engineering rules, planning protocols, coding preferences, and frontend conventions. These are the same regardless of which AI tool runs them.
+
+**shared_context/** contains project-specific domain knowledge: personas, analysis frameworks, industry-specific rules. These are unique to your project but shared across all AI tools.
 
 ## How to Use This
 
@@ -10,7 +50,7 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 1. Clone this repo: `git clone https://github.com/safqore/agent-q-framework.git my-project-name`
 2. Reset git: `cd my-project-name && rm -rf .git && git init`
 3. Copy `.env.example` to `.env` and add your API keys
-4. Start Claude (`claude`) and describe your project — Claude fills in `CLAUDE.md` and `todo.md` for you
+4. Start your AI tool and describe your project — it fills in the config and `todo.md` for you
 5. Follow the Phase 1 and Phase 2 checklists below
 
 ### Adding to an Existing Project
@@ -18,20 +58,32 @@ Based on the Agent Q methodology (Workflows, Agents, Tools).
 1. Clone this repo somewhere temporary: `git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q`
 2. Copy the framework files into your project:
    ```bash
-   cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
+   cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/agent.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
    cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
+   cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/
    cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
+   mkdir -p your-project/.github && cp /tmp/agent-q/.github/copilot-instructions.md your-project/.github/
    cp /tmp/agent-q/.env.example your-project/
    ```
 3. Copy `.env.example` to `.env` and add your API keys
-4. Start Claude (`claude`) and tell it: "This is an existing project. Read the codebase and fill in CLAUDE.md and todo.md based on what already exists."
+4. Start your AI tool and tell it: "This is an existing project. Read the codebase and fill in the config and todo.md based on what already exists."
 5. Use Phase 2B (Code Review) to review your existing code, or Phase 2A to plan new features
 
 ### Folder Structure
 
 ```
 your-project/
-├── CLAUDE.md              ← Agent rules & config (the brain)
+├── CLAUDE.md              ← Claude Code config (thin pointer)
+├── agent.md               ← OpenAI Codex config (thin pointer)
+├── .github/
+│   └── copilot-instructions.md ← GitHub Copilot config (thin pointer)
+├── context/               ← Framework rules & preferences (shared by all tools)
+│   ├── rules.md           ← Engineering rules, verification, plan storage
+│   ├── planning-protocol.md ← 8-question planning interview
+│   ├── engineering-preferences.md ← DRY, testing, edge cases, etc.
+│   └── frontend.md        ← Frontend development rules (delete for backend-only)
+├── shared_context/        ← Project-specific domain knowledge
+│   └── README.md          ← Instructions for what to put here
 ├── CHEATSHEET.md          ← Prompts & commands for every phase
 ├── QUICKSTART.md          ← 5-minute new project guide
 ├── README.md              ← This file
@@ -47,7 +99,7 @@ your-project/
 ├── tools/                 ← Executable scripts
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
 │   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
-├── rules/                 ← Engineering rules for Claude
+├── rules/                 ← Engineering rules for code generation
 │   └── _TEMPLATE.md       ← Copy this for every new rule
 ├── clients/               ← Per-client data (if applicable)
 └── templates/             ← Reusable templates for docs/trackers
@@ -57,26 +109,25 @@ your-project/
 
 - [ ] Clone this repo and rename folder (or copy framework files into existing project)
 - [ ] Copy `.env.example` to `.env` and add your API keys
-- [ ] Start Claude and describe your project — Claude fills in CLAUDE.md and todo.md
+- [ ] Start your AI tool and describe your project — it fills in config and todo.md
 - [ ] Create your first workflow file in /workflows
-- [ ] Verify: run `claude` and ask it to read CLAUDE.md and describe its role
+- [ ] Verify: ask the AI to read context/ and describe its role
 
 ### Phase 2 Checklist (Planning)
 
-- [ ] Start Claude Code: `claude`
-- [ ] Enter Plan Mode: `Shift+Tab`
+- [ ] Start your AI tool
+- [ ] Enter planning mode (Shift+Tab in Claude Code, or just instruct the agent)
 - [ ] Paste the Reverse Elicitation Prompt (see below)
-- [ ] Answer all of Claude's questions
-- [ ] Tell Claude to write the plan file to `workflows/build-plan-{feature-name}.md`
-- [ ] Review plan with `Ctrl+G`
+- [ ] Answer all of the AI's questions
+- [ ] Tell it to write the plan file to `workflows/build-plan-{feature-name}.md`
+- [ ] Review the plan
 - [ ] Edit anything you disagree with
-- [ ] Exit Plan Mode: `Shift+Tab`
-- [ ] Tell Claude to execute the plan
+- [ ] Exit planning mode and tell it to execute the plan
 
 ### The Reverse Elicitation Prompt (Copy-Paste This Every Time)
 
 ```
-Read CLAUDE.md and all files in /workflows.
+Read all files in context/ and workflows/.
 
 [YOUR 2-3 SENTENCE PROJECT DESCRIPTION HERE]
 
@@ -98,15 +149,15 @@ before writing the plan.
 ### Phase 3: Execution (StarCraft Method)
 
 Once the plan is approved:
-- Tab 1: `claude -dangerously-skip-permissions` (Builder)
-- Tab 2: `tail -f logs | claude` or run tests (Verifier)
-- Use `/clear` often to keep context clean
-- 2-Strike Rule: If you correct Claude twice on the same thing, 
+- Tab 1: Builder agent (auto-accept mode)
+- Tab 2: Verifier agent or test runner
+- Use context clearing often to keep context clean
+- 2-Strike Rule: If you correct the AI twice on the same thing,
   kill the session and restart fresh
 
 ### Phase 4: Verification & Deployment
 
-- Visual check: Use `/chrome` to verify UI
+- Visual check: Verify UI in browser
 - Logic check: Post-write hooks run tests automatically
 - Deploy: Push to Modal, Railway, or Render
 - Security: Always run a security audit before deploying

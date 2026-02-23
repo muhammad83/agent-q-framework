@@ -9,15 +9,13 @@ rm -rf .git
 git init
 ```
 
-## Step 2: Tell Claude about your project (2 minutes)
+## Step 2: Tell your AI tool about your project (2 minutes)
 
-```bash
-claude
-```
+Start your AI tool (e.g., `claude`, Codex, Copilot).
 
-Describe your project in 2-3 sentences and tell Claude to fill in
-CLAUDE.md and todo.md. Claude will set up the role, project context,
-folder structure, and first goal for you.
+Describe your project in 2-3 sentences and tell it to fill in
+the config file and todo.md. The AI will set up the role, project
+context, and first goal for you.
 
 ## Step 3: Add secrets (30 seconds)
 
@@ -33,18 +31,14 @@ Open .env and add your real API keys.
 cp workflows/_TEMPLATE.md workflows/my-first-task.md
 ```
 
-Open it and fill in what Claude should do.
+Open it and fill in what the AI should do.
 
 ## Step 5: Run Phase 2 Planning (start here every time)
 
-```bash
-claude
-```
-
-Press Shift+Tab (Plan Mode), then paste:
+Start your AI tool, enter planning mode, then paste:
 
 ```
-Read CLAUDE.md and all files in /workflows.
+Read all files in context/ and workflows/.
 
 [YOUR 2-3 SENTENCE PROJECT DESCRIPTION HERE]
 
@@ -66,7 +60,7 @@ workflows/build-plan-{feature-name}.md.
 
 ## Step 6: Verify setup
 
-Ask Claude:
+Ask your AI tool:
 ```
 What is your role? What workflows do you have?
 What is the current project state in todo.md?

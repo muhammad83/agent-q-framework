@@ -45,24 +45,26 @@ cp .env.example .env   # add your real API keys
 ```bash
 # Copy framework files into your project
 git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q
-cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
+cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/agent.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
 cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
+cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/
 cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
+mkdir -p your-project/.github && cp /tmp/agent-q/.github/copilot-instructions.md your-project/.github/
 cp /tmp/agent-q/.env.example your-project/
 cd your-project && cp .env.example .env   # add your real API keys
 ```
 
-### First Claude Session
-Start Claude Code and describe your project:
+### First AI Session
+Start your AI tool and describe your project:
 ```
-Read CLAUDE.md and the entire project structure.
+Read all files in context/ and workflows/.
 [Describe your project in 2-3 sentences.]
-Fill in CLAUDE.md and todo.md based on what you see.
+Fill in the config file and todo.md based on what you see.
 ```
 
 ### Verification Prompt
 ```
-Read CLAUDE.md and the entire project structure.
+Read all files in context/ and the project structure.
 Tell me:
 1. What is your role?
 2. What workflows do you have?
@@ -77,11 +79,12 @@ If it answers all three correctly, Phase 1 is done.
 Use this when starting a new project from scratch.
 
 ### Step 1 — Enter Plan Mode
-Press: Shift+Tab
+In Claude Code: Press `Shift+Tab`
+In other tools: Instruct the agent to plan without writing code.
 
 ### Step 2 — Reverse Elicitation Prompt (copy this every time)
 ```
-Read CLAUDE.md and all files in /workflows.
+Read all files in context/ and workflows/.
 
 [YOUR 2-3 SENTENCE PROJECT DESCRIPTION HERE]
 
@@ -108,11 +111,13 @@ Include every decision we made and every edge case we covered.
 ```
 
 ### Step 4 — Review the plan
-Press: Ctrl+G (opens in editor)
+In Claude Code: Press `Ctrl+G` (opens in editor)
+In other tools: Open the plan file and review it.
 Read it. Edit anything you disagree with. Save.
 
 ### Step 5 — Switch to Code Mode
-Press: Shift+Tab
+In Claude Code: Press `Shift+Tab`
+In other tools: Instruct the agent to begin implementation.
 
 ### Step 6 — Execute
 ```
@@ -128,13 +133,15 @@ Use this to review any existing code — either after Phase 3 (build) or
 when onboarding a pre-existing codebase.
 Full prompt and instructions are in `workflows/code-review.md`.
 
+Engineering preferences for reviews are in `context/engineering-preferences.md`.
+
 ### Quick version:
-1. Enter Plan Mode: `Shift+Tab`
+1. Enter planning mode
 2. Open and paste the prompt from `workflows/code-review.md`
 3. Choose BIG CHANGE (4 issues per section) or SMALL CHANGE (1 per section)
 4. Work through: Architecture → Code Quality → Tests → Performance
-5. Approve changes, exit Plan Mode: `Shift+Tab`
-6. Tell Claude: `Execute all the changes we agreed on in the review.`
+5. Approve changes, exit planning mode
+6. Tell the AI: `Execute all the changes we agreed on in the review.`
 ```
 
 ---
@@ -143,7 +150,9 @@ Full prompt and instructions are in `workflows/code-review.md`.
 
 ### Terminal Tab 1 — Builder
 ```bash
+# Claude Code:
 claude -dangerously-skip-permissions
+# Other tools: use their auto-accept/autonomous mode
 ```
 Then:
 ```
@@ -161,15 +170,15 @@ claude "Run all tests and report what fails."
 
 ### Context Hygiene Commands
 ```
-/clear          — Wipe context, start fresh
-/compact        — Summarize and compress current context
+/clear          — Wipe context, start fresh (Claude Code)
+/compact        — Summarize and compress current context (Claude Code)
 ```
 
 ### The 2-Strike Rule
-If you correct Claude twice on the same mistake:
+If you correct the AI twice on the same mistake:
 1. Stop the session (Ctrl+C)
 2. Update todo.md with what went wrong
-3. Start a new session: `claude`
+3. Start a new session
 4. It reads todo.md and picks up with fresh context
 
 ### Conversation Steering (Phase 3)
@@ -220,7 +229,7 @@ Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
 ### Quick Start
 1. Finalize build plans for 2+ projects
 2. `tmux new-session -s starcraft`
-3. Open a window per project, start `claude --dangerously-skip-permissions`
+3. Open a window per project, start builder in auto-accept mode
 4. Kick off each: `Read workflows/build-plan-{feature}.md and execute it fully.`
 5. Rotate every 5-10 min — glance, steer, unblock, move on
 6. Verify each with `opusplan` when done
@@ -267,8 +276,7 @@ Don't skip this. The 10 minutes here save hours of tech debt later.
 
 ### Visual Verification
 ```
-/chrome
-Open http://localhost:8000 and test every button. Take a
+Open the app in a browser and test every button. Take a
 screenshot of each page and tell me if anything looks wrong.
 ```
 
@@ -322,20 +330,20 @@ Each check is a label and a grep pattern: `"Label:::pattern"`
 
 ## EMERGENCY COMMANDS
 
-### Claude is stuck or looping
+### AI is stuck or looping
 ```
 /clear
 Read todo.md. What is the current state? What should we do next?
 ```
 
-### Claude made a mess of the files
+### AI made a mess of the files
 ```
 git diff                    — See what changed
 git checkout -- .           — Undo all changes
 git stash                   — Save changes but revert
 ```
 
-### Claude broke something that was working
+### AI broke something that was working
 ```
 git log --oneline -10       — Find the last good commit
 git checkout [commit-hash]  — Go back to it
@@ -346,7 +354,7 @@ git checkout [commit-hash]  — Go back to it
 ## SESSION START TEMPLATE (use at the beginning of every session)
 
 ```
-Read CLAUDE.md and todo.md. 
+Read all files in context/ and todo.md.
 
 What is the current project state? What should we work on next?
 Do not make any changes yet — just tell me your understanding.
