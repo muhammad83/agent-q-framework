@@ -11,6 +11,7 @@ if [ -z "$1" ]; then
 fi
 
 PROJECT_NAME=$1
+FRAMEWORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=========================================="
 echo "  Agent Q Framework — Setting up: $PROJECT_NAME"
@@ -38,31 +39,31 @@ echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/
 
 # Step 3: Copy framework files
 # Copy context files from the framework repo
-if [ -d "../context" ]; then
-    cp ../context/rules.md ./context/rules.md
-    cp ../context/planning-protocol.md ./context/planning-protocol.md
-    cp ../context/engineering-preferences.md ./context/engineering-preferences.md
-    cp ../context/frontend.md ./context/frontend.md
+if [ -d "$FRAMEWORK_DIR/context" ]; then
+    cp $FRAMEWORK_DIR/context/rules.md ./context/rules.md
+    cp $FRAMEWORK_DIR/context/planning-protocol.md ./context/planning-protocol.md
+    cp $FRAMEWORK_DIR/context/engineering-preferences.md ./context/engineering-preferences.md
+    cp $FRAMEWORK_DIR/context/frontend.md ./context/frontend.md
     echo "✓ Copied context/ files (rules, planning, preferences, frontend)"
 fi
 
 # Copy CLAUDE.md
-if [ -f "../CLAUDE.md" ]; then
-    cp ../CLAUDE.md ./CLAUDE.md
+if [ -f "$FRAMEWORK_DIR/CLAUDE.md" ]; then
+    cp "$FRAMEWORK_DIR/CLAUDE.md" ./CLAUDE.md
 else
     touch CLAUDE.md
 fi
 echo "✓ CLAUDE.md ready (fill in the [PLACEHOLDERS])"
 
 # Copy agent.md (OpenAI Codex)
-if [ -f "../agent.md" ]; then
-    cp ../agent.md ./agent.md
+if [ -f "$FRAMEWORK_DIR/agent.md" ]; then
+    cp "$FRAMEWORK_DIR/agent.md" ./agent.md
     echo "✓ Copied agent.md (OpenAI Codex)"
 fi
 
 # Copy .github/copilot-instructions.md (GitHub Copilot)
-if [ -f "../.github/copilot-instructions.md" ]; then
-    cp ../.github/copilot-instructions.md ./.github/copilot-instructions.md
+if [ -f "$FRAMEWORK_DIR/.github/copilot-instructions.md" ]; then
+    cp "$FRAMEWORK_DIR/.github/copilot-instructions.md" ./.github/copilot-instructions.md
     echo "✓ Copied .github/copilot-instructions.md (GitHub Copilot)"
 fi
 
@@ -146,25 +147,25 @@ EOF
 echo "✓ Created workflow template"
 
 # Step 5b: Copy rules template and verify script from framework repo
-if [ -f "../rules/_TEMPLATE.md" ]; then
-    cp ../rules/_TEMPLATE.md ./rules/_TEMPLATE.md
+if [ -f "$FRAMEWORK_DIR/rules/_TEMPLATE.md" ]; then
+    cp "$FRAMEWORK_DIR/rules/_TEMPLATE.md" ./rules/_TEMPLATE.md
     echo "✓ Copied rules/_TEMPLATE.md"
 fi
-if [ -f "../tools/verify.sh" ]; then
-    cp ../tools/verify.sh ./tools/verify.sh
+if [ -f "$FRAMEWORK_DIR/tools/verify.sh" ]; then
+    cp "$FRAMEWORK_DIR/tools/verify.sh" ./tools/verify.sh
     chmod +x ./tools/verify.sh
     echo "✓ Copied tools/verify.sh"
 fi
 
 # Soul — agent personality (agent writes its own)
-if [ -f "../soul.md" ]; then
-    cp ../soul.md ./soul.md
+if [ -f "$FRAMEWORK_DIR/soul.md" ]; then
+    cp "$FRAMEWORK_DIR/soul.md" ./soul.md
     echo "✓ Copied soul.md"
 fi
 
 # Heartbeat — proactive monitoring (optional)
-if [ -f "../tools/heartbeat.sh" ]; then
-    cp ../tools/heartbeat.sh ./tools/heartbeat.sh
+if [ -f "$FRAMEWORK_DIR/tools/heartbeat.sh" ]; then
+    cp "$FRAMEWORK_DIR/tools/heartbeat.sh" ./tools/heartbeat.sh
     chmod +x ./tools/heartbeat.sh
     echo "✓ Copied tools/heartbeat.sh"
 fi
