@@ -8,3 +8,6 @@ Use these preferences to guide all code recommendations, reviews, and implementa
 - **Thoughtfulness over speed** — Err on the side of handling more edge cases, not fewer.
 - **Explicit over clever** — Bias toward readable, obvious code.
 - **Handle more edge cases, not fewer** — Be thorough with error handling and boundary conditions.
+
+## Tool Preference
+Prefer CLI tools over MCPs. CLIs are composable and lighter on tokens. Use MCPs only for stateful tools where no CLI alternative exists.

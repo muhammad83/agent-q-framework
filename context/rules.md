@@ -14,7 +14,7 @@
    stop and ask for clarification rather than guessing again.
 
 ## Plan Storage
-Save implementation plans to `workflows/build-plan-{feature-name}.md`. Plans must live in the project repo so they are tracked in git and reviewable.
+Save implementation plans to `workflows/build-plan-{feature-name}.md`. Never save plans to `~/.claude/plans/` — this causes drift. Plans must live in the project repo so they are tracked in git and reviewable.
 
 ## Verification
 After completing any build task:
