@@ -191,6 +191,20 @@ tmux kill-session -t starcraft
 - **5-8**: Too many panes to see at once. Named windows let you jump by number.
 - **8+**: Your local machine becomes the bottleneck. Offload to cloud sessions.
 
+## Google Antigravity Alternative
+
+If you're using **Google Antigravity**, you can skip tmux entirely. Antigravity's
+**Manager view** is a built-in control center for orchestrating multiple agents
+working in parallel across workspaces. It provides:
+- A dashboard showing all active agents and their progress
+- Ability to steer, pause, or restart any agent from one interface
+- Asynchronous task execution across multiple workspaces
+
+To use: open Manager view, create an agent per project, point each to its
+`workflows/build-plan-{feature}.md`, and rotate between them in the dashboard.
+The same model strategy applies (use Gemini 3 Flash or Sonnet for building,
+Deep Think or Opus for planning/review).
+
 ## Mobile Control
 
 ### Cloud Sessions (`&` prefix)

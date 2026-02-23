@@ -50,6 +50,7 @@ cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
 cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/
 cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
 mkdir -p your-project/.github && cp /tmp/agent-q/.github/copilot-instructions.md your-project/.github/
+mkdir -p your-project/.agent/rules && cp /tmp/agent-q/.agent/rules/agent-q.md your-project/.agent/rules/
 cp /tmp/agent-q/.env.example your-project/
 cd your-project && cp .env.example .env   # add your real API keys
 ```

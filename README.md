@@ -3,22 +3,22 @@
 A deterministic, repeatable, tool-agnostic framework for building projects with AI coding agents.
 Based on the Agent Q methodology (Workflows, Agents, Tools).
 
-Works with **Claude Code**, **OpenAI Codex**, **GitHub Copilot**, and any future AI tool that reads markdown instructions.
+Works with **Claude Code**, **OpenAI Codex**, **GitHub Copilot**, **Google Antigravity**, and any future AI tool that reads markdown instructions.
 
 ## Architecture: Pass by Reference
 
 Agent Q uses a two-tier "pass by reference" architecture. Instead of duplicating rules inside each tool's config file, all tools point to the same shared context:
 
 ```
-┌─────────────┐  ┌─────────────┐  ┌──────────────────────────┐
-│  CLAUDE.md  │  │  agent.md   │  │ .github/copilot-         │
-│ (Claude Code)│  │ (OpenAI     │  │  instructions.md         │
-│             │  │  Codex)     │  │ (GitHub Copilot)         │
-└──────┬──────┘  └──────┬──────┘  └────────────┬─────────────┘
-       │                │                      │
-       └────────────────┼──────────────────────┘
-                        │
-                        ▼
+┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  ┌──────────────┐
+│  CLAUDE.md  │  │  agent.md   │  │ .github/copilot- │  │ .agent/rules/│
+│(Claude Code)│  │(OpenAI Codex)│  │ instructions.md  │  │ agent-q.md   │
+│             │  │             │  │(GitHub Copilot)  │  │(Antigravity) │
+└──────┬──────┘  └──────┬──────┘  └────────┬────────┘  └──────┬───────┘
+       │                │                   │                  │
+       └────────────────┴───────────────────┴──────────────────┘
+                                  │
+                                  ▼
               ┌─────────────────┐
               │    context/     │  ← Framework rules (same for every project)
               │  rules.md       │
@@ -63,6 +63,7 @@ Agent Q uses a two-tier "pass by reference" architecture. Instead of duplicating
    cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/
    cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/rules your-project/
    mkdir -p your-project/.github && cp /tmp/agent-q/.github/copilot-instructions.md your-project/.github/
+   mkdir -p your-project/.agent/rules && cp /tmp/agent-q/.agent/rules/agent-q.md your-project/.agent/rules/
    cp /tmp/agent-q/.env.example your-project/
    ```
 3. Copy `.env.example` to `.env` and add your API keys
@@ -77,6 +78,9 @@ your-project/
 ├── agent.md               ← OpenAI Codex config (thin pointer)
 ├── .github/
 │   └── copilot-instructions.md ← GitHub Copilot config (thin pointer)
+├── .agent/
+│   └── rules/
+│       └── agent-q.md     ← Google Antigravity config (thin pointer)
 ├── context/               ← Framework rules & preferences (shared by all tools)
 │   ├── rules.md           ← Engineering rules, verification, plan storage
 │   ├── planning-protocol.md ← 8-question planning interview

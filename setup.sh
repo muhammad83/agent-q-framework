@@ -35,7 +35,8 @@ mkdir -p rules
 mkdir -p context
 mkdir -p shared_context
 mkdir -p .github
-echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/ shared_context/ .github/"
+mkdir -p .agent/rules
+echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/ shared_context/ .github/ .agent/rules/"
 
 # Step 3: Copy framework files
 # Copy context files from the framework repo
@@ -65,6 +66,12 @@ fi
 if [ -f "$FRAMEWORK_DIR/.github/copilot-instructions.md" ]; then
     cp "$FRAMEWORK_DIR/.github/copilot-instructions.md" ./.github/copilot-instructions.md
     echo "✓ Copied .github/copilot-instructions.md (GitHub Copilot)"
+fi
+
+# Copy .agent/rules/agent-q.md (Google Antigravity)
+if [ -f "$FRAMEWORK_DIR/.agent/rules/agent-q.md" ]; then
+    cp "$FRAMEWORK_DIR/.agent/rules/agent-q.md" ./.agent/rules/agent-q.md
+    echo "✓ Copied .agent/rules/agent-q.md (Google Antigravity)"
 fi
 
 # If backend-only, delete context/frontend.md
@@ -310,6 +317,7 @@ echo "  Project structure:"
 echo "    CLAUDE.md          — Claude Code config (thin pointer)"
 echo "    agent.md           — OpenAI Codex config (thin pointer)"
 echo "    .github/copilot-instructions.md — GitHub Copilot config"
+echo "    .agent/rules/agent-q.md — Google Antigravity config"
 echo "    context/           — Framework rules & preferences (shared)"
 echo "    shared_context/    — Project-specific domain knowledge"
 echo "    todo.md            — Project state tracker"

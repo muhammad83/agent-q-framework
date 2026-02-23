@@ -11,7 +11,7 @@ git init
 
 ## Step 2: Tell your AI tool about your project (2 minutes)
 
-Start your AI tool (e.g., `claude`, Codex, Copilot).
+Start your AI tool (e.g., `claude`, Codex, Copilot, Antigravity).
 
 Describe your project in 2-3 sentences and tell it to fill in
 the config file and todo.md. The AI will set up the role, project
