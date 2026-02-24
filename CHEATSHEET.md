@@ -63,6 +63,16 @@ Read all files in context/ and workflows/.
 Fill in the config file and todo.md based on what you see.
 ```
 
+### Project Setup Interview (Recommended)
+Instead of a free-form description, run the structured setup interview:
+```
+Run the project setup interview from workflows/project-setup.md.
+```
+This profiles your project with 5 quick questions, shows you every
+framework feature with tailored recommendations, and lets you pick
+which ones to adopt. Takes ~3 minutes. Prevents the "I wish I'd
+included that feature" problem.
+
 ### Verification Prompt
 ```
 Read all files in context/ and the project structure.

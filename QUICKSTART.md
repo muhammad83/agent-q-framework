@@ -9,13 +9,22 @@ rm -rf .git
 git init
 ```
 
-## Step 2: Tell your AI tool about your project (2 minutes)
+## Step 2: Run the setup interview (2-3 minutes)
 
 Start your AI tool (e.g., `claude`, Codex, Copilot, Antigravity).
 
-Describe your project in 2-3 sentences and tell it to fill in
-the config file and todo.md. The AI will set up the role, project
-context, and first goal for you.
+```
+Run the project setup interview from workflows/project-setup.md.
+```
+
+This asks 5 quick questions about your project, then shows you every
+framework feature with a recommendation (include/skip/optional) tailored
+to your project type, scale, and quality bar. You pick which features to
+adopt, and it generates your customized config files.
+
+**Alternative (quick and dirty):** Skip the interview and just describe
+your project in 2-3 sentences. The AI will fill in config and todo.md,
+but you may miss framework features that would have helped.
 
 ## Step 3: Add secrets (30 seconds)
 
