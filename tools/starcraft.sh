@@ -21,6 +21,10 @@
 
 set -e
 
+# Unset CLAUDECODE to allow launching from inside an existing Claude session.
+# Without this, Claude Code blocks "nested sessions" and refuses to start.
+unset CLAUDECODE
+
 SESSION="starcraft"
 MODEL="${STARCRAFT_MODEL:-}"  # Optional: override model (e.g. claude-sonnet-4-6)
 CLAUDE_CMD="claude --dangerously-skip-permissions"
@@ -133,7 +137,7 @@ if [ "$WORKTREE_MODE" = true ]; then
     DIR="${DIRS[0]}"
     NAME=$(basename "$DIR")
     tmux new-session -d -s "$SESSION" -n "$NAME" -c "$DIR"
-    tmux send-keys -t "$SESSION:$NAME" "$CLAUDE_CMD" C-m
+    tmux send-keys -t "$SESSION:$NAME" "unset CLAUDECODE && $CLAUDE_CMD" C-m
     sleep 2
     tmux send-keys -t "$SESSION:$NAME" "Read CLAUDE.md and todo.md. Then read the current build plan in workflows/ and execute it fully. Update todo.md as you go." C-m
     echo -e "  ${GREEN}✓${NC} Window 0: $NAME → $DIR"
@@ -143,7 +147,7 @@ if [ "$WORKTREE_MODE" = true ]; then
         DIR="${DIRS[$i]}"
         NAME=$(basename "$DIR")
         tmux new-window -t "$SESSION" -n "$NAME" -c "$DIR"
-        tmux send-keys -t "$SESSION:$NAME" "$CLAUDE_CMD" C-m
+        tmux send-keys -t "$SESSION:$NAME" "unset CLAUDECODE && $CLAUDE_CMD" C-m
         sleep 2
         tmux send-keys -t "$SESSION:$NAME" "Read CLAUDE.md and todo.md. Then read the current build plan in workflows/ and execute it fully. Update todo.md as you go." C-m
         echo -e "  ${GREEN}✓${NC} Window $i: $NAME → $DIR"
@@ -154,7 +158,7 @@ else
     PLAN="${PLANS[0]}"
     NAME=$(basename "$PLAN" .md | sed 's/build-plan-//')
     tmux new-session -d -s "$SESSION" -n "$NAME" -c "$PROJECT_DIR"
-    tmux send-keys -t "$SESSION:$NAME" "$CLAUDE_CMD" C-m
+    tmux send-keys -t "$SESSION:$NAME" "unset CLAUDECODE && $CLAUDE_CMD" C-m
     sleep 2
     tmux send-keys -t "$SESSION:$NAME" "Read $PLAN and execute it fully. Update todo.md as you go." C-m
     echo -e "  ${GREEN}✓${NC} Window 0: $NAME → $PLAN"
@@ -163,7 +167,7 @@ else
         PLAN="${PLANS[$i]}"
         NAME=$(basename "$PLAN" .md | sed 's/build-plan-//')
         tmux new-window -t "$SESSION" -n "$NAME" -c "$PROJECT_DIR"
-        tmux send-keys -t "$SESSION:$NAME" "$CLAUDE_CMD" C-m
+        tmux send-keys -t "$SESSION:$NAME" "unset CLAUDECODE && $CLAUDE_CMD" C-m
         sleep 2
         tmux send-keys -t "$SESSION:$NAME" "Read $PLAN and execute it fully. Update todo.md as you go." C-m
         echo -e "  ${GREEN}✓${NC} Window $i: $NAME → $PLAN"
