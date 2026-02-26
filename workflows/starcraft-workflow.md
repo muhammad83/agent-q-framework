@@ -2,13 +2,38 @@
 
 ## When to Use
 
-Run this when you have **2 or more projects** that are past planning/code review
-(Phase 2A/2B) and have concrete things to build. Each project needs a finalized
-build plan in `workflows/build-plan-{feature}.md` before you launch.
+**Default to parallel whenever you can split work into independent streams.**
+If you have 2+ build plans, features, or tasks that don't depend on each other
+— run them in parallel. This applies to:
 
-Don't use this for a single project — you'll just add overhead without
-parallelism. The benefit comes from keeping multiple Claude instances building
-while you rotate between them as the human-in-the-loop.
+- **Multiple features** in the same project (e.g. Phase 3 + Phase 4 of a visual overhaul)
+- **Multiple projects** across different repos
+- **Independent tasks** within one phase (e.g. "add blog images" + "add about page visuals")
+
+Each stream needs a finalized build plan in `workflows/build-plan-{feature}.md`.
+
+The only time to run sequentially is when tasks have hard dependencies (e.g.
+Phase 5 image optimisation needs Phase 3+4 images to exist first).
+
+## Quick Start (One Command)
+
+```bash
+# Auto-detect all build plans and launch parallel instances:
+./tools/starcraft.sh
+
+# Or specify exact plans:
+./tools/starcraft.sh workflows/build-plan-phase3.md workflows/build-plan-phase4.md
+
+# Or separate directories:
+./tools/starcraft.sh --worktrees /path/to/feature-a /path/to/feature-b
+
+# Override model (default is Sonnet for cost efficiency):
+STARCRAFT_MODEL=claude-sonnet-4-6 ./tools/starcraft.sh
+```
+
+The script handles everything: creates a tmux session, opens one window per
+plan, launches Claude with auto-accept, and sends the build prompt. You just
+rotate between windows.
 
 ## Context Needed
 
@@ -73,36 +98,38 @@ No special setup needed.
 
 ## Steps
 
-### 1. Prepare Each Project
+### 1. Write Build Plans
 
-For every project you're about to run in parallel:
+Each parallel stream needs a plan file:
+- `workflows/build-plan-{feature-a}.md`
+- `workflows/build-plan-{feature-b}.md`
+- etc.
+
+Make sure `todo.md` is current and there are no uncommitted changes.
+
+### 2. Launch (Automated)
 
 ```bash
-# In each project directory
-claude
-> Read CLAUDE.md and todo.md. Confirm the build plan is ready.
-> exit
+./tools/starcraft.sh
 ```
 
-Make sure each project has:
-- A clear build plan in `workflows/build-plan-{feature}.md`
-- A current `todo.md` with the next tasks listed
-- No uncommitted changes that could conflict
+That's it. The script auto-detects all `build-plan-*.md` files and launches
+a Claude instance for each in a tmux session.
 
-### 2. Launch with tmux
+### 3. Launch (Manual Fallback)
+
+If the script doesn't fit your setup:
 
 ```bash
-# Create a named tmux session
 tmux new-session -s starcraft
+# Ctrl+B then % to split, or create named windows:
+tmux new-window -n feature-a
+tmux new-window -n feature-b
 
-# Split into panes (for 2-4 projects)
-# Ctrl+B then % for vertical split
-# Ctrl+B then " for horizontal split
-
-# Or use named windows (better for 5+)
-tmux new-window -n project-a
-tmux new-window -n project-b
-tmux new-window -n project-c
+# In each window:
+cd /path/to/project
+claude --dangerously-skip-permissions
+> Read workflows/build-plan-{feature}.md and execute it fully. Update todo.md as you go.
 ```
 
 **tmux essentials:**
@@ -110,24 +137,6 @@ tmux new-window -n project-c
 - `Ctrl+B` then `n` / `p` → next / previous window
 - `Ctrl+B` then `d` → detach (session keeps running)
 - `tmux attach -t starcraft` → reattach
-
-### 3. Kick Off Builds
-
-In each pane/window, start Claude with auto-accept:
-
-```bash
-cd /path/to/project-a
-claude --dangerously-skip-permissions
-```
-
-Then paste the build prompt:
-
-```
-Read workflows/build-plan-{feature}.md and execute it fully.
-Update todo.md as you go.
-```
-
-Repeat for each project. Now they're all building simultaneously.
 
 ### 4. Rotate Every 5-10 Minutes
 
@@ -335,8 +344,9 @@ Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
 
 ## Tools Used
 
+- `tools/starcraft.sh` — one-command launcher (creates tmux session, opens windows, sends prompts)
 - `tmux` for session management
-- `git worktree` for parallel branches
+- `git worktree` for parallel branches (optional)
 - `claude --dangerously-skip-permissions` for auto-accept builds
 - `opusplan` alias for Opus planning/verification sessions
 

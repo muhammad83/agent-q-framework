@@ -225,7 +225,16 @@ Don't just paste prompts and hope. Steer the conversation.
 
 Full workflow: `workflows/starcraft-workflow.md`
 
-Use when you have 2+ projects past planning with things to build.
+**Default to parallel whenever tasks are independent.** Same project, different
+features? Parallel. Multiple projects? Parallel. Only go sequential when there's
+a hard dependency.
+
+### One-Command Launch
+```bash
+./tools/starcraft.sh                    # Auto-detect all build plans
+./tools/starcraft.sh plan-a.md plan-b.md  # Specific plans
+STARCRAFT_MODEL=claude-sonnet-4-6 ./tools/starcraft.sh  # Override model
+```
 
 ### Model Alias (add to ~/.zshrc)
 ```bash
@@ -237,21 +246,19 @@ alias opusplan="claude --model claude-opus-4-6"
 Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
 ```
 
-### Quick Start
-1. Finalize build plans for 2+ projects
-2. `tmux new-session -s starcraft`
-3. Open a window per project, start builder in auto-accept mode
-4. Kick off each: `Read workflows/build-plan-{feature}.md and execute it fully.`
-5. Rotate every 5-10 min — glance, steer, unblock, move on
-6. Verify each with `opusplan` when done
-7. Merge branches, clean up worktrees, `tmux kill-session -t starcraft`
+### Manual Fallback
+1. `tmux new-session -s starcraft`
+2. Open a window per task, start builder in auto-accept mode
+3. Kick off each: `Read workflows/build-plan-{feature}.md and execute it fully.`
+4. Rotate every 5-10 min — glance, steer, unblock, move on
+5. Verify each with `opusplan` when done
+6. Merge, clean up, `tmux kill-session -t starcraft`
 
 ### Scaling
-| Projects | Strategy |
-|----------|----------|
-| 1 | Don't use this. Build normally. |
-| 2-4 | tmux panes. Split screen. |
-| 5-8 | tmux named windows (`Ctrl+B` + number). |
+| Streams | Strategy |
+|---------|----------|
+| 2-4 | `./tools/starcraft.sh` — tmux windows, rotate. |
+| 5-8 | Same script. Named windows (`Ctrl+B` + number). |
 | 8+ | Cloud sessions with `&` prefix. |
 
 ### Mobile
