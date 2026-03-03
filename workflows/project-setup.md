@@ -115,7 +115,7 @@ Present this table with the Rec column filled in:
 
     WORKFLOWS
 7   Code review (Phase 2B)           [rec]     4-section review: architecture, code, tests, perf
-8   StarCraft parallel execution     [rec]     Run multiple AI instances in parallel via tmux
+8   Spin Jit Su parallel execution   [rec]     Run multiple AI instances in parallel via tmux
 9   Post-build refactor              [rec]     4 retrospective questions after every feature
 
     TOOLS
@@ -131,13 +131,25 @@ Present this table with the Rec column filled in:
 15  copilot-instructions.md          [rec]     Config for GitHub Copilot
 16  .agent/rules/agent-q.md          [rec]     Config for Google Antigravity
 
+    CONTEXT AWARENESS
+17  Context monitor hooks            [rec]     Status bar + warnings when context runs low
+18  Slash commands (/q:*)            [rec]     9 commands replacing copy-paste prompts
+
+    SESSION MANAGEMENT
+19  Pause/Resume workflows           [rec]     Save & restore session state across context clears
+20  Debug workflow                   [rec]     Scientific method debugging with investigation tracking
+
+    AGENTS
+21  Subagent roles (agents/)         [rec]     Planner, executor, verifier, debugger role definitions
+22  Subagent spawning                [rec]     Spawn parallel executors via Task tool
+
 Legend: INCLUDE = recommended | OPTIONAL = your call | SKIP = not needed
 ```
 
 After the table, show each SKIP and OPTIONAL item with a one-line rationale:
 ```
 Why some features are SKIP/OPTIONAL for your project:
-- #8 StarCraft: SKIP — solo project, one thing at a time
+- #8 Spin Jit Su: SKIP — solo project, one thing at a time
 - #11 Heartbeat: SKIP — not a production backend service
 - #12 Soul.md: OPTIONAL — useful for long projects, skip for quick ones
 ```
@@ -183,7 +195,7 @@ Use these rules to fill the Rec column:
 - High quality/mission-critical or team (Q4=C/D or Q3=C/D) → INCLUDE
 - Balanced + solo (Q4=B + Q3=A/B) → OPTIONAL
 
-**#8 StarCraft parallel execution**
+**#8 Spin Jit Su parallel execution**
 - Solo hobby (Q3=A) → SKIP
 - Solo serious (Q3=B) with one project at a time → OPTIONAL
 - Small team or team (Q3=C/D) → INCLUDE
@@ -219,6 +231,34 @@ Use these rules to fill the Rec column:
 - Q5=E → INCLUDE all
 - Q5=F → SKIP all (note they exist if needed later)
 
+**#17 Context monitor hooks**
+- Q5 includes Claude Code (A/B/C/D/E) → INCLUDE
+- Q5=F → OPTIONAL (hooks are Claude Code specific, but useful for any future setup)
+
+**#18 Slash commands (/q:*)**
+- Q5 includes Claude Code (A/B/C/D/E) → INCLUDE
+- Q5=F → SKIP (slash commands are Claude Code specific)
+
+**#19 Pause/Resume workflows**
+- Balanced or higher (Q4=B/C/D) → INCLUDE (session continuity matters)
+- Ship fast (Q4=A) → OPTIONAL
+
+**#20 Debug workflow**
+- High quality or mission-critical (Q4=C/D) → INCLUDE
+- Balanced (Q4=B) → OPTIONAL
+- Ship fast (Q4=A) → SKIP
+
+**#21 Subagent roles (agents/)**
+- Team (Q3=C/D) → INCLUDE (role clarity across sessions)
+- Solo serious (Q3=B) → OPTIONAL
+- Solo hobby (Q3=A) + ship fast (Q4=A) → SKIP
+
+**#22 Subagent spawning**
+- Same as #8 (Spin Jit Su) — follows parallel execution recommendation
+- If #8 is INCLUDE → INCLUDE #22
+- If #8 is OPTIONAL → OPTIONAL #22
+- If #8 is SKIP → SKIP #22
+
 ---
 
 ## Stage 3: User Selection
@@ -231,7 +271,7 @@ Use these rules to fill the Rec column:
 ```
 FINAL SELECTION:
   INCLUDED: Core rules, Pass-by-reference, Planning protocol, ...
-  SKIPPED:  StarCraft, Heartbeat, ...
+  SKIPPED:  Spin Jit Su, Heartbeat, ...
 
 Generating project files now...
 ```
@@ -332,13 +372,19 @@ Copy from framework based on selection:
 | #4 Engineering prefs | `context/engineering-preferences.md` (if #2 INCLUDED) |
 | #5 Frontend rules | `context/frontend.md` (if #2 INCLUDED) |
 | #7 Code review | `workflows/code-review.md` |
-| #8 StarCraft | `workflows/starcraft-workflow.md` |
+| #8 Spin Jit Su | `workflows/spin-jit-su-workflow.md`, `tools/spin-jit-su.sh` |
 | #10 Verification | `tools/verify.sh` (customize checks for project type) |
 | #11 Heartbeat | `tools/heartbeat.sh` |
 | #12 Soul.md | `soul.md` (template — agent fills in on first session) |
 | #14 agent.md | `agent.md` |
 | #15 copilot-instructions | `.github/copilot-instructions.md` |
 | #16 agent-q.md | `.agent/rules/agent-q.md` |
+| #17 Context monitor | `hooks/agentq-statusline.js`, `hooks/agentq-context-monitor.js`, `.claude/settings.json` |
+| #18 Slash commands | `commands/q/` (9 command files, symlinked) |
+| #19 Pause/Resume | `workflows/pause.md`, `workflows/resume.md` |
+| #20 Debug workflow | `workflows/debug.md` |
+| #21 Subagent roles | `agents/q-planner.md`, `agents/q-executor.md`, `agents/q-verifier.md`, `agents/q-debugger.md` |
+| #22 Subagent spawning | Documented in `workflows/spin-jit-su-workflow.md` (requires #8) |
 
 ### 4C: Document Exclusions
 

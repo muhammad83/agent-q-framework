@@ -81,13 +81,34 @@ your-project/
 ├── .agent/
 │   └── rules/
 │       └── agent-q.md     ← Google Antigravity config (thin pointer)
+├── .claude/
+│   └── settings.json      ← Claude Code hooks & statusline config
 ├── context/               ← Framework rules & preferences (shared by all tools)
-│   ├── rules.md           ← Engineering rules, verification, plan storage
-│   ├── planning-protocol.md ← 8-question planning interview
+│   ├── rules.md           ← Engineering rules, deviation rules, atomic commits
+│   ├── planning-protocol.md ← 8-question interview, context budget, discovery levels
 │   ├── engineering-preferences.md ← DRY, testing, edge cases, etc.
 │   └── frontend.md        ← Frontend development rules (delete for backend-only)
 ├── shared_context/        ← Project-specific domain knowledge
 │   └── README.md          ← Instructions for what to put here
+├── agents/                ← Subagent role definitions
+│   ├── q-planner.md       ← Creates build plans with task breakdown
+│   ├── q-executor.md      ← Executes build plans atomically
+│   ├── q-verifier.md      ← Verifies goal achievement, not just task completion
+│   └── q-debugger.md      ← Scientific method debugging
+├── hooks/                 ← Claude Code hooks (symlinked to projects)
+│   ├── agentq-statusline.js  ← Context window progress bar in status line
+│   └── agentq-context-monitor.js ← Warns when context is running low
+├── commands/              ← Slash commands (symlinked to projects)
+│   └── q/
+│       ├── plan.md        ← /q:plan — Reverse elicitation planning
+│       ├── execute.md     ← /q:execute — Build from plan with deviation rules
+│       ├── verify.md      ← /q:verify — Verify work against plan
+│       ├── review.md      ← /q:review — 4-section code review
+│       ├── progress.md    ← /q:progress — Show project state
+│       ├── debug.md       ← /q:debug — Scientific method debugging
+│       ├── quick.md       ← /q:quick — Small fix without planning
+│       ├── pause.md       ← /q:pause — Save session state
+│       └── resume.md      ← /q:resume — Resume from paused session
 ├── CHEATSHEET.md          ← Prompts & commands for every phase
 ├── QUICKSTART.md          ← 5-minute new project guide
 ├── README.md              ← This file
@@ -99,9 +120,14 @@ your-project/
 ├── workflows/             ← Step-by-step instructions (SOPs)
 │   ├── _TEMPLATE.md       ← Copy this for every new workflow
 │   ├── code-review.md     ← Phase 2B code review workflow
-│   └── starcraft-workflow.md ← Parallel execution workflow
+│   ├── spin-jit-su-workflow.md ← Parallel execution (tmux + subagent spawning)
+│   ├── pause.md           ← Session pause workflow
+│   ├── resume.md          ← Session resume workflow
+│   ├── debug.md           ← Scientific method debugging workflow
+│   └── project-setup.md   ← Structured project onboarding interview
 ├── tools/                 ← Executable scripts
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
+│   ├── spin-jit-su.sh     ← One-command parallel launcher (tmux)
 │   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
 ├── rules/                 ← Engineering rules for code generation
 │   └── _TEMPLATE.md       ← Copy this for every new rule
@@ -150,7 +176,7 @@ After all questions are answered, summarize every decision we made
 before writing the plan.
 ```
 
-### Phase 3: Execution (StarCraft Method)
+### Phase 3: Execution (Spin Jit Su Method)
 
 Once the plan is approved:
 - Tab 1: Builder agent (auto-accept mode)

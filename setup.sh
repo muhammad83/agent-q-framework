@@ -34,19 +34,69 @@ mkdir -p clients
 mkdir -p rules
 mkdir -p context
 mkdir -p shared_context
+mkdir -p agents
+mkdir -p hooks
+mkdir -p .claude
 mkdir -p .github
 mkdir -p .agent/rules
-echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/ shared_context/ .github/ .agent/rules/"
+echo "✓ Created folders: workflows/ tools/ templates/ clients/ rules/ context/ shared_context/ agents/ hooks/ .claude/ .github/ .agent/rules/"
 
-# Step 3: Copy framework files
-# Copy context files from the framework repo
+# Step 3: Symlink shared framework files (single source of truth)
+# Context files are symlinked so updates to the framework propagate to all projects
 if [ -d "$FRAMEWORK_DIR/context" ]; then
-    cp $FRAMEWORK_DIR/context/rules.md ./context/rules.md
-    cp $FRAMEWORK_DIR/context/planning-protocol.md ./context/planning-protocol.md
-    cp $FRAMEWORK_DIR/context/engineering-preferences.md ./context/engineering-preferences.md
-    cp $FRAMEWORK_DIR/context/frontend.md ./context/frontend.md
-    echo "✓ Copied context/ files (rules, planning, preferences, frontend)"
+    ln -s "$FRAMEWORK_DIR/context/rules.md" ./context/rules.md
+    ln -s "$FRAMEWORK_DIR/context/planning-protocol.md" ./context/planning-protocol.md
+    ln -s "$FRAMEWORK_DIR/context/engineering-preferences.md" ./context/engineering-preferences.md
+    ln -s "$FRAMEWORK_DIR/context/frontend.md" ./context/frontend.md
+    echo "✓ Symlinked context/ files → framework (rules, planning, preferences, frontend)"
 fi
+
+# Symlink shared workflows from the framework
+if [ -d "$FRAMEWORK_DIR/workflows" ]; then
+    ln -s "$FRAMEWORK_DIR/workflows/code-review.md" ./workflows/code-review.md
+    ln -s "$FRAMEWORK_DIR/workflows/pause.md" ./workflows/pause.md
+    ln -s "$FRAMEWORK_DIR/workflows/resume.md" ./workflows/resume.md
+    ln -s "$FRAMEWORK_DIR/workflows/debug.md" ./workflows/debug.md
+    echo "✓ Symlinked workflows/ → framework (code-review, pause, resume, debug)"
+fi
+
+# Symlink hooks from the framework
+if [ -d "$FRAMEWORK_DIR/hooks" ]; then
+    ln -s "$FRAMEWORK_DIR/hooks/agentq-statusline.js" ./hooks/agentq-statusline.js
+    ln -s "$FRAMEWORK_DIR/hooks/agentq-context-monitor.js" ./hooks/agentq-context-monitor.js
+    echo "✓ Symlinked hooks/ → framework (statusline, context monitor)"
+fi
+
+# Symlink slash commands from the framework
+if [ -d "$FRAMEWORK_DIR/commands" ]; then
+    ln -s "$FRAMEWORK_DIR/commands" ./commands
+    echo "✓ Symlinked commands/ → framework (slash commands)"
+fi
+
+# Copy agent role definitions (projects may customize these)
+if [ -d "$FRAMEWORK_DIR/agents" ]; then
+    cp "$FRAMEWORK_DIR/agents/q-planner.md" ./agents/q-planner.md
+    cp "$FRAMEWORK_DIR/agents/q-executor.md" ./agents/q-executor.md
+    cp "$FRAMEWORK_DIR/agents/q-verifier.md" ./agents/q-verifier.md
+    cp "$FRAMEWORK_DIR/agents/q-debugger.md" ./agents/q-debugger.md
+    echo "✓ Copied agents/ (planner, executor, verifier, debugger)"
+fi
+
+# Create .claude/settings.json with hook configuration
+cat > .claude/settings.json << 'EOF'
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "node hooks/agentq-context-monitor.js"
+      }
+    ]
+  },
+  "statusLine": "node hooks/agentq-statusline.js"
+}
+EOF
+echo "✓ Created .claude/settings.json (hooks + statusline)"
 
 # Copy CLAUDE.md
 if [ -f "$FRAMEWORK_DIR/CLAUDE.md" ]; then
@@ -74,10 +124,10 @@ if [ -f "$FRAMEWORK_DIR/.agent/rules/agent-q.md" ]; then
     echo "✓ Copied .agent/rules/agent-q.md (Google Antigravity)"
 fi
 
-# If backend-only, delete context/frontend.md
+# If backend-only, remove frontend symlink
 if [ "$HAS_FRONTEND" != "y" ] && [ "$HAS_FRONTEND" != "Y" ]; then
     rm -f context/frontend.md
-    echo "✓ Removed context/frontend.md (backend-only project)"
+    echo "✓ Removed context/frontend.md symlink (backend-only project)"
 fi
 
 # Create shared_context/README.md
@@ -318,8 +368,12 @@ echo "    CLAUDE.md          — Claude Code config (thin pointer)"
 echo "    agent.md           — OpenAI Codex config (thin pointer)"
 echo "    .github/copilot-instructions.md — GitHub Copilot config"
 echo "    .agent/rules/agent-q.md — Google Antigravity config"
-echo "    context/           — Framework rules & preferences (shared)"
+echo "    context/           — Framework rules & preferences (symlinked)"
 echo "    shared_context/    — Project-specific domain knowledge"
+echo "    agents/            — Subagent role definitions (planner, executor, verifier, debugger)"
+echo "    hooks/             — Context monitor & statusline (symlinked)"
+echo "    commands/          — Slash commands /q:plan, /q:execute, etc. (symlinked)"
+echo "    .claude/           — Claude Code settings (hooks config)"
 echo "    todo.md            — Project state tracker"
 echo "    workflows/         — Step-by-step instructions"
 echo "    tools/             — Executable scripts"

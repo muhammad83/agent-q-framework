@@ -1,4 +1,4 @@
-# Workflow: StarCraft Method (Parallel Claude Code Execution)
+# Workflow: Spin Jit Su Method (Parallel Claude Code Execution)
 
 ## When to Use
 
@@ -19,16 +19,16 @@ Phase 5 image optimisation needs Phase 3+4 images to exist first).
 
 ```bash
 # Auto-detect all build plans and launch parallel instances:
-./tools/starcraft.sh
+./tools/spin-jit-su.sh
 
 # Or specify exact plans:
-./tools/starcraft.sh workflows/build-plan-phase3.md workflows/build-plan-phase4.md
+./tools/spin-jit-su.sh workflows/build-plan-phase3.md workflows/build-plan-phase4.md
 
 # Or separate directories:
-./tools/starcraft.sh --worktrees /path/to/feature-a /path/to/feature-b
+./tools/spin-jit-su.sh --worktrees /path/to/feature-a /path/to/feature-b
 
 # Override model (default is Sonnet for cost efficiency):
-STARCRAFT_MODEL=claude-sonnet-4-6 ./tools/starcraft.sh
+SPINJITSU_MODEL=claude-sonnet-4-6 ./tools/spin-jit-su.sh
 ```
 
 The script handles everything: creates a tmux session, opens one window per
@@ -110,7 +110,7 @@ Make sure `todo.md` is current and there are no uncommitted changes.
 ### 2. Launch (Automated)
 
 ```bash
-./tools/starcraft.sh
+./tools/spin-jit-su.sh
 ```
 
 That's it. The script auto-detects all `build-plan-*.md` files and launches
@@ -121,7 +121,7 @@ a Claude instance for each in a tmux session.
 If the script doesn't fit your setup:
 
 ```bash
-tmux new-session -s starcraft
+tmux new-session -s spinjitsu
 # Ctrl+B then % to split, or create named windows:
 tmux new-window -n feature-a
 tmux new-window -n feature-b
@@ -136,11 +136,11 @@ claude --dangerously-skip-permissions
 - `Ctrl+B` then number → switch to window
 - `Ctrl+B` then `n` / `p` → next / previous window
 - `Ctrl+B` then `d` → detach (session keeps running)
-- `tmux attach -t starcraft` → reattach
+- `tmux attach -t spinjitsu` → reattach
 
 ### 4. Rotate Every 5-10 Minutes
 
-This is the StarCraft part. You're the commander — check each base regularly:
+This is the Spin Jit Su part. You're the sensei — check each dojo regularly:
 
 - **Glance** at the output. Is it making progress or stuck?
 - **Steer** if it's going off-track: "Stop. That's wrong. Do X instead."
@@ -182,7 +182,7 @@ git worktree remove ../project-feature-a
 git worktree remove ../project-feature-b
 
 # Kill the tmux session when done
-tmux kill-session -t starcraft
+tmux kill-session -t spinjitsu
 ```
 
 ## Scaling Rules
@@ -303,9 +303,57 @@ For 4 parallel projects with plan → build → verify:
 Compare to running everything on Opus: ~$48+. The model strategy saves
 roughly 60%.
 
+## Alternative: Subagent Spawning (Single Session)
+
+Instead of tmux windows, you can use Claude Code's **Task tool** to spawn
+q-executor subagents within a single session. Each subagent gets a fresh
+200K context window while the orchestrator stays lean at ~15% context usage.
+
+### How It Works
+
+```
+Orchestrator (you, ~15% context)
+├── Task: q-executor → build feature A (fresh 200K)
+├── Task: q-executor → build feature B (fresh 200K)
+└── Task: q-executor → build feature C (fresh 200K)
+```
+
+The orchestrator reads the build plans, splits work, spawns executors,
+collects results, and runs verification.
+
+### When to Use Subagent Spawning vs tmux
+
+| Factor | Subagent Spawning (Task tool) | tmux (Spin Jit Su) |
+|--------|-------------------------------|---------------------|
+| Same repo, short tasks | Best | Overkill |
+| Same repo, long builds | Risky (subagent timeout) | Best |
+| Multiple repos | Not possible | Best |
+| Human steering needed | Limited (async) | Direct |
+| Context isolation | Automatic | Automatic (separate sessions) |
+| Setup required | None | tmux + script |
+
+### Spawning Pattern
+
+```
+Read agents/q-executor.md for the executor role.
+
+For each independent task in the build plan:
+1. Use the Task tool to spawn a subagent
+2. Pass it: the task description, relevant file paths, and a reference to context/rules.md
+3. The subagent executes the task and returns results
+4. Verify the results before moving to the next task
+```
+
+### Limitations
+
+- Subagents can't see each other's work in real-time
+- Long tasks may hit subagent turn limits
+- If tasks have dependencies, run them sequentially
+- For builds longer than ~20 minutes, prefer tmux
+
 ## CLAUDE.md Addition for Parallel Execution
 
-Add this block to each project's `CLAUDE.md` when running in StarCraft mode:
+Add this block to each project's `CLAUDE.md` when running in Spin Jit Su mode:
 
 ```markdown
 ## Parallel Execution
@@ -321,13 +369,13 @@ This project may be running alongside other Claude Code instances.
 Add to `CHEATSHEET.md` under Phase 3:
 
 ```markdown
-## PHASE 3+: STARCRAFT (PARALLEL EXECUTION)
+## PHASE 3+: SPIN JIT SU (PARALLEL EXECUTION)
 
-Full workflow: `workflows/starcraft-workflow.md`
+Full workflow: `workflows/spin-jit-su-workflow.md`
 
 ### Quick Start
 1. Finalize build plans for 2+ projects
-2. `tmux new-session -s starcraft`
+2. `tmux new-session -s spinjitsu`
 3. Open a window per project, start `claude --dangerously-skip-permissions`
 4. Kick off builds, rotate every 5-10 min
 5. Verify each with `opusplan` when done
@@ -344,7 +392,7 @@ Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
 
 ## Tools Used
 
-- `tools/starcraft.sh` — one-command launcher (creates tmux session, opens windows, sends prompts)
+- `tools/spin-jit-su.sh` — one-command launcher (creates tmux session, opens windows, sends prompts)
 - `tmux` for session management
 - `git worktree` for parallel branches (optional)
 - `claude --dangerously-skip-permissions` for auto-accept builds

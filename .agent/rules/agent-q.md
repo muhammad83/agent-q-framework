@@ -10,10 +10,12 @@ These contain your rules, planning protocols, engineering preferences, and opera
 
 Also read `shared_context/` for project-specific domain knowledge (personas, frameworks, domain rules).
 
+Read `agents/` for subagent role definitions (planner, executor, verifier, debugger).
+
 Track all state in todo.md.
 
 ## Tool-Specific Notes (Google Antigravity)
-- Use **Manager view** to orchestrate multiple agents working in parallel (see `workflows/starcraft-workflow.md`).
+- Use **Manager view** to orchestrate multiple agents working in parallel (see `workflows/spin-jit-su-workflow.md`).
 - Use **Deep Think mode** (Gemini 3 Deep Think) for planning sessions and architectural decisions.
 - For plan execution, read `workflows/build-plan-{feature-name}.md` and follow it step by step.
 - Use **Agent-assisted development** mode (recommended) to stay in control while the AI handles safe automations.

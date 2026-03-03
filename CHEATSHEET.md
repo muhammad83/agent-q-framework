@@ -5,6 +5,45 @@ and prompts you use at each phase.
 
 ---
 
+## SLASH COMMANDS (QUICK REFERENCE)
+
+These replace copy-paste prompts. Use them directly in Claude Code:
+
+| Command | What It Does | When to Use |
+|---------|-------------|-------------|
+| `/q:plan` | Reverse elicitation planning interview | Starting a new feature |
+| `/q:execute` | Build from plan with deviation rules | After plan is approved |
+| `/q:verify` | Verify work against plan + code review | After build is complete |
+| `/q:review` | 4-section code review | Reviewing existing or new code |
+| `/q:progress` | Show project state + next action | Start of session, checking status |
+| `/q:debug` | Scientific method debugging | Bug found, tests failing |
+| `/q:quick` | Small fix, no planning overhead | Typos, 1-2 file fixes |
+| `/q:pause` | Save state for next session | Ending a session mid-task |
+| `/q:resume` | Pick up where you left off | Starting a new session |
+
+**Quick workflow:** `/q:plan` → `/q:execute` → `/q:verify`
+
+**Session flow:** `/q:resume` → (work) → `/q:pause`
+
+---
+
+## CONTEXT MONITOR
+
+Agent Q includes automatic context window monitoring:
+
+- **Status line** shows a colored progress bar: green (PEAK) → yellow (GOOD/DEGRADING) → red (POOR)
+- **Warnings** inject at 35% remaining (WARNING) and 25% remaining (CRITICAL)
+- When you see DEGRADING: wrap up current task and commit
+- When you see POOR: `/compact` or `/clear` immediately
+
+Context budget targets (from planning protocol):
+- 0-30% used = PEAK (do your best work)
+- 30-50% = GOOD (finish current task set)
+- 50-70% = DEGRADING (wrap up and commit)
+- 70%+ = POOR (stop, commit, `/compact` or `/clear`)
+
+---
+
 ## VOICE PROMPTING (SPEED MULTIPLIER)
 
 Dictate your prompts instead of typing. You'll move 3-5x faster.
@@ -157,7 +196,7 @@ Engineering preferences for reviews are in `context/engineering-preferences.md`.
 
 ---
 
-## PHASE 3: EXECUTION (STARCRAFT METHOD)
+## PHASE 3: EXECUTION (SPIN JIT SU METHOD)
 
 ### Terminal Tab 1 — Builder
 ```bash
@@ -221,9 +260,9 @@ Don't just paste prompts and hope. Steer the conversation.
 
 ---
 
-## PHASE 3+: STARCRAFT (PARALLEL EXECUTION)
+## PHASE 3+: SPIN JIT SU (PARALLEL EXECUTION)
 
-Full workflow: `workflows/starcraft-workflow.md`
+Full workflow: `workflows/spin-jit-su-workflow.md`
 
 **Default to parallel whenever tasks are independent.** Same project, different
 features? Parallel. Multiple projects? Parallel. Only go sequential when there's
@@ -231,9 +270,9 @@ a hard dependency.
 
 ### One-Command Launch
 ```bash
-./tools/starcraft.sh                    # Auto-detect all build plans
-./tools/starcraft.sh plan-a.md plan-b.md  # Specific plans
-STARCRAFT_MODEL=claude-sonnet-4-6 ./tools/starcraft.sh  # Override model
+./tools/spin-jit-su.sh                    # Auto-detect all build plans
+./tools/spin-jit-su.sh plan-a.md plan-b.md  # Specific plans
+SPINJITSU_MODEL=claude-sonnet-4-6 ./tools/spin-jit-su.sh  # Override model
 ```
 
 ### Model Alias (add to ~/.zshrc)
@@ -247,17 +286,17 @@ Plan with Opus → Build with Sonnet → Verify with Opus = ~60% savings
 ```
 
 ### Manual Fallback
-1. `tmux new-session -s starcraft`
+1. `tmux new-session -s spinjitsu`
 2. Open a window per task, start builder in auto-accept mode
 3. Kick off each: `Read workflows/build-plan-{feature}.md and execute it fully.`
 4. Rotate every 5-10 min — glance, steer, unblock, move on
 5. Verify each with `opusplan` when done
-6. Merge, clean up, `tmux kill-session -t starcraft`
+6. Merge, clean up, `tmux kill-session -t spinjitsu`
 
 ### Scaling
 | Streams | Strategy |
 |---------|----------|
-| 2-4 | `./tools/starcraft.sh` — tmux windows, rotate. |
+| 2-4 | `./tools/spin-jit-su.sh` — tmux windows, rotate. |
 | 5-8 | Same script. Named windows (`Ctrl+B` + number). |
 | 8+ | Cloud sessions with `&` prefix. |
 
@@ -369,17 +408,24 @@ git checkout [commit-hash]  — Go back to it
 
 ---
 
-## SESSION START TEMPLATE (use at the beginning of every session)
+## SESSION START / END (PAUSE & RESUME)
 
+### Starting a Session
+```
+/q:resume
+```
+Or the manual way:
 ```
 Read all files in context/ and todo.md.
-
 What is the current project state? What should we work on next?
 Do not make any changes yet — just tell me your understanding.
 ```
 
-## SESSION END TEMPLATE (use at the end of every session)
-
+### Ending a Session
+```
+/q:pause
+```
+Or the manual way:
 ```
 Update todo.md with:
 1. Everything we accomplished this session
@@ -387,3 +433,42 @@ Update todo.md with:
 3. Any known issues or blockers
 4. Any decisions we made and why
 ```
+
+The `/q:pause` command also creates `.continue-here.md` with detailed
+state so `/q:resume` can pick up exactly where you stopped.
+
+---
+
+## DEBUGGING
+
+### Scientific Method Debug Session
+```
+/q:debug [describe the bug or paste the error message]
+```
+
+This creates a `DEBUG-{issue}.md` file that tracks the investigation:
+1. **Observe** — gather symptoms, error messages, repro steps
+2. **Hypothesize** — form a testable theory
+3. **Test** — investigate and document findings
+4. **Conclude** — confirm root cause or form new hypothesis (max 3)
+5. **Fix** — implement and verify the fix
+6. **Clean up** — commit, update todo.md, delete debug file
+
+The debug file preserves progress across sessions — if context runs out
+mid-investigation, `/q:resume` will pick up where you left off.
+
+---
+
+## SUBAGENT ROLES
+
+Agent Q includes 4 subagent role definitions in `agents/`:
+
+| Agent | Role | When Used |
+|-------|------|-----------|
+| q-planner | Creates build plans | `/q:plan`, planning sessions |
+| q-executor | Executes plans atomically | `/q:execute`, build sessions |
+| q-verifier | Verifies goal achievement | `/q:verify`, post-build review |
+| q-debugger | Scientific method debugging | `/q:debug`, bug investigations |
+
+For parallel execution, these can be spawned as Task subagents
+(see `workflows/spin-jit-su-workflow.md` → "Subagent Spawning").

@@ -37,3 +37,45 @@ After completing any build task that adds, removes, or changes:
 
 Never mark a task complete without checking if documentation
 needs updating. When in doubt, update the docs.
+
+## Deviation Rules
+
+When executing a build plan, you will encounter issues that weren't anticipated.
+Use these rules to decide whether to auto-fix or stop and ask.
+
+**Rule 1: Auto-fix bugs.** Broken behavior, errors, logic errors, typos in code.
+Fix immediately. No need to ask.
+
+**Rule 2: Auto-add missing critical functionality.** Validation, error handling,
+security checks, null guards. If the code would fail without it, add it.
+
+**Rule 3: Auto-fix blocking issues.** Missing dependencies, wrong types, build
+errors, import failures. Fix whatever is preventing forward progress.
+
+**Rule 4: STOP for architectural changes.** New database tables, switching
+frameworks, breaking public APIs, changing data models, adding new services.
+These require user approval. Stop and explain what you want to change and why.
+
+Rules 1-3 have a **3-attempt limit**. If you can't fix an issue in 3 tries,
+stop and report it. If the issue is pre-existing (not caused by your changes),
+log it under `todo.md` → Known Issues and move on.
+
+Rule 4 always stops. No exceptions.
+
+## Analysis Paralysis Guard
+
+If you make **5+ consecutive Read/Grep/Glob calls** without any Edit/Write/Bash
+action: **STOP**. State what you've learned and why you haven't written code yet.
+Either write code or report "blocked on [reason]."
+
+Reading is not progress. Writing is progress.
+
+## Atomic Commits
+
+After completing each discrete task (not at the end of a session — after each task):
+
+1. Stage files individually — never use `git add .` or `git add -A`
+2. Commit with format: `{type}({scope}): {description}`
+   - Types: `feat`, `fix`, `test`, `refactor`, `chore`, `docs`
+   - Example: `feat(auth): add JWT token refresh endpoint`
+3. Keep commits small and focused — one logical change per commit

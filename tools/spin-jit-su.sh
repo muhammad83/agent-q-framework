@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# Agent Q Framework — StarCraft Launcher
+# Agent Q Framework — Spin Jit Su Launcher
 # Kicks off parallel Claude Code instances across worktrees or plan files.
 #
 # Usage:
-#   ./tools/starcraft.sh                           # Auto-detect: all build-plan-*.md files
-#   ./tools/starcraft.sh plan1.md plan2.md          # Specific plans
-#   ./tools/starcraft.sh --worktrees dir1 dir2      # Separate directories
+#   ./tools/spin-jit-su.sh                           # Auto-detect: all build-plan-*.md files
+#   ./tools/spin-jit-su.sh plan1.md plan2.md          # Specific plans
+#   ./tools/spin-jit-su.sh --worktrees dir1 dir2      # Separate directories
 #
 # Requirements:
 #   - tmux installed (brew install tmux)
 #   - claude CLI installed
 #
 # What it does:
-#   1. Creates a tmux session called "starcraft"
+#   1. Creates a tmux session called "spinjitsu"
 #   2. Opens one window per plan/worktree
 #   3. Launches Claude with auto-accept in each
 #   4. Sends the build prompt automatically
@@ -25,8 +25,8 @@ set -e
 # Without this, Claude Code blocks "nested sessions" and refuses to start.
 unset CLAUDECODE
 
-SESSION="starcraft"
-MODEL="${STARCRAFT_MODEL:-}"  # Optional: override model (e.g. claude-sonnet-4-6)
+SESSION="spinjitsu"
+MODEL="${SPINJITSU_MODEL:-}"  # Optional: override model (e.g. claude-sonnet-4-6)
 CLAUDE_CMD="claude --dangerously-skip-permissions"
 
 if [ -n "$MODEL" ]; then
@@ -40,13 +40,13 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo -e "${BLUE}=========================================="
-echo -e "  Agent Q — StarCraft Launcher"
+echo -e "  Agent Q — Spin Jit Su Launcher"
 echo -e "==========================================${NC}"
 echo ""
 
 # Kill existing session if running
 if tmux has-session -t "$SESSION" 2>/dev/null; then
-    echo -e "${YELLOW}⚠ Existing starcraft session found.${NC}"
+    echo -e "${YELLOW}⚠ Existing spinjitsu session found.${NC}"
     read -p "Kill it and start fresh? (y/n): " KILL
     if [ "$KILL" = "y" ] || [ "$KILL" = "Y" ]; then
         tmux kill-session -t "$SESSION"
@@ -119,7 +119,7 @@ echo ""
 if [ -n "$MODEL" ]; then
     echo -e "Model: ${GREEN}$MODEL${NC}"
 else
-    echo -e "Model: ${GREEN}default (Sonnet)${NC}  [set STARCRAFT_MODEL to override]"
+    echo -e "Model: ${GREEN}default (Sonnet)${NC}  [set SPINJITSU_MODEL to override]"
 fi
 echo ""
 read -p "Launch? (y/n): " GO

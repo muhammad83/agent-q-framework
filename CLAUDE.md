@@ -15,6 +15,8 @@ These contain your rules, planning protocols, engineering preferences, and opera
 
 Also read `shared_context/` for project-specific domain knowledge (personas, frameworks, domain rules).
 
+Read `agents/` for subagent role definitions (planner, executor, verifier, debugger).
+
 Track all state in todo.md.
 
 ## Tool-Specific Notes (Claude Code)
