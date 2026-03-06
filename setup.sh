@@ -88,12 +88,19 @@ cat > .claude/settings.json << 'EOF'
   "hooks": {
     "PostToolUse": [
       {
-        "type": "command",
-        "command": "node hooks/agentq-context-monitor.js"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/agentq-context-monitor.js"
+          }
+        ]
       }
     ]
   },
-  "statusLine": "node hooks/agentq-statusline.js"
+  "statusLine": {
+    "type": "command",
+    "command": "node hooks/agentq-statusline.js"
+  }
 }
 EOF
 echo "✓ Created .claude/settings.json (hooks + statusline)"

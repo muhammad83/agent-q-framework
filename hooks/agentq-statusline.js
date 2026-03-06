@@ -8,7 +8,7 @@
  * outputs a formatted status line.
  *
  * Usage: configured as statusLine in .claude/settings.json
- *   "statusLine": "node hooks/agentq-statusline.js"
+ *   "statusLine": { "type": "command", "command": "node hooks/agentq-statusline.js" }
  *
  * Bridge file: /tmp/claude-ctx-{session_id}.json
  *   Used by agentq-context-monitor.js to inject warnings.
@@ -52,7 +52,7 @@ function processInput(data) {
     const bar = buildProgressBar(used);
 
     // Write bridge file for context monitor
-    const sessionId = process.env.CLAUDE_SESSION_ID || "default";
+    const sessionId = parsed.session_id || process.env.CLAUDE_SESSION_ID || "default";
     const bridgePath = `/tmp/claude-ctx-${sessionId}.json`;
     const bridgeData = {
       used_pct: used,

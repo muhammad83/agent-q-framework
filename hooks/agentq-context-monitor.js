@@ -8,7 +8,7 @@
  *
  * Usage: configured as PostToolUse hook in .claude/settings.json
  *   "hooks": {
- *     "PostToolUse": [{ "type": "command", "command": "node hooks/agentq-context-monitor.js" }]
+ *     "PostToolUse": [{ "hooks": [{ "type": "command", "command": "node hooks/agentq-context-monitor.js" }] }]
  *   }
  *
  * Warning levels:
