@@ -83,6 +83,9 @@ your-project/
 │       └── agent-q.md     ← Google Antigravity config (thin pointer)
 ├── .claude/
 │   └── settings.json      ← Claude Code hooks & statusline config
+├── .claude-plugin/
+│   ├── plugin.json         ← Agent Skills plugin metadata
+│   └── marketplace.json    ← Agent Skills marketplace registration
 ├── context/               ← Framework rules & preferences (shared by all tools)
 │   ├── rules.md           ← Engineering rules, deviation rules, atomic commits
 │   ├── planning-protocol.md ← 8-question interview, context budget, discovery levels
@@ -111,6 +114,7 @@ your-project/
 │       └── resume.md      ← /q:resume — Resume from paused session
 ├── CHEATSHEET.md          ← Prompts & commands for every phase
 ├── QUICKSTART.md          ← 5-minute new project guide
+├── SKILL.md               ← Agent Skills skill definition
 ├── README.md              ← This file
 ├── soul.md                ← Agent personality (the agent writes its own)
 ├── todo.md                ← Project state tracker (the memory)
@@ -191,3 +195,23 @@ Once the plan is approved:
 - Logic check: Post-write hooks run tests automatically
 - Deploy: Push to Modal, Railway, or Render
 - Security: Always run a security audit before deploying
+
+## Installation via Agent Skills
+
+Agent Q is available as an installable skill for AI coding tools that support the Agent Skills spec.
+
+### Marketplace Install
+
+```
+/plugin marketplace add safqore/agent-q-framework
+```
+
+### NPX Install
+
+```bash
+npx skills add git@github.com:safqore/agent-q-framework.git
+```
+
+### Manual Install
+
+See [Adding to an Existing Project](#adding-to-an-existing-project) above for step-by-step instructions on copying the framework files into your project.

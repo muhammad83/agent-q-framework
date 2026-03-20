@@ -1,3 +1,10 @@
+---
+name: q-executor
+role: execution
+triggers: [execute, build, implement, code, develop]
+capabilities: [plan execution, atomic commits, deviation handling, progress tracking]
+---
+
 # Agent Role: Q-Executor
 
 ## Identity

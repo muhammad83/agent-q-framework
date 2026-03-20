@@ -1,6 +1,7 @@
 ---
 name: q:progress
 description: Show current project state and recommend next actions
+triggers: [progress, status, state, where are we]
 argument-hint: ""
 allowed-tools: [Read, Glob]
 ---

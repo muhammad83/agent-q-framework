@@ -1,7 +1,10 @@
 # Agent Q Framework — Project State
 
 ## Current Goal
-- [ ] Enhance Agent Q with ECC cherry-picked features (orchestration, quality, DX)
+- [x] Adopt Agent Skills spec from obsidian-skills → `workflows/build-plan-skills-spec.md`
+
+## Previous Goal (Completed)
+- [x] Enhance Agent Q with ECC cherry-picked features (orchestration, quality, DX)
 
 ## Active Tasks (Spin Jit Su — Parallel Execution)
 - [ ] **Plan A:** Multi-agent orchestration (`/q:orchestrate` + `/q:spinjitsu`) → `workflows/build-plan-orchestration.md`

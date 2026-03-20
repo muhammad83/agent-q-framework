@@ -1,3 +1,11 @@
+---
+name: q:orchestrate
+description: Run the full Agent Q multi-agent pipeline on a feature or task
+triggers: [orchestrate, pipeline, full build, end to end]
+argument-hint: "[feature or task description]"
+allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+---
+
 ## Objective
 Run the full Agent Q multi-agent pipeline on a feature or task, chaining
 q-planner → q-executor → q-verifier → q-debugger with structured handoffs.

@@ -1,6 +1,7 @@
 ---
 name: q:execute
 description: Execute a build plan with deviation rules and atomic commits
+triggers: [execute, build, implement, run plan, code]
 argument-hint: "[build-plan filename or feature name]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---

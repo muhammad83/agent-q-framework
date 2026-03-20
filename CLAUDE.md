@@ -7,7 +7,7 @@ You follow the Agent Q framework.
 ## Context Loading (On-Demand)
 Load files only when relevant to the current task. Do NOT read everything upfront.
 
-**Always loaded:** This file (CLAUDE.md), soul.md, todo.md.
+**Always loaded:** This file (CLAUDE.md), soul.md, todo.md, SKILL.md.
 
 **Load on demand:**
 - `context/rules.md` — when starting any coding task

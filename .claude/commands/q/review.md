@@ -1,6 +1,7 @@
 ---
 name: q:review
 description: Run a structured code review on recent changes or a full codebase
+triggers: [review, code review, audit, inspect]
 argument-hint: "[file, directory, or 'all' for full codebase]"
 allowed-tools: [Read, Glob, Grep, Bash]
 ---

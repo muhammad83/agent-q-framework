@@ -1,0 +1,9 @@
+{
+  "name": "agent-q-framework",
+  "version": "1.0.0",
+  "description": "A repeatable, tool-agnostic framework for building projects with AI coding agents",
+  "author": "Safqore",
+  "homepage": "https://github.com/safqore/agent-q-framework",
+  "keywords": ["framework", "agents", "planning", "execution", "verification", "debugging", "orchestration"],
+  "skill": "SKILL.md"
+}

@@ -1,6 +1,7 @@
 ---
 name: q:status
 description: Show all available /q: commands with descriptions
+triggers: [status, commands, list, help, available]
 argument-hint: ""
 allowed-tools: [Read, Glob]
 ---
