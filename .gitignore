@@ -19,8 +19,9 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Claude Code local config
-.claude/
+# Claude Code local config (keep commands tracked)
+.claude/*
+!.claude/commands/
 
 # Logs
 *.log

@@ -79,3 +79,8 @@ After completing each discrete task (not at the end of a session — after each 
    - Types: `feat`, `fix`, `test`, `refactor`, `chore`, `docs`
    - Example: `feat(auth): add JWT token refresh endpoint`
 3. Keep commits small and focused — one logical change per commit
+
+## Language-Specific Rules
+Load the relevant language rules based on the project's tech stack:
+- TypeScript/JavaScript projects → also read `context/rules-typescript.md`
+- Python projects → also read `context/rules-python.md`

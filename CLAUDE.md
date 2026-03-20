@@ -1,46 +1,46 @@
 # CLAUDE.md — [PROJECT NAME]
-<!-- CLAUDE: Replace [PROJECT NAME] above with the project name the user gives you. -->
 
 ## Role
-<!-- CLAUDE: Ask the user to describe their project in 1-2 sentences.
-     Write a role statement like: "You are a [role] that [does what]."
-     For personality and tone, write soul.md separately.
-     DELETE THIS COMMENT after filling in the role. -->
 You are [ROLE — fill in after interviewing the user].
 You follow the Agent Q framework.
 
-## Context Loading
-Before starting any task, read every file in `context/` and `workflows/`.
-These contain your rules, planning protocols, engineering preferences, and operational workflows.
+## Context Loading (On-Demand)
+Load files only when relevant to the current task. Do NOT read everything upfront.
 
-Also read `shared_context/` for project-specific domain knowledge (personas, frameworks, domain rules).
+**Always loaded:** This file (CLAUDE.md), soul.md, todo.md.
 
-Read `agents/` for subagent role definitions (planner, executor, verifier, debugger).
+**Load on demand:**
+- `context/rules.md` — when starting any coding task
+- `context/engineering-preferences.md` — when making architecture/style decisions
+- `context/planning-protocol.md` — when entering Plan Mode or planning a feature
+- `context/frontend.md` — when working on frontend/UI code
+- `workflows/debug.md` — when debugging issues
+- `workflows/code-review.md` — when reviewing code
+- `workflows/pause.md` — when pausing a session
+- `workflows/resume.md` — when resuming a paused session
+- `workflows/project-setup.md` — when onboarding a new project (first session only)
+- `workflows/spin-jit-su-workflow.md` — when using the spin-jit-su workflow
+- `shared_context/` — when you need project-specific domain knowledge
+- `agents/q-planner.md` — when spawning a planner subagent
+- `agents/q-executor.md` — when spawning an executor subagent
+- `agents/q-verifier.md` — when spawning a verifier subagent
+- `agents/q-debugger.md` — when spawning a debugger subagent
 
 Track all state in todo.md.
 
 ## Tool-Specific Notes (Claude Code)
-- Use `Shift+Tab` to enter/exit Plan Mode for planning sessions.
-- Use `/chrome` to open a browser for visual verification.
-- Use `-dangerously-skip-permissions` flag for auto-accept execution (Phase 3).
-- Use `/clear` to wipe context and start fresh.
-- Use `/compact` to summarize and compress current context.
-- After filling in any section that has a `<!-- CLAUDE: ... -->` comment,
-  delete that comment. CLAUDE.md is read every message — dead comments waste tokens.
+- `Shift+Tab` — enter/exit Plan Mode
+- `/chrome` — open browser for visual verification
+- `/clear` — wipe context and start fresh
+- `/compact` — summarize and compress current context
 
 ## Project Context
-<!-- CLAUDE: Ask the user: "What does this project do? What problem does it
-     solve, who uses it, and what are the key features?"
-     If the project has existing code, scan the codebase first and describe
-     what already exists — languages, architecture, key modules, entry points.
-     Write 2-3 paragraphs based on what you find and the user's answer.
-     DELETE THIS COMMENT after filling in. -->
+[Fill in during project setup: what the project does, who uses it, key features, tech stack.]
 
 ## Self-Awareness
 You have permission to modify files in /tools/, /workflows/, and /context/ to
-improve your own performance. If something isn't working, read your
-own source code and fix it.
+improve your own performance.
 
-File map: CLAUDE.md (tool config), context/ (rules & preferences),
+File map: CLAUDE.md (config), context/ (rules & preferences),
 soul.md (personality), todo.md (state), workflows/ (SOPs),
-tools/ (scripts), shared_context/ (domain knowledge).
+tools/ (scripts), shared_context/ (domain knowledge), agents/ (subagent roles).
