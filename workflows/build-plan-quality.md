@@ -9,13 +9,10 @@ Level 1 — Quick verify.
 ## Tasks
 
 ### Task 1: Token optimization + language rules
-- Modify `~/.claude/settings.json` — add autocompact override and thinking token limit:
-  ```json
-  "env": {
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
-    "MAX_THINKING_TOKENS": "10000"
-  }
-  ```
+- **DO NOT** set `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` or `MAX_THINKING_TOKENS` in settings.json.
+  - `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` default is ~83.5% and cannot go higher. Setting it lower (e.g. 50%) wastes context window.
+  - `MAX_THINKING_TOKENS` conflicts with the `effortLevel` system (high/medium/low) and caps reasoning unnecessarily.
+  - Use `effortLevel: "high"` in settings.json instead for thorough reasoning.
 - Create `context/rules-typescript.md` — TypeScript/React/Next.js/Node.js rules:
   - Strict types (no `any`)
   - React: functional components, hooks rules, proper key props
@@ -53,7 +50,7 @@ Level 1 — Quick verify.
 
 ## Edge Cases
 - False positives on test fixtures containing fake keys → allow `test/` and `__test__/` directories
-- Autocompact at 50% may be too aggressive for long sessions → user can override
+- Default autocompact (~83.5%) is optimal — do not override
 
 ## Verification
 - Create a test file with a fake AWS key, verify security scan catches it
