@@ -38,29 +38,57 @@ After completing any build task that adds, removes, or changes:
 Never mark a task complete without checking if documentation
 needs updating. When in doubt, update the docs.
 
-## Deviation Rules
+## Deviation Rules — Error Taxonomy
 
-When executing a build plan, you will encounter issues that weren't anticipated.
-Use these rules to decide whether to auto-fix or stop and ask.
+When executing a build plan, classify unexpected issues using this hierarchy
+to determine the correct response.
 
-**Rule 1: Auto-fix bugs.** Broken behavior, errors, logic errors, typos in code.
-Fix immediately. No need to ask.
+### Error Hierarchy
 
-**Rule 2: Auto-add missing critical functionality.** Validation, error handling,
-security checks, null guards. If the code would fail without it, add it.
+```
+AgentQError (base)
+├── BuildError (blocks forward progress)
+│   ├── DependencyError — missing package, wrong version
+│   ├── ImportError — module not found, circular import
+│   ├── TypeError — wrong types, missing args
+│   └── CompileError — syntax errors, build failures
+├── LogicError (wrong behavior)
+│   ├── BugError — broken functionality, wrong output
+│   ├── ValidationError — missing guards, bad input handling
+│   └── SecurityError — injection, XSS, auth bypass
+├── ArchitecturalError (structural change needed)
+│   ├── SchemaChange — new tables, data model changes
+│   ├── APIChange — breaking public interface
+│   └── ServiceChange — new service, framework swap
+└── EnvironmentError (external)
+    ├── NetworkError — API down, timeout
+    ├── PermissionError — file access, auth token expired
+    └── ResourceError — disk full, memory limit
+```
 
-**Rule 3: Auto-fix blocking issues.** Missing dependencies, wrong types, build
-errors, import failures. Fix whatever is preventing forward progress.
+### Response Rules
 
-**Rule 4: STOP for architectural changes.** New database tables, switching
-frameworks, breaking public APIs, changing data models, adding new services.
-These require user approval. Stop and explain what you want to change and why.
+| Error Type | Action | Auto-fix Limit |
+|------------|--------|---------------|
+| BuildError | Auto-fix immediately | 3 attempts |
+| LogicError (Bug, Validation) | Auto-fix immediately | 3 attempts |
+| LogicError (Security) | Auto-fix + flag to user | 1 attempt |
+| ArchitecturalError | **STOP** — user approval required | 0 (always stop) |
+| EnvironmentError | Log + skip if non-blocking | 2 attempts |
 
-Rules 1-3 have a **3-attempt limit**. If you can't fix an issue in 3 tries,
-stop and report it. If the issue is pre-existing (not caused by your changes),
-log it under `todo.md` → Known Issues and move on.
+After exhausting auto-fix attempts, log the issue under `todo.md` → Known Issues
+and move on if the issue is non-blocking. If blocking, stop and report.
 
-Rule 4 always stops. No exceptions.
+Pre-existing issues (not caused by your changes) go directly to Known Issues.
+
+### Debug Strategy by Error Type
+
+| Error Type | Strategy |
+|------------|----------|
+| BuildError | Check imports → check versions → check types → check build config |
+| LogicError | Hypothesis-driven scientific method (see `workflows/debug.md`) |
+| ArchitecturalError | N/A — escalate to user for decision |
+| EnvironmentError | Check connectivity → check permissions → check resources |
 
 ## Analysis Paralysis Guard
 

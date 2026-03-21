@@ -90,6 +90,16 @@ _Status: INVESTIGATING / FIXING / RESOLVED_
 - Mark issues as resolved without user confirmation
 - Delete debug files before user reviews them
 
+## Error Classification
+
+Before debugging, classify the error using the taxonomy from `context/rules.md`:
+- **BuildError** → systematic: check imports, versions, types, build config
+- **LogicError** → hypothesis-driven: observe, hypothesize, predict, test, conclude
+- **SecurityError** → fix immediately, flag to user, single attempt
+- **EnvironmentError** → check connectivity, permissions, resources
+
+State the error classification in your debug report.
+
 ## Context Loading
 Before starting, read:
 - Any existing `DEBUG-*.md` files in project root
