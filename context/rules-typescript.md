@@ -21,6 +21,7 @@
 - Use `loading.tsx`, `error.tsx`, and `not-found.tsx` for each route segment.
 - Metadata: export `metadata` or `generateMetadata` from page/layout files.
 - Images: always use `next/image` with explicit width/height or `fill`.
+- **`NEXT_PUBLIC_` env vars are embedded in the client bundle** — visible to anyone inspecting page source. Never use `NEXT_PUBLIC_` for feature flags, secrets, admin toggles, test mode flags, or anything security-sensitive. Use server-side env vars and expose via API route if the client needs to check.
 
 ## Node.js
 - `async/await` over callbacks. Never mix paradigms.
