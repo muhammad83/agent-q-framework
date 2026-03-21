@@ -4,6 +4,8 @@ description: Verify completed work against the build plan and quality standards
 triggers: [verify, check, validate, test, quality check]
 argument-hint: "[build-plan filename or feature name]"
 allowed-tools: [Read, Bash, Glob, Grep]
+autonomy: auto
+namespace: quality
 ---
 
 ## Objective

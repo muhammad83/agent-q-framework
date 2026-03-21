@@ -4,6 +4,8 @@ description: Show current project state and recommend next actions
 triggers: [progress, status, state, where are we]
 argument-hint: ""
 allowed-tools: [Read, Glob]
+autonomy: auto
+namespace: dx
 ---
 
 ## Objective

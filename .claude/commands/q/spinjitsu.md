@@ -4,6 +4,8 @@ description: Launch parallel execution of multiple build plans using Spin Jit Su
 triggers: [spinjitsu, parallel, concurrent, multi-agent launch]
 argument-hint: "[optional: specific build plan files]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+autonomy: confirm
+namespace: execution
 ---
 
 ## Objective

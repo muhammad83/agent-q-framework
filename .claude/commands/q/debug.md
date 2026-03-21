@@ -4,6 +4,8 @@ description: Start a scientific method debugging session
 triggers: [debug, fix, error, bug, investigate]
 argument-hint: "[description of the bug or error message]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+autonomy: confirm
+namespace: quality
 ---
 
 ## Objective

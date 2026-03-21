@@ -4,6 +4,8 @@ description: Save session state for clean handoff to next session
 triggers: [pause, save, stop, break, handoff]
 argument-hint: ""
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+autonomy: auto
+namespace: dx
 ---
 
 ## Objective

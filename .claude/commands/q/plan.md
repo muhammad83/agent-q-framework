@@ -4,6 +4,8 @@ description: Start a structured planning session with reverse elicitation
 triggers: [plan, interview, design, scope, feature planning]
 argument-hint: "[2-3 sentence project/feature description]"
 allowed-tools: [Read, Glob, Grep, WebSearch, WebFetch, AskUserQuestion]
+autonomy: confirm
+namespace: planning
 ---
 
 ## Objective

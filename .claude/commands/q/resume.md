@@ -4,6 +4,8 @@ description: Resume from a paused session or start fresh from todo.md
 triggers: [resume, continue, pick up, restart]
 argument-hint: ""
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+autonomy: auto
+namespace: dx
 ---
 
 ## Objective

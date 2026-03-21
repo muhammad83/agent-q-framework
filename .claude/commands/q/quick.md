@@ -4,6 +4,8 @@ description: Apply a small, focused fix without full planning overhead
 triggers: [quick fix, small change, patch, tweak]
 argument-hint: "[what to fix — be specific]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+autonomy: confirm
+namespace: execution
 ---
 
 ## Objective

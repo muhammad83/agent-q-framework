@@ -32,20 +32,20 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/q:plan` | Start a structured planning session with reverse elicitation |
-| `/q:execute` | Execute a build plan with deviation rules and atomic commits |
-| `/q:verify` | Verify completed work against the build plan and quality standards |
-| `/q:review` | Run a structured code review on recent changes or a full codebase |
-| `/q:debug` | Start a scientific method debugging session |
-| `/q:quick` | Apply a small, focused fix without full planning overhead |
-| `/q:progress` | Show current project state and recommend next actions |
-| `/q:pause` | Save session state for clean handoff to next session |
-| `/q:resume` | Resume from a paused session or start fresh from todo.md |
-| `/q:orchestrate` | Run the full multi-agent pipeline (plan, execute, verify, debug) |
-| `/q:spinjitsu` | Launch parallel execution of multiple build plans |
-| `/q:status` | Show all available /q: commands with descriptions |
+| Command | Description | Autonomy | Namespace |
+|---------|-------------|----------|-----------|
+| `/q:plan` | Start a structured planning session with reverse elicitation | confirm | planning |
+| `/q:execute` | Execute a build plan with deviation rules and atomic commits | confirm | execution |
+| `/q:verify` | Verify completed work against the build plan and quality standards | auto | quality |
+| `/q:review` | Run a structured code review on recent changes or a full codebase | auto | quality |
+| `/q:debug` | Start a scientific method debugging session | confirm | quality |
+| `/q:quick` | Apply a small, focused fix without full planning overhead | confirm | execution |
+| `/q:progress` | Show current project state and recommend next actions | auto | dx |
+| `/q:pause` | Save session state for clean handoff to next session | auto | dx |
+| `/q:resume` | Resume from a paused session or start fresh from todo.md | auto | dx |
+| `/q:orchestrate` | Run the full multi-agent pipeline (plan, execute, verify, debug) | confirm | execution |
+| `/q:spinjitsu` | Launch parallel execution of multiple build plans | confirm | execution |
+| `/q:status` | Show all available /q: commands with descriptions | auto | dx |
 
 ## Installation
 
