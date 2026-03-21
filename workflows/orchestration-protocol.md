@@ -20,24 +20,29 @@ q-planner --> q-executor --> q-verifier --+--> SHIP
 
 Each agent reads its role file from `agents/q-{role}.md` before starting work.
 
-## Handoff Document Format
+## Handoff Format
 
-Every transition between agents produces a handoff document. These are passed
-as structured text from one agent to the next. **Max 50 lines per handoff.**
+Every agent-to-agent handoff uses this structure (max 50 lines, summarize ruthlessly):
 
 ```
-## HANDOFF: [previous-agent] -> [next-agent]
+## HANDOFF: [previous-agent] → [next-agent]
+### Status
+`pending` | `running` | `done` | `failed`
+### Timestamps
+- Started: [ISO timestamp]
+- Completed: [ISO timestamp]
 ### Context
-What was asked, what phase this is, reference to the build plan or feature.
+[Brief description of what was done]
 ### Findings
-Key results from the previous agent's work. Be specific — file names, line
-numbers, test results, decisions made.
+[Key results or issues discovered]
 ### Files Modified
-List of files created, modified, or deleted. One per line.
+[List of files]
+### Error Classification (if failed)
+[Error type from taxonomy: BuildError/LogicError/ArchitecturalError/EnvironmentError]
 ### Open Questions
-Anything unresolved that the next agent needs to decide or escalate.
+[Unresolved items]
 ### Recommendations
-What the previous agent thinks the next agent should focus on or watch for.
+[Suggested next steps]
 ```
 
 ### Handoff Rules
@@ -45,6 +50,14 @@ What the previous agent thinks the next agent should focus on or watch for.
 - Include file paths, never vague references like "the main file."
 - Open Questions must be answerable by the next agent or flagged for the user.
 - If a handoff exceeds 50 lines, trim Findings to top-5 most important items.
+
+## Status Polling
+
+The orchestrator checks handoff status after each phase:
+- If `done` → proceed to next phase
+- If `failed` + BuildError or LogicError → route to q-debugger
+- If `failed` + ArchitecturalError → verdict = **BLOCKED**, present to user
+- If `failed` + EnvironmentError → retry once, then BLOCKED
 
 ## Parallel vs Sequential Logic
 
@@ -75,12 +88,9 @@ After the q-verifier completes, the orchestrator assigns a verdict:
 | **BLOCKED** | Critical issues, architectural problems, or debug loop exhausted | Stop. Report to user with details. |
 
 ### Verdict Rules
-- **SHIP:** Zero critical issues, zero major issues. Minor issues are logged
-  but do not block shipping.
-- **NEEDS WORK:** One or more major issues that the debugger can reasonably fix
-  (wrong logic, missing validation, failing tests).
-- **BLOCKED:** Any critical issue (security vulnerability, data loss risk,
-  architectural flaw) OR the debugger has already attempted 2 fix cycles.
+- **SHIP** — Zero critical or major issues. Commit and report success.
+- **NEEDS WORK** — Major issues found but fixable. Route to debugger.
+- **BLOCKED** — Critical issues, architectural problems, or debug loop exhausted (max 2 cycles).
 
 ## Debug Loop Limit
 
