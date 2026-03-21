@@ -45,6 +45,7 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 | `/q:resume` | Resume from a paused session or start fresh from todo.md | auto | dx |
 | `/q:orchestrate` | Run the full multi-agent pipeline (plan, execute, verify, debug) | confirm | execution |
 | `/q:spinjitsu` | Launch parallel execution of multiple build plans | confirm | execution |
+| `/q:ingest` | Ingest video/audio content for Agent Q context | confirm | dx |
 | `/q:status` | Show all available /q: commands with descriptions | auto | dx |
 
 ## Installation
@@ -102,4 +103,5 @@ cp -r /tmp/agent-q/.claude your-project/
 | `agents/` | Subagent role definitions (planner, executor, verifier, debugger) |
 | `tools/` | Executable scripts (verify.sh, spin-jit-su.sh, heartbeat.sh) |
 | `shared_context/` | Project-specific domain knowledge |
+| `shared_context/ingested/` | Ingested video/audio transcripts and keyframes |
 | `.claude/commands/q/` | Slash command definitions |

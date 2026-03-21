@@ -21,6 +21,7 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `workflows/project-setup.md` — when onboarding a new project (first session only)
 - `workflows/spin-jit-su-workflow.md` — when using the spin-jit-su workflow
 - `shared_context/` — when you need project-specific domain knowledge
+- `shared_context/ingested/` — when referencing ingested video/audio content
 - `agents/q-planner.md` — when spawning a planner subagent
 - `agents/q-executor.md` — when spawning an executor subagent
 - `agents/q-verifier.md` — when spawning a verifier subagent
