@@ -1,15 +1,20 @@
 # Agent Q Framework — Project State
 
 ## Current Goal
+Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 plans via Spin Jit Su.
+
+## Active Tasks
+- (none — all plans complete)
+
+## Recently Completed (Spin Jit Su — 4 Parallel Streams)
+- [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
+- [x] **Plan B:** Error & Deviation Upgrade (error taxonomy + status tracking) → `ac13f59`
+- [x] **Plan C:** Parallel Execution Hardening (config isolation + FIFO cache) → `37277a0`
+- [x] **Plan D:** Media Ingestion (`/q:ingest` — yt-dlp + ffmpeg + whisper) → `955c5d9`
+
+## Previous Goals (Completed)
 - [x] Adopt Agent Skills spec from obsidian-skills → `workflows/build-plan-skills-spec.md`
-
-## Previous Goal (Completed)
 - [x] Enhance Agent Q with ECC cherry-picked features (orchestration, quality, DX)
-
-## Active Tasks (Spin Jit Su — Parallel Execution)
-- [ ] **Plan A:** Multi-agent orchestration (`/q:orchestrate` + `/q:spinjitsu`) → `workflows/build-plan-orchestration.md`
-- [ ] **Plan B:** Token optimization + language rules + security scanning → `workflows/build-plan-quality.md`
-- [ ] **Plan C:** Hook profiles + session persistence → `workflows/build-plan-dx.md`
 
 ## Completed
 - [x] Fixed CLAUDE.md context loading (bulk → on-demand) to reduce context waste
@@ -22,9 +27,12 @@
 - Cherry-pick from ECC rather than install whole plugin (context bloat risk)
 - On-demand context loading instead of bulk read
 - TypeScript + Python as primary language rules (based on project scan)
-- Plans A/B/C are independent → execute via Spin Jit Su (parallel)
+- Plans A-D are independent → execute via Spin Jit Su (parallel)
 - `/q:orchestrate` chains existing subagents (planner → executor → verifier → debugger)
 - `/q:spinjitsu` offers both subagent spawning and tmux modes
+- notebooklm-py patterns: autonomy rules, error taxonomy, namespace API, config isolation, FIFO cache, poll-based status
+- Media ingestion: local-first (yt-dlp + ffmpeg + whisper), no API keys, ~97% coverage
+- M2/M5 GPU accelerates whisper via Metal — no slow CPU fallback concern
 
 ## Known Issues
 - (none yet)
