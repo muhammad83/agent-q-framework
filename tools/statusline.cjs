@@ -54,7 +54,7 @@ function processInput(data) {
     const windowSize = cw.context_window_size || 200000;
 
     // Write bridge file for context monitor
-    const sessionId = parsed.session_id || process.env.CLAUDE_SESSION_ID || "default";
+    const sessionId = parsed.session_id || process.env.AGENTQ_INSTANCE_ID || process.env.CLAUDE_SESSION_ID || "default";
     const bridgePath = `/tmp/claude-ctx-${sessionId}.json`;
     const bridgeData = {
       used_pct: used,

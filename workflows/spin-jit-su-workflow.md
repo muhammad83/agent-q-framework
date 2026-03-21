@@ -44,6 +44,24 @@ Before running, make sure you have:
 - [ ] `tmux` installed (`brew install tmux` on macOS)
 - [ ] API budget estimated (see Token Budget below)
 
+## Agent Isolation
+
+Each parallel stream gets a unique `AGENTQ_INSTANCE_ID` environment variable.
+This ensures bridge files, state files, and context monitor data don't collide
+between parallel agents.
+
+Set it before launching each stream:
+```bash
+export AGENTQ_INSTANCE_ID=stream-1
+export AGENTQ_INSTANCE_ID=stream-2
+```
+
+The statusline and context monitor automatically use this for file isolation:
+- Bridge file: `/tmp/claude-ctx-${AGENTQ_INSTANCE_ID}.json`
+- State file: `/tmp/claude-ctx-state-${AGENTQ_INSTANCE_ID}.json`
+
+Falls back to `CLAUDE_SESSION_ID` → `"default"` if not set.
+
 ## Model Strategy
 
 Use different models for different jobs. This is where the cost savings come from.
