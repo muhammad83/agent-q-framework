@@ -26,7 +26,7 @@ const CRITICAL_THRESHOLD = 25;  // remaining %
 const DEBOUNCE_CALLS = 5;
 
 // Track state via a temp file (hooks are stateless between calls)
-const sessionId = process.env.CLAUDE_SESSION_ID || "default";
+const sessionId = process.env.AGENTQ_INSTANCE_ID || process.env.CLAUDE_SESSION_ID || "default";
 const bridgePath = `/tmp/claude-ctx-${sessionId}.json`;
 const statePath = `/tmp/claude-ctx-state-${sessionId}.json`;
 
@@ -43,6 +43,20 @@ function writeJSON(filepath, data) {
 }
 
 function main() {
+  // Check if bridge file has changed since last check
+  let bridgeMtime;
+  try {
+    bridgeMtime = fs.statSync(bridgePath).mtimeMs;
+  } catch {
+    return; // File doesn't exist
+  }
+
+  let state = readJSON(statePath) || { callsSinceLastWarning: 0, lastSeverity: null, last_bridge_mtime: 0 };
+
+  if (bridgeMtime === state.last_bridge_mtime) {
+    return; // Bridge unchanged, skip processing
+  }
+
   const bridge = readJSON(bridgePath);
   if (!bridge) return; // No data yet — statusline hasn't run
 
@@ -54,10 +68,14 @@ function main() {
   if (remaining <= CRITICAL_THRESHOLD) severity = "CRITICAL";
   else if (remaining <= WARNING_THRESHOLD) severity = "WARNING";
 
-  if (!severity) return; // Context is fine, no warning needed
+  if (!severity) {
+    // Context is fine, but still record mtime so we skip next time
+    state.last_bridge_mtime = bridgeMtime;
+    writeJSON(statePath, state);
+    return;
+  }
 
   // Check debounce state
-  let state = readJSON(statePath) || { callsSinceLastWarning: 0, lastSeverity: null };
   state.callsSinceLastWarning++;
 
   // Severity escalation bypasses debounce
@@ -65,6 +83,7 @@ function main() {
   const debounceExpired = state.callsSinceLastWarning >= DEBOUNCE_CALLS;
 
   if (!debounceExpired && !escalated) {
+    state.last_bridge_mtime = bridgeMtime;
     writeJSON(statePath, state);
     return;
   }
@@ -72,6 +91,7 @@ function main() {
   // Reset debounce counter
   state.callsSinceLastWarning = 0;
   state.lastSeverity = severity;
+  state.last_bridge_mtime = bridgeMtime;
   writeJSON(statePath, state);
 
   // Output warning to stderr (Claude Code displays hook stderr as user-visible messages)
