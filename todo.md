@@ -4,7 +4,8 @@
 Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 plans via Spin Jit Su.
 
 ## Active Tasks
-- (none — all plans complete)
+- [x] **Superpowers DX Integration — Task 1:** Visual Brainstorming Companion + Command
+- [ ] **Superpowers DX Integration — Task 2:** Finish Branch Workflow + Command
 
 ## Recently Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
