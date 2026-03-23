@@ -6,6 +6,11 @@ Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 pla
 ## Active Tasks
 - (none — all plans complete)
 
+## Recently Completed (SuperClaude Integration — Stream A)
+- [x] **Stream A Task 1:** Token-efficiency rules (`context/token-efficiency.md`) → `d7259bb`
+- [x] **Stream A Task 2:** Behavioral modes (`context/modes.md`) → `58f96b1`
+- [x] **Stream A Task 3:** CLAUDE.md on-demand loading updated → `7123a3f`
+
 ## Recently Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
 - [x] **Plan B:** Error & Deviation Upgrade (error taxonomy + status tracking) → `ac13f59`
