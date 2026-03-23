@@ -6,17 +6,18 @@ Agent Q multi-agent pipeline.
 
 ## Agent Chain
 
-The standard pipeline is sequential with an optional debug loop:
+The standard pipeline is sequential with a document review gate and an
+optional debug loop:
 
 ```
-q-planner --> q-executor --> q-verifier --+--> SHIP
-                                          |
-                                          +--> q-debugger --> q-verifier (retry)
-                                          |
-                                          +--> BLOCKED
+q-planner --> [document review] --> q-executor --> q-verifier --+--> SHIP
+                  |                                             |
+                  +--> REVISE (up to 3x)                        +--> q-debugger --> q-verifier (retry)
+                  |                                             |
+                  +--> surface to human                         +--> BLOCKED
 ```
 
-**Order:** q-planner -> q-executor -> q-verifier -> q-debugger (if needed)
+**Order:** q-planner -> document review -> q-executor -> q-verifier -> q-debugger (if needed)
 
 Each agent reads its role file from `agents/q-{role}.md` before starting work.
 
@@ -58,6 +59,65 @@ The orchestrator checks handoff status after each phase:
 - If `failed` + BuildError or LogicError → route to q-debugger
 - If `failed` + ArchitecturalError → verdict = **BLOCKED**, present to user
 - If `failed` + EnvironmentError → retry once, then BLOCKED
+
+## Document Review Loop
+
+After the planner produces a build plan and before execution begins, the plan
+passes through a document review gate. A subagent reviewer evaluates the plan
+for quality before it reaches the executor.
+
+### Review Criteria
+
+The reviewer evaluates three dimensions:
+
+1. **Completeness** -- Are all requirements from the user's request addressed?
+   Are there tasks for every file that needs to change? Are edge cases covered?
+
+2. **Feasibility** -- Can each task be done in the stated scope? Are there
+   hidden dependencies? Is the task breakdown realistic?
+
+3. **Risks** -- Are there gaps, ambiguities, or contradictions in the plan?
+   Are there implicit assumptions that should be made explicit?
+
+### Review Verdict
+
+- **APPROVED** -- Plan is ready for execution. Proceed to q-executor.
+- **REVISE** -- Plan needs changes. Reviewer provides specific feedback
+  (what to fix, why, and where). Planner revises and resubmits.
+
+### Iteration Cap
+
+The review loop is capped at **3 iterations**.
+
+```
+Iteration 1: reviewer evaluates -> REVISE -> planner revises
+Iteration 2: reviewer evaluates -> REVISE -> planner revises
+Iteration 3: reviewer evaluates -> REVISE -> surface to human
+```
+
+After 3 REVISE verdicts without reaching APPROVED, the orchestrator:
+1. Presents the plan in its current state to the human.
+2. Lists all unresolved reviewer concerns.
+3. Asks the human to approve as-is, provide guidance, or cancel.
+
+### Review Handoff Format
+
+```
+## REVIEW: plan-reviewer
+### Verdict
+APPROVED / REVISE
+### Iteration
+{n}/3
+### Completeness
+{assessment}
+### Feasibility
+{assessment}
+### Risks
+{assessment}
+### Feedback (if REVISE)
+- {specific change 1}
+- {specific change 2}
+```
 
 ## Parallel vs Sequential Logic
 

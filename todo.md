@@ -6,7 +6,7 @@ Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 pla
 ## Active Tasks
 - [x] **Superpowers Quality Integration — Task 1:** TDD Workflow + Command
 - [x] **Superpowers Quality Integration — Task 2:** Two-Stage Review
-- [ ] **Superpowers Quality Integration — Task 3:** Document Review Loop
+- [x] **Superpowers Quality Integration — Task 3:** Document Review Loop
 
 ## Recently Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
