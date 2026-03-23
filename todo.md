@@ -4,7 +4,8 @@
 Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 plans via Spin Jit Su.
 
 ## Active Tasks
-- (none — all plans complete)
+- [x] **Superpowers Task 1:** Multi-Platform Support (Cursor, Codex, OpenCode, Gemini CLI)
+- [ ] **Superpowers Task 2:** Skill Composability (agentskills.io deepening)
 
 ## Recently Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`

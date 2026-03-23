@@ -26,6 +26,11 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `agents/q-executor.md` — when spawning an executor subagent
 - `agents/q-verifier.md` — when spawning a verifier subagent
 - `agents/q-debugger.md` — when spawning a debugger subagent
+- `agents/gemini-cli-extension.md` — when configuring Gemini CLI integration
+- `hooks/session-start.sh` — when configuring platform hooks
+- `.cursor-plugin/plugin.json` — when setting up for Cursor
+- `.codex/setup.md` — when setting up for Codex
+- `.opencode/config.json` — when setting up for OpenCode
 
 Track all state in todo.md.
 

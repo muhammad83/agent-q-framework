@@ -3,7 +3,7 @@
 A deterministic, repeatable, tool-agnostic framework for building projects with AI coding agents.
 Based on the Agent Q methodology (Workflows, Agents, Tools).
 
-Works with **Claude Code**, **OpenAI Codex**, **GitHub Copilot**, **Google Antigravity**, and any future AI tool that reads markdown instructions.
+Works with **Claude Code**, **Cursor**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **GitHub Copilot**, **Google Antigravity**, and any future AI tool that reads markdown instructions.
 
 ## Architecture: Pass by Reference
 
@@ -86,6 +86,12 @@ your-project/
 ├── .claude-plugin/
 │   ├── plugin.json         ← Agent Skills plugin metadata
 │   └── marketplace.json    ← Agent Skills marketplace registration
+├── .cursor-plugin/
+│   └── plugin.json         ← Cursor marketplace plugin metadata
+├── .codex/
+│   └── setup.md            ← Codex installation and command mapping
+├── .opencode/
+│   └── config.json         ← OpenCode hook auto-registration
 ├── context/               ← Framework rules & preferences (shared by all tools)
 │   ├── rules.md           ← Engineering rules, deviation rules, atomic commits
 │   ├── planning-protocol.md ← 8-question interview, context budget, discovery levels
@@ -97,8 +103,10 @@ your-project/
 │   ├── q-planner.md       ← Creates build plans with task breakdown
 │   ├── q-executor.md      ← Executes build plans atomically
 │   ├── q-verifier.md      ← Verifies goal achievement, not just task completion
-│   └── q-debugger.md      ← Scientific method debugging
-├── hooks/                 ← Claude Code hooks (symlinked to projects)
+│   ├── q-debugger.md      ← Scientific method debugging
+│   └── gemini-cli-extension.md ← Gemini CLI tool mapping and limitations
+├── hooks/                 ← Platform hooks (symlinked to projects)
+│   ├── session-start.sh      ← Platform detection and context injection
 │   ├── agentq-statusline.js  ← Context window progress bar in status line
 │   └── agentq-context-monitor.js ← Warns when context is running low
 ├── commands/              ← Slash commands (symlinked to projects)

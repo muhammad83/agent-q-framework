@@ -1,0 +1,80 @@
+{
+  "name": "agent-q-framework",
+  "version": "1.1.0",
+  "description": "A repeatable, tool-agnostic framework for building projects with AI coding agents",
+  "author": "Safqore",
+  "homepage": "https://github.com/safqore/agent-q-framework",
+  "skill": "../SKILL.md",
+  "capabilities": [
+    "planning",
+    "execution",
+    "verification",
+    "debugging",
+    "orchestration",
+    "parallel-execution",
+    "tdd",
+    "code-review",
+    "brainstorm",
+    "media-ingestion"
+  ],
+  "activation": {
+    "file_patterns": [
+      "CLAUDE.md",
+      "agent.md",
+      "todo.md",
+      "soul.md",
+      "workflows/*.md",
+      "agents/*.md"
+    ],
+    "keyword_triggers": [
+      "agent q",
+      "/q:plan",
+      "/q:execute",
+      "/q:verify",
+      "/q:review",
+      "/q:debug",
+      "/q:quick",
+      "/q:orchestrate",
+      "/q:spinjitsu",
+      "/q:ingest"
+    ]
+  },
+  "commands": {
+    "/q:plan": {
+      "description": "Start a structured planning session with reverse elicitation",
+      "workflow": "context/planning-protocol.md",
+      "agent": "agents/q-planner.md"
+    },
+    "/q:execute": {
+      "description": "Execute a build plan with deviation rules and atomic commits",
+      "agent": "agents/q-executor.md"
+    },
+    "/q:verify": {
+      "description": "Verify completed work against the build plan and quality standards",
+      "agent": "agents/q-verifier.md"
+    },
+    "/q:review": {
+      "description": "Run a structured code review on recent changes or a full codebase",
+      "workflow": "workflows/code-review.md"
+    },
+    "/q:debug": {
+      "description": "Start a scientific method debugging session",
+      "workflow": "workflows/debug.md",
+      "agent": "agents/q-debugger.md"
+    },
+    "/q:quick": {
+      "description": "Apply a small, focused fix without full planning overhead"
+    },
+    "/q:orchestrate": {
+      "description": "Run the full multi-agent pipeline (plan, execute, verify, debug)",
+      "workflow": "workflows/orchestration-protocol.md"
+    },
+    "/q:spinjitsu": {
+      "description": "Launch parallel execution of multiple build plans",
+      "workflow": "workflows/spin-jit-su-workflow.md"
+    },
+    "/q:ingest": {
+      "description": "Ingest video/audio content for Agent Q context"
+    }
+  }
+}
