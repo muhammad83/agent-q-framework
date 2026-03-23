@@ -1,32 +1,32 @@
 # Agent Q Framework — Project State
 
 ## Current Goal
-Integrate 7 Superpowers capabilities into Agent Q via 3 parallel Spin Jit Su streams.
+Integrate SuperClaude-inspired capabilities into Agent Q (token-efficiency, behavioral modes, domain specialists).
 
 ## Active Tasks
 - (none — all streams complete)
 
-## Recently Completed (Spin Jit Su — Superpowers Integration, 3 Streams)
-- [x] **Stream A:** Quality — TDD + Two-Stage Review + Document Review → `worktree-agent-ae3cc527`
-- [x] **Stream B:** DX — Visual Brainstorm + Finish Branch → `worktree-agent-a931507b`
-- [x] **Stream C:** Platform — Multi-Platform + Composability → `worktree-agent-a8805840`
-
-## Recently Completed (SuperClaude Integration — Stream A)
+## Recently Completed (SuperClaude Integration — 2 Parallel Streams)
 - [x] **Stream A Task 1:** Token-efficiency rules (`context/token-efficiency.md`) → `d7259bb`
 - [x] **Stream A Task 2:** Behavioral modes (`context/modes.md`) → `58f96b1`
 - [x] **Stream A Task 3:** CLAUDE.md on-demand loading updated → `7123a3f`
 
-## Recently Completed (Spin Jit Su — 4 Parallel Streams)
+## Recently Completed (SuperClaude Integration — Stream B)
+- [x] **Stream B Task 1:** Created 3 specialist agent files (q-security, q-frontend, q-researcher) → `f0011d3`
+- [x] **Stream B Task 2:** Added specialist routing to orchestration protocol, updated SKILL.md manifest, updated todo.md
+
+## Previous Goals (Completed)
+- [x] Adopt notebooklm-py patterns + add media ingestion to Agent Q (Plans A-D via Spin Jit Su)
+- [x] Adopt Agent Skills spec from obsidian-skills → `workflows/build-plan-skills-spec.md`
+- [x] Enhance Agent Q with ECC cherry-picked features (orchestration, quality, DX)
+
+## Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
 - [x] **Plan B:** Error & Deviation Upgrade (error taxonomy + status tracking) → `ac13f59`
 - [x] **Plan C:** Parallel Execution Hardening (config isolation + FIFO cache) → `37277a0`
 - [x] **Plan D:** Media Ingestion (`/q:ingest` — yt-dlp + ffmpeg + whisper) → `955c5d9`
 
-## Previous Goals (Completed)
-- [x] Adopt Agent Skills spec from obsidian-skills → `workflows/build-plan-skills-spec.md`
-- [x] Enhance Agent Q with ECC cherry-picked features (orchestration, quality, DX)
-
-## Completed
+## Completed (Earlier)
 - [x] Fixed CLAUDE.md context loading (bulk → on-demand) to reduce context waste
 - [x] Fixed statusline.cjs math bug (CEILING scaling broke used% calculation)
 - [x] Moved statusline.cjs to framework `tools/` directory
@@ -53,11 +53,22 @@ Integrate 7 Superpowers capabilities into Agent Q via 3 parallel Spin Jit Su str
 - Document review loop capped at 3 iterations
 - Visual brainstorm: zero-dependency Node.js, 30min idle timeout, parent PID monitoring
 - Multi-platform: single source of truth in SKILL.md, platform configs derive from it
+- SuperClaude: drop MCP integrations, keep CLI-first philosophy
+- Specialists capped at 3: security, frontend, researcher (advise, don't replace pipeline)
+- Priority order for specialist ambiguity: security > frontend > researcher
+- Specialists loaded as advisors alongside active pipeline agent, not as replacement
+- Token-efficiency rules only activate in DEGRADING/POOR context zones (50%+)
+- Behavioral modes are advisory, not enforced — no /q:mode command
 
 ## Known Issues
 - (none yet)
 
 ## Session Log
+
+### Session 3 — 2026-03-23
+- What was done: Researched SuperClaude Framework, planned integration of best ideas (token-efficiency, modes, specialists), executed 2 parallel streams via Spin Jit Su subagent spawning, resolved merge conflicts, merged both streams into main
+- What's next: Verify all new files work with orchestration pipeline
+- Blockers: None
 
 ### Session 2 — 2026-03-23
 - What was done: Researched Superpowers framework, planned integration of all 7 capabilities, wrote 3 parallel build plans, executed all 3 streams via Spin Jit Su, merged into main

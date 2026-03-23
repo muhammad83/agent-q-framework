@@ -21,6 +21,40 @@ q-planner --> [document review] --> q-executor --> q-verifier --+--> SHIP
 
 Each agent reads its role file from `agents/q-{role}.md` before starting work.
 
+## Specialist Routing
+
+Specialist agents advise alongside the core pipeline agents. They are loaded as
+advisors when keyword or file triggers match -- they do not replace pipeline agents.
+
+### Routing Table
+
+| Specialist | Keyword Triggers | File Triggers | Priority |
+|------------|-----------------|---------------|----------|
+| **q-security** | vulnerability, XSS, auth, OWASP, injection, CVE, security, CSRF, SQL injection, encryption, secrets, permissions | `*.env`, `auth/*`, `middleware/*`, `security/*` | 1 (highest) |
+| **q-frontend** | UI, CSS, component, layout, responsive, accessibility, a11y, Tailwind, React, animation, design system | `*.tsx`, `*.css`, `*.scss`, `components/*`, `pages/*`, `layouts/*` | 2 |
+| **q-researcher** | research, compare, evaluate, alternatives, best practice, benchmark, trade-off, library choice, architecture decision | _(no file triggers)_ | 3 (lowest) |
+
+### Priority Order
+
+When multiple specialists match the same task, load them in priority order:
+**security > frontend > researcher**. Security always takes precedence because
+vulnerabilities are the highest-risk category.
+
+### Invocation Rules
+
+1. **Advisor, not replacement.** Specialists are loaded alongside the active
+   pipeline agent (executor, verifier, etc.), not instead of it.
+2. **Trigger matching.** A specialist is invoked when the task description or
+   modified files match its keyword or file triggers.
+3. **No match = no specialist.** If no triggers match, no specialist is loaded.
+   Do not force-load a specialist without a trigger match.
+4. **Multiple specialists allowed.** If both security and frontend triggers
+   match, both specialists advise (in priority order).
+5. **Read-only parallel.** Specialists can run in parallel with pipeline agents
+   when both are read-only (e.g., security review + verifier review).
+6. **Output integration.** Specialist findings are included in the pipeline
+   agent's handoff report under a "Specialist Findings" subsection.
+
 ## Handoff Format
 
 Every agent-to-agent handoff uses this structure (max 50 lines, summarize ruthlessly):

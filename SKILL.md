@@ -20,7 +20,7 @@ requires:
   - node >= 18
 extends: []
 triggers:
-  keywords: [agent q, planning, build plan, orchestrate, execute, verify, debug, spinjitsu, tdd, brainstorm, finish]
+  keywords: [agent q, planning, build plan, orchestrate, execute, verify, debug, spinjitsu, tdd, brainstorm, finish, domain-specialists, security, frontend, research]
   files: [CLAUDE.md, agent.md, todo.md, soul.md, "workflows/*.md", "agents/*.md"]
 platforms: [claude-code, cursor, codex, opencode, gemini-cli]
 ---
@@ -43,6 +43,7 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 - **Brainstorm Mode** -- Structured ideation that produces actionable build plans, not just ideas.
 - **Branch Finish** -- End-to-end branch completion: review, test, squash, merge.
 - **Two-Stage Code Review** -- Automated first pass (lint, structure) followed by deep logic review.
+- **Domain Specialists** -- Specialist agents (security, frontend, researcher) that advise alongside the core pipeline with trigger-based routing and priority ordering.
 
 ## Agents
 
@@ -50,6 +51,9 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 - **q-executor** — Executes build plans with deviation rules, atomic commits, and documentation updates.
 - **q-verifier** — Verifies completed work against the build plan and quality standards.
 - **q-debugger** — Debugs issues using the scientific method with structured hypothesis testing.
+- **q-security** — Reviews code for OWASP Top 10 vulnerabilities, auth/authz weaknesses, and secrets exposure.
+- **q-frontend** — Audits UI code for WCAG 2.1 accessibility, component quality, responsive design, and performance.
+- **q-researcher** — Conducts structured investigations with comparison matrices and ranked recommendations.
 
 ## Commands
 
@@ -142,7 +146,7 @@ cp -r /tmp/agent-q/.claude your-project/
 |-----------|----------|
 | `context/` | Framework rules, planning protocol, engineering preferences, frontend rules |
 | `workflows/` | Step-by-step operational workflows and build plans |
-| `agents/` | Subagent role definitions (planner, executor, verifier, debugger) |
+| `agents/` | Subagent role definitions (planner, executor, verifier, debugger) and domain specialists (security, frontend, researcher) |
 | `tools/` | Executable scripts (verify.sh, spin-jit-su.sh, heartbeat.sh) |
 | `shared_context/` | Project-specific domain knowledge |
 | `shared_context/ingested/` | Ingested video/audio transcripts and keyframes |
