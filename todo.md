@@ -1,10 +1,12 @@
 # Agent Q Framework — Project State
 
 ## Current Goal
-Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 plans via Spin Jit Su.
+Integrate 7 Superpowers capabilities into Agent Q via 3 parallel Spin Jit Su streams.
 
 ## Active Tasks
-- (none — all plans complete)
+- [ ] **Stream A:** Quality — TDD + Two-Stage Review + Document Review → `workflows/build-plan-superpowers-quality.md`
+- [ ] **Stream B:** DX — Visual Brainstorm + Finish Branch → `workflows/build-plan-superpowers-dx.md`
+- [ ] **Stream C:** Platform — Multi-Platform Support + Skill Composability → `workflows/build-plan-superpowers-platform.md`
 
 ## Recently Completed (Spin Jit Su — 4 Parallel Streams)
 - [x] **Plan A:** Command Intelligence (autonomy rules + namespace grouping) → `0a2f4e3`
@@ -23,6 +25,9 @@ Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 pla
 - [x] Moved slash commands from `commands/q/` to `.claude/commands/q/`
 - [x] Updated `~/.claude/settings.json` to point to framework statusline
 
+## Previous Goals (Completed)
+- [x] Adopt notebooklm-py patterns + media ingestion via Spin Jit Su (Plans A-D)
+
 ## Decisions Made
 - Cherry-pick from ECC rather than install whole plugin (context bloat risk)
 - On-demand context loading instead of bulk read
@@ -33,11 +38,23 @@ Adopt notebooklm-py patterns + add media ingestion to Agent Q. Execute all 4 pla
 - notebooklm-py patterns: autonomy rules, error taxonomy, namespace API, config isolation, FIFO cache, poll-based status
 - Media ingestion: local-first (yt-dlp + ffmpeg + whisper), no API keys, ~97% coverage
 - M2/M5 GPU accelerates whisper via Metal — no slow CPU fallback concern
+- Superpowers: integrate all 7 capabilities (not cherry-pick 3) — same pattern as GSD/ECC/notebooklm-py integrations
+- Superpowers streams: A (quality), B (DX), C (platform) — independent, parallel via Spin Jit Su
+- TDD only for application code, not config/docs/workflows
+- Two-stage review default + --quick flag for trivial changes
+- Document review loop capped at 3 iterations
+- Visual brainstorm: zero-dependency Node.js, 30min idle timeout, parent PID monitoring
+- Multi-platform: single source of truth in SKILL.md, platform configs derive from it
 
 ## Known Issues
 - (none yet)
 
 ## Session Log
+
+### Session 2 — 2026-03-23
+- What was done: Researched Superpowers framework, planned integration of all 7 capabilities, wrote 3 parallel build plans
+- What's next: Execute Streams A/B/C in parallel via Spin Jit Su
+- Blockers: None
 
 ### Session 1 — 2026-03-20
 - What was done: Fixed context loading, fixed statusline, moved commands, scanned projects, planned ECC integration
