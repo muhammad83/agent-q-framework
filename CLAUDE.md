@@ -43,6 +43,15 @@ Track all state in todo.md.
 ## Project Context
 [Fill in during project setup: what the project does, who uses it, key features, tech stack.]
 
+## gstack
+Use /browse from gstack for all web browsing. Never use mcp__claude-in-chrome__* tools.
+Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
+/design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse,
+/qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro,
+/investigate, /document-release, /codex, /cso, /autoplan, /careful, /freeze, /guard,
+/unfreeze, /gstack-upgrade.
+If gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to rebuild.
+
 ## Self-Awareness
 You have permission to modify files in /tools/, /workflows/, and /context/ to
 improve your own performance.
