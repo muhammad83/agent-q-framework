@@ -1,0 +1,68 @@
+{
+  "name": "agent-q-framework",
+  "version": "1.1.0",
+  "description": "Agent Q framework integration for OpenCode",
+  "hooks": {
+    "session-start": {
+      "command": "bash hooks/session-start.sh",
+      "description": "Detect platform and inject Agent Q context",
+      "env": {
+        "OPENCODE_SESSION": "1"
+      }
+    }
+  },
+  "workflows": {
+    "plan": {
+      "description": "Start a structured planning session with reverse elicitation",
+      "entry": "context/planning-protocol.md",
+      "agent": "agents/q-planner.md"
+    },
+    "execute": {
+      "description": "Execute a build plan with deviation rules and atomic commits",
+      "entry": "agents/q-executor.md",
+      "rules": "context/rules.md"
+    },
+    "verify": {
+      "description": "Verify completed work against the build plan",
+      "entry": "agents/q-verifier.md"
+    },
+    "review": {
+      "description": "Run a structured code review",
+      "entry": "workflows/code-review.md"
+    },
+    "debug": {
+      "description": "Scientific method debugging session",
+      "entry": "workflows/debug.md",
+      "agent": "agents/q-debugger.md"
+    },
+    "orchestrate": {
+      "description": "Full multi-agent pipeline (plan, execute, verify, debug)",
+      "entry": "workflows/orchestration-protocol.md"
+    },
+    "spinjitsu": {
+      "description": "Parallel execution of multiple build plans",
+      "entry": "workflows/spin-jit-su-workflow.md"
+    },
+    "ingest": {
+      "description": "Ingest video/audio content for context",
+      "entry": "tools/ingest.sh"
+    }
+  },
+  "context": {
+    "always_load": [
+      "CLAUDE.md",
+      "soul.md",
+      "todo.md",
+      "SKILL.md"
+    ],
+    "on_demand": {
+      "context/rules.md": "when starting any coding task",
+      "context/engineering-preferences.md": "when making architecture or style decisions",
+      "context/planning-protocol.md": "when entering planning mode",
+      "context/frontend.md": "when working on frontend or UI code",
+      "workflows/debug.md": "when debugging issues",
+      "workflows/code-review.md": "when reviewing code"
+    }
+  },
+  "state_file": "todo.md"
+}
