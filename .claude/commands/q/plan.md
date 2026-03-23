@@ -40,11 +40,20 @@ then produce a detailed build plan saved to `workflows/build-plan-{feature-name}
    - Edge cases and rollback strategy
    - Verification criteria
 
-6. **Update todo.md** with the new plan reference.
+6. **Document review loop.** After generating the plan, run a review pass
+   (see `workflows/orchestration-protocol.md` -> Document Review Loop):
+   a. Evaluate the plan for completeness, feasibility, and risks.
+   b. If issues found (verdict: REVISE), revise the plan and re-evaluate.
+   c. Cap at 3 review iterations. After 3 REVISE verdicts, surface remaining
+      concerns to the user and ask for approval or guidance.
+   d. Show the user the reviewer's verdict and any revisions made.
+
+7. **Update todo.md** with the new plan reference.
 
 ## Success Criteria
 - All 8 planning questions answered or explicitly deferred
 - Plan saved to `workflows/build-plan-{feature-name}.md`
 - Plan has 2-3 tasks max (per context budget awareness rules)
 - Discovery level assessed and noted
+- Document review loop completed (APPROVED or human-approved after cap)
 - `todo.md` updated with plan reference
