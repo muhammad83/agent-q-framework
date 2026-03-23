@@ -111,6 +111,7 @@ your-project/
 │       ├── debug.md       ← /q:debug — Scientific method debugging
 │       ├── quick.md       ← /q:quick — Small fix without planning
 │       ├── brainstorm.md   ← /q:brainstorm — Visual brainstorming with live browser preview
+│       ├── finish.md      ← /q:finish — Finish branch with merge/PR/keep/discard options
 │       ├── pause.md       ← /q:pause — Save session state
 │       └── resume.md      ← /q:resume — Resume from paused session
 ├── CHEATSHEET.md          ← Prompts & commands for every phase
@@ -129,6 +130,7 @@ your-project/
 │   ├── pause.md           ← Session pause workflow
 │   ├── resume.md          ← Session resume workflow
 │   ├── debug.md           ← Scientific method debugging workflow
+│   ├── finish-branch.md   ← Branch completion with verification and 4 options
 │   └── project-setup.md   ← Structured project onboarding interview
 ├── tools/                 ← Executable scripts
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
