@@ -110,6 +110,8 @@ your-project/
 │       ├── progress.md    ← /q:progress — Show project state
 │       ├── debug.md       ← /q:debug — Scientific method debugging
 │       ├── quick.md       ← /q:quick — Small fix without planning
+│       ├── brainstorm.md   ← /q:brainstorm — Visual brainstorming with live browser preview
+│       ├── finish.md      ← /q:finish — Finish branch with merge/PR/keep/discard options
 │       ├── pause.md       ← /q:pause — Save session state
 │       └── resume.md      ← /q:resume — Resume from paused session
 ├── CHEATSHEET.md          ← Prompts & commands for every phase
@@ -128,11 +130,15 @@ your-project/
 │   ├── pause.md           ← Session pause workflow
 │   ├── resume.md          ← Session resume workflow
 │   ├── debug.md           ← Scientific method debugging workflow
+│   ├── finish-branch.md   ← Branch completion with verification and 4 options
 │   └── project-setup.md   ← Structured project onboarding interview
 ├── tools/                 ← Executable scripts
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
+│   ├── visual-brainstorm.cjs ← Zero-dep WebSocket server for visual brainstorming
 │   ├── spin-jit-su.sh     ← One-command parallel launcher (tmux)
 │   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
+├── docs/                  ← Generated documentation
+│   └── specs/             ← Spec documents from brainstorm sessions
 ├── rules/                 ← Engineering rules for code generation
 │   └── _TEMPLATE.md       ← Copy this for every new rule
 ├── clients/               ← Per-client data (if applicable)
