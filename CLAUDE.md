@@ -26,6 +26,9 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `agents/q-executor.md` — when spawning an executor subagent
 - `agents/q-verifier.md` — when spawning a verifier subagent
 - `agents/q-debugger.md` — when spawning a debugger subagent
+- `agents/q-security.md` — when reviewing code for security vulnerabilities
+- `agents/q-frontend.md` — when reviewing frontend/UI code quality
+- `agents/q-researcher.md` — when conducting structured research or comparisons
 
 Track all state in todo.md.
 
