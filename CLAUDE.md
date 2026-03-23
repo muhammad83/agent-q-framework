@@ -14,6 +14,8 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `context/engineering-preferences.md` — when making architecture/style decisions
 - `context/planning-protocol.md` — when entering Plan Mode or planning a feature
 - `context/frontend.md` — when working on frontend/UI code
+- `context/token-efficiency.md` — when context usage is high or agent needs to conserve tokens
+- `context/modes.md` — when switching behavioral modes or user requests a specific mode
 - `workflows/debug.md` — when debugging issues
 - `workflows/code-review.md` — when reviewing code
 - `workflows/pause.md` — when pausing a session
