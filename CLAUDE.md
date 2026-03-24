@@ -17,7 +17,11 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `context/token-efficiency.md` — when context usage is high or agent needs to conserve tokens
 - `context/modes.md` — when switching behavioral modes or user requests a specific mode
 - `workflows/debug.md` — when debugging issues
-- `workflows/code-review.md` — when reviewing code
+- `workflows/code-review.md` — when reviewing code (basic)
+- `workflows/review-ceo.md` — when running a CEO/strategy plan review
+- `workflows/review-eng.md` — when running an engineering plan review (required shipping gate)
+- `workflows/review-design.md` — when running a design plan review
+- `workflows/review-pr.md` — when running a pre-landing PR/diff review
 - `workflows/pause.md` — when pausing a session
 - `workflows/resume.md` — when resuming a paused session
 - `workflows/project-setup.md` — when onboarding a new project (first session only)
@@ -28,6 +32,7 @@ Load files only when relevant to the current task. Do NOT read everything upfron
 - `agents/q-executor.md` — when spawning an executor subagent
 - `agents/q-verifier.md` — when spawning a verifier subagent
 - `agents/q-debugger.md` — when spawning a debugger subagent
+- `agents/q-reviewer.md` — when running any review workflow (CEO, eng, design, PR)
 - `agents/q-security.md` — when reviewing code for security vulnerabilities
 - `agents/q-frontend.md` — when reviewing frontend/UI code quality
 - `agents/q-researcher.md` — when conducting structured research or comparisons
