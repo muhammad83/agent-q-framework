@@ -85,6 +85,8 @@ format_duration() {
 
 # ── Extract JSON ────────────────────────────────────────
 model_name=$(echo "$input" | jq -r '.model.display_name // "Claude"')
+model_id=$(echo "$input" | jq -r '.model.id // ""')
+output_style=$(echo "$input" | jq -r '.output_style.name // "default"')
 
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
 [ -z "$cwd" ] || [ "$cwd" = "null" ] && cwd=$(pwd)
@@ -115,8 +117,30 @@ if git -C "$cwd" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     fi
 fi
 
-# ── LINE 1: model │ $cost │ dir (branch) │ session │ ctx% ──
+# ── Derive mode & thinking ─────────────────────────────
+# Thinking: inferred from model ID containing "thinking" or extended context hints
+thinking=""
+case "$model_id" in
+    *thinking*) thinking="thinking" ;;
+esac
+
+# Mode badge: fast, plan, or default (no badge)
+mode_badge=""
+case "$output_style" in
+    fast)    mode_badge="${orange}fast${reset}" ;;
+    plan)    mode_badge="${yellow}plan${reset}" ;;
+esac
+
+# ── LINE 1: model │ mode │ $cost │ dir (branch) │ session ──
 line1="${blue}${model_name}${reset}"
+
+# Append thinking + mode tags
+if [ -n "$thinking" ]; then
+    line1+=" ${dim}(${thinking})${reset}"
+fi
+if [ -n "$mode_badge" ]; then
+    line1+="${sep}${mode_badge}"
+fi
 
 if [ -n "$cost" ]; then
     cost_fmt=$(printf '%.2f' "$cost")
@@ -131,6 +155,16 @@ fi
 if [ -n "$duration_ms" ] && [ "$duration_ms" != "null" ]; then
     dur=$(format_duration "$duration_ms")
     line1+="${sep}${dim}session${reset} ${white}${dur}${reset}"
+fi
+
+# Voice indicator
+voice_on=$(jq -r '.voiceEnabled // false' "$HOME/.claude/settings.json" 2>/dev/null)
+if [ "$voice_on" = "true" ]; then
+    playing=""
+    pgrep -f afplay >/dev/null 2>&1 && playing=" ${dim}playing${reset}"
+    line1+="${sep}${green}voice on${reset}${playing}"
+else
+    line1+="${sep}${dim}voice off${reset}"
 fi
 
 # ── LINE 2: context bar ────────────────────────────────
@@ -172,10 +206,63 @@ if [ "$lines_added" -gt 0 ] || [ "$lines_removed" -gt 0 ]; then
     changes_line="${white}changes${reset} ${green}+${lines_added} added${reset} ${dim}·${reset} ${red}-${lines_removed} removed${reset}"
 fi
 
+# ── LINE 6: ccusage token analyzer (today · burn · block) ──
+# Non-blocking: read a short-lived cache instantly; refresh it in the
+# background when stale so the HUD never waits on ccusage.
+usage_line=""
+CCUSAGE_BIN=""
+if [ -x "$HOME/.bun/bin/ccusage" ]; then CCUSAGE_BIN="$HOME/.bun/bin/ccusage"
+elif command -v ccusage >/dev/null 2>&1; then CCUSAGE_BIN="ccusage"; fi
+
+if [ -n "$CCUSAGE_BIN" ]; then
+    cache_file="/tmp/ccusage-hud-$(id -u).cache"
+
+    # Determine staleness (refresh every 45s)
+    stale=1
+    if [ -f "$cache_file" ]; then
+        mtime=$(stat -f %m "$cache_file" 2>/dev/null || stat -c %Y "$cache_file" 2>/dev/null)
+        now=$(date +%s)
+        [ -n "$mtime" ] && [ $(( now - mtime )) -lt 45 ] && stale=0
+    fi
+
+    # Kick a background refresh; this render still uses whatever's cached.
+    if [ "$stale" = "1" ]; then
+        (
+            today=$("$CCUSAGE_BIN" daily --json 2>/dev/null | jq -r '.daily[-1].totalCost // 0')
+            bj=$("$CCUSAGE_BIN" blocks --active --json 2>/dev/null)
+            bc=$(echo "$bj" | jq -r '.blocks[0].costUSD // 0')
+            br=$(echo "$bj" | jq -r '.blocks[0].burnRate.costPerHour // 0')
+            rm_=$(echo "$bj" | jq -r '.blocks[0].projection.remainingMinutes // 0')
+            printf '%s|%s|%s|%s' "$today" "$bc" "$br" "$rm_" > "$cache_file.tmp" 2>/dev/null \
+                && mv "$cache_file.tmp" "$cache_file" 2>/dev/null
+        ) >/dev/null 2>&1 &
+        disown 2>/dev/null
+    fi
+
+    if [ -f "$cache_file" ]; then
+        IFS='|' read -r u_today u_block u_burn u_remain < "$cache_file"
+        if [ -n "$u_today" ] && [ "$u_today" != "0" ] && [ "$u_today" != "null" ]; then
+            today_fmt=$(printf '%.2f' "$u_today" 2>/dev/null)
+            burn_fmt=$(printf '%.2f' "$u_burn" 2>/dev/null)
+            usage_line="${white}usage${reset}   ${green}\$${today_fmt} today${reset}"
+            if [ -n "$u_burn" ] && [ "$u_burn" != "0" ] && [ "$u_burn" != "null" ]; then
+                usage_line+=" ${dim}·${reset} ${orange}\$${burn_fmt}/hr burn${reset}"
+            fi
+            rem_int=${u_remain%.*}
+            if [ -n "$rem_int" ] && [ "$rem_int" != "0" ] && [ "$rem_int" != "null" ] 2>/dev/null; then
+                rem_h=$(( rem_int / 60 )); rem_m=$(( rem_int % 60 ))
+                if [ "$rem_h" -gt 0 ]; then rem_fmt="${rem_h}h${rem_m}m"; else rem_fmt="${rem_m}m"; fi
+                usage_line+=" ${dim}·${reset} ${dim}block ${rem_fmt} left${reset}"
+            fi
+        fi
+    fi
+fi
+
 # ── Output ──────────────────────────────────────────────
 printf "%b" "$line1"
 printf "\n\n%b" "$line2"
 [ -n "$rate_lines" ] && printf "\n%b" "$rate_lines"
 [ -n "$changes_line" ] && printf "\n%b" "$changes_line"
+[ -n "$usage_line" ] && printf "\n%b" "$usage_line"
 
 exit 0
