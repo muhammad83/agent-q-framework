@@ -8,8 +8,11 @@ which framework features to adopt, and lets the user choose.
 
 ## Context Needed
 Before running, make sure you have:
-- [ ] Agent Q framework files are present (context/, workflows/, tools/, soul.md, CLAUDE.md template)
+- [ ] Agent Q framework repo is available at `~/Documents/Projects/agent-q-framework/`
 - [ ] User is ready to answer 5 questions about their project (~2-3 minutes)
+
+## IMPORTANT: Symlink, Never Copy
+Framework files (`agents/`, `context/`, `workflows/`, `tools/`, `shared_context/`, `soul.md`, `SKILL.md`, `CHEATSHEET.md`, `CONTRIBUTING.md`) must be **symlinked** from the canonical `agent-q-framework/` repo, never copied. This prevents 300K+ of duplicated bloat per project. See Stage 4B for details.
 
 ## Overview
 
@@ -143,6 +146,10 @@ Present this table with the Rec column filled in:
 21  Subagent roles (agents/)         [rec]     Planner, executor, verifier, debugger role definitions
 22  Subagent spawning                [rec]     Spawn parallel executors via Task tool
 
+    TOKEN & MCP HYGIENE
+23  Token-burn analyzer              [rec]     Rank what burned tokens in a session (by tool/file/cache re-reads)
+24  MCP hygiene audit (SessionStart) [rec]     Warn at session start about connected-but-unused MCP servers
+
 Legend: INCLUDE = recommended | OPTIONAL = your call | SKIP = not needed
 ```
 
@@ -259,6 +266,14 @@ Use these rules to fill the Rec column:
 - If #8 is OPTIONAL → OPTIONAL #22
 - If #8 is SKIP → SKIP #22
 
+**#23 Token-burn analyzer**
+- Q5 includes Claude Code (A/B/C/D/E) → INCLUDE (reads `~/.claude` session logs; pairs with #17)
+- Q5=F → OPTIONAL
+
+**#24 MCP hygiene audit**
+- Project uses any MCP servers/connectors → INCLUDE
+- No MCP servers at all → OPTIONAL (harmless; warns only when something unused appears)
+
 ---
 
 ## Stage 3: User Selection
@@ -362,7 +377,44 @@ Inline all selected rules directly into CLAUDE.md as numbered sections
 
 ### 4B: Supporting Files
 
-Copy from framework based on selection:
+**Symlink** directories and shared files from the framework repo. Never copy.
+
+```bash
+# Run from the new project root:
+FRAMEWORK=~/Documents/Projects/agent-q-framework
+
+# Directories — always symlink whole dirs
+ln -s "$FRAMEWORK/agents" ./agents
+ln -s "$FRAMEWORK/context" ./context
+ln -s "$FRAMEWORK/workflows" ./workflows
+ln -s "$FRAMEWORK/tools" ./tools
+ln -s "$FRAMEWORK/shared_context" ./shared_context
+
+# Individual files
+ln -s "$FRAMEWORK/soul.md" ./soul.md
+ln -s "$FRAMEWORK/SKILL.md" ./SKILL.md
+ln -s "$FRAMEWORK/CHEATSHEET.md" ./CHEATSHEET.md
+ln -s "$FRAMEWORK/CONTRIBUTING.md" ./CONTRIBUTING.md
+
+# Add to .gitignore so symlinks are never committed
+cat >> .gitignore << 'EOF'
+
+# Agent Q framework (symlinked from agent-q-framework/)
+agents/
+context/
+workflows/
+tools/
+shared_context/
+soul.md
+SKILL.md
+CHEATSHEET.md
+CONTRIBUTING.md
+EOF
+```
+
+**Project-specific build plans** should live in the project root (e.g., `build-plan-my-feature.md`), not inside the symlinked `workflows/` directory.
+
+Feature-to-file mapping (all resolved via symlinks):
 
 | Selected Feature | Files to Generate |
 |-----------------|-------------------|
@@ -385,6 +437,8 @@ Copy from framework based on selection:
 | #20 Debug workflow | `workflows/debug.md` |
 | #21 Subagent roles | `agents/q-planner.md`, `agents/q-executor.md`, `agents/q-verifier.md`, `agents/q-debugger.md` |
 | #22 Subagent spawning | Documented in `workflows/spin-jit-su-workflow.md` (requires #8) |
+| #23 Token-burn analyzer | `tools/token-burn.py` (symlinked) |
+| #24 MCP hygiene audit | `tools/mcp-audit.sh` (symlinked) + SessionStart hook in `.claude/settings.json` — see 4E |
 
 ### 4C: Document Exclusions
 
@@ -433,6 +487,59 @@ from the Agent Q framework repo):
 - Next: Fill in project context, create first build plan
 - Blockers: None
 ```
+
+### 4E: Token & MCP Hygiene Hooks (features #23–24)
+
+These two tools read the user's **machine-wide** `~/.claude/` data (session logs and
+connected MCP servers), not per-project files. They run from the symlinked `tools/`
+directory but report on global state, so they're set up once and benefit every project.
+
+**Dependency (token analysis):** the HUD's `usage` line and burn-rate reporting use
+[`ccusage`](https://github.com/ryoppippi/ccusage). Install once per machine:
+```bash
+bun add -g ccusage      # or: npm i -g ccusage
+```
+The HUD degrades gracefully — it simply hides the `usage` line if `ccusage` is absent.
+
+**Wire the MCP audit into SessionStart.** Merge this into the project's
+`.claude/settings.json` (preserve any existing hooks — never replace the `hooks` block):
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ {
+          "type": "command",
+          "command": "bash $FRAMEWORK/tools/mcp-audit.sh --quiet",
+          "timeout": 15
+      } ] }
+    ]
+  }
+}
+```
+Substitute `$FRAMEWORK` with the absolute framework path (e.g.
+`~/Documents/Projects/agent-q-framework`) — hook commands cannot use shell variables.
+After editing, validate: `jq -e '.hooks.SessionStart' .claude/settings.json`.
+
+At each session start this prints one line **only if** a connected MCP server has never
+been invoked:
+```
+⚠ unused MCP servers (never called): claude.ai Gmail, claude.ai Atlassian
+```
+It **reports only** — it never disconnects anything. claude.ai connectors are
+account-managed, so disable them via `/mcp` or claude.ai → Settings → Connectors;
+plugin MCPs are disabled in `enabledPlugins`.
+
+**Manual use (any time):**
+```bash
+tools/token-burn.py --all     # rank heaviest sessions, then biggest token sinks within one
+tools/token-burn.py --project <name> --top 20
+tools/mcp-audit.sh            # full connected-vs-actually-used MCP report
+```
+
+> Note: the HUD itself (`tools/statusline-hud.sh`, feature #17) is registered in the
+> user's **global** `~/.claude/settings.json` under `statusLine`, not per-project. The
+> SessionStart hook above can live in either global or project settings — global makes
+> the warning fire everywhere; project-level scopes it to this repo.
 
 ---
 
