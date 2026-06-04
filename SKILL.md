@@ -20,7 +20,7 @@ requires:
   - node >= 18
 extends: []
 triggers:
-  keywords: [agent q, planning, build plan, estimate, cost forecast, orchestrate, execute, verify, debug, spinjitsu, tdd, brainstorm, finish, domain-specialists, security, frontend, research]
+  keywords: [agent q, planning, build plan, estimate, cost forecast, orchestrate, execute, verify, debug, spinjitsu, opus, model tiers, tiered run, tdd, brainstorm, finish, domain-specialists, security, frontend, research]
   files: [CLAUDE.md, agent.md, todo.md, soul.md, "workflows/*.md", "agents/*.md"]
 platforms: [claude-code, cursor, codex, opencode, gemini-cli]
 ---
@@ -71,6 +71,7 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 | `/q:resume` | Resume from a paused session or start fresh from todo.md | auto | dx |
 | `/q:orchestrate` | Run the full multi-agent pipeline (plan, execute, verify, debug) | confirm | execution |
 | `/q:spinjitsu` | Launch parallel execution of multiple build plans | confirm | execution |
+| `/q:opus` | Model-tiered run — strongest model to think, cheaper model to do | confirm | execution |
 | `/q:ingest` | Ingest video/audio content for Agent Q context | confirm | dx |
 | `/q:status` | Show all available /q: commands with descriptions | auto | dx |
 

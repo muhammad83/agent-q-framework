@@ -119,6 +119,7 @@ your-project/
 │       ├── progress.md    ← /q:progress — Show project state
 │       ├── debug.md       ← /q:debug — Scientific method debugging
 │       ├── quick.md       ← /q:quick — Small fix without planning
+│       ├── opus.md        ← /q:opus — Model-tiered run (strong to think, cheap to do)
 │       ├── brainstorm.md   ← /q:brainstorm — Visual brainstorming with live browser preview
 │       ├── finish.md      ← /q:finish — Finish branch with merge/PR/keep/discard options
 │       ├── pause.md       ← /q:pause — Save session state
