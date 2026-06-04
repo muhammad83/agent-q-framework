@@ -258,11 +258,41 @@ if [ -n "$CCUSAGE_BIN" ]; then
     fi
 fi
 
+# ── LINE 7: workday budget pace ────────────────────────
+# Reuses today's spend already cached above ($u_today). Calls budget-guard.sh
+# in --pace mode only (pure math, NO extra ccusage call → no HUD slowdown).
+budget_line=""
+guard="$(dirname "$0")/budget-guard.sh"
+if [ -n "${u_today:-}" ] && [ "$u_today" != "0" ] && [ "$u_today" != "null" ] && [ -x "$guard" ]; then
+    pace=$("$guard" --pace "$u_today" 2>/dev/null)
+    if [ -n "$pace" ]; then
+        IFS='|' read -r b_pct b_key b_proj b_rem b_exp <<< "$pace"
+        b_budget="${Q_DAILY_BUDGET_USD:-40}"
+        case "$b_key" in
+            under)    b_color="$green";  b_lbl="under pace" ;;
+            ontrack)  b_color="$cyan";   b_lbl="on track" ;;
+            over)     b_color="$orange"; b_lbl="over pace" ;;
+            critical) b_color="$red";    b_lbl="OVER BUDGET RISK" ;;
+            preday)   b_color="$dim";    b_lbl="before workday" ;;
+            postday)  b_color="$dim";    b_lbl="after workday" ;;
+            *)        b_color="$dim";    b_lbl="$b_key" ;;
+        esac
+        b_bar=$(build_bar "${b_pct%.*}" 10)
+        today_b=$(printf '%.2f' "$u_today" 2>/dev/null)
+        proj_b=$(printf '%.0f' "$b_proj" 2>/dev/null)
+        budget_line="${white}budget${reset}  ${b_bar} ${b_color}$(printf '%3d' "${b_pct%.*}")%${reset}"
+        budget_line+=" ${dim}·${reset} ${green}\$${today_b}${dim}/\$${b_budget}${reset}"
+        budget_line+=" ${dim}·${reset} ${b_color}${b_lbl}${reset}"
+        budget_line+=" ${dim}· ~\$${proj_b} eod${reset}"
+    fi
+fi
+
 # ── Output ──────────────────────────────────────────────
 printf "%b" "$line1"
 printf "\n\n%b" "$line2"
 [ -n "$rate_lines" ] && printf "\n%b" "$rate_lines"
 [ -n "$changes_line" ] && printf "\n%b" "$changes_line"
 [ -n "$usage_line" ] && printf "\n%b" "$usage_line"
+[ -n "$budget_line" ] && printf "\n%b" "$budget_line"
 
 exit 0
