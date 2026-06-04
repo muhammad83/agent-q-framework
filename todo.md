@@ -1,10 +1,29 @@
 # Agent Q Framework — Project State
 
 ## Current Goal
-Integrate SuperClaude-inspired capabilities into Agent Q (token-efficiency, behavioral modes, domain specialists).
+Full gstack extraction — separate behavioral prompts from runtime tools, extract all P1
+skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE EXPANSION,
+7/7 proposals accepted).
 
 ## Active Tasks
-- (none — all streams complete)
+- [ ] **Token Economy Tooling** (no-cache Bedrock Sonnet, $40/day) → `workflows/build-plan-token-economy.md`. Planned + self-review APPROVED 2026-06-04. 3 independent tasks:
+  - [x] **Task 1:** `tools/budget-guard.sh` workday pacer + pace-aware statusline segment + `context/budget-discipline.md` + `.env.example` vars → `410392c` (plus `fe26b0d` verify.sh ugrep fix). Verified: all modes run, statusline renders budget line, doc passes verify.sh.
+  - [ ] **Task 2:** `/q:estimate` + `tools/estimate-plan.py` pre-flight plan cost forecaster.
+  - [ ] **Task 3:** `/q:opus` model-tiered run + `context/model-tiers.md`.
+  - Run each remaining task as its own `/q:execute` (or spinjitsu) with `/clear` between.
+- [ ] **Stream A:** Review Gates (CEO/Eng/Design/PR + q-reviewer agent) → `workflows/build-plan-gstack-stream-a.md`
+- [x] **Stream B:** Ship + QA + Document-Release workflows → `workflows/build-plan-gstack-stream-b.md`
+  - Ship workflow (`workflows/ship.md`, 240 lines) + `/q:ship` command → `baede98`
+  - QA workflow (`workflows/qa.md`, 215 lines) + `/q:qa` command → `7633107`
+  - Document-release workflow (`workflows/document-release.md`, 174 lines) + `/q:docs` command → `7633107`
+- [ ] **Stream C:** Safety + Retro + Multi-AI verification → `workflows/build-plan-gstack-stream-c.md`
+
+## External Plans (Other Repos)
+- [x] **Penfold preview cleanup hardening** (target repo: `infrastructure-as-code` on `penfold` branch) → `workflows/build-plan-penfold-preview-cleanup.md`. Document review APPROVED 2026-05-02 (iteration 3/3). Executed 2026-05-02. Three commits on penfold branch: `98ca23f` (vault scope refactor), `3b5769a` (script + playbook + inventory + vault), `fcc78bc` (URL-embedded git auth — required because git 2.43 ignores `http.extraHeader`). End-to-end verification on live server passed: audit OK, dry-run correct, network-failure sim preserves all containers, real run deletes only deleted-branch container. Cron re-enabled. Soak window: confirm previews persist through next four cron firings (06/12/18/00 UTC) over 24h.
+- [x] **Superman Protocol — v3 Sprint 1 SHIPPED 2026-05-20** (target repo: `~/Documents/Projects/superman-protocol/`). Tag `v0.2-vertical-push`. Vertical slice across all 3 pillars (Session Driver + Coach + Body). Plan: `superman-protocol/workflows/build-plan-v3-companion.md`. Commits `f275c48` / `12a67cf` / `5d19745`. 59 tests, 647 KB JS / 196 KB gzip.
+- [ ] **Superman Protocol — v3 Sprint 2 PLANNED 2026-05-21** → `superman-protocol/workflows/build-plan-v3-companion-sprint2.md`. Self-review APPROVED. Reframes Sprint 2 honestly — the v3 plan's "horizontal port to Days 2–5" turned out to be mostly free because the state machine generalizes; Sprint 2 is verification + the quality gaps Day-1 use exposes. 3 atomic tasks (~3.5 days): (A) end-to-end day-walk tests + edit-history + quick-rest trigger fix, (B) Coach bundle split (~440 KB initial vs 647) + streaming responses, (C) real Settings screen + home consolidation. Tag `v0.3-week-1` on completion. Sprint 3 (Capacitor + HealthKit + iCloud) deferred.
+
+## Recently Completed (SuperClaude Integration — 2 Parallel Streams)
 
 ## Recently Completed (SuperClaude Integration — 2 Parallel Streams)
 - [x] **Stream A Task 1:** Token-efficiency rules (`context/token-efficiency.md`) → `d7259bb`
