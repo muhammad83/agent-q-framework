@@ -6,10 +6,10 @@ skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE E
 7/7 proposals accepted).
 
 ## Active Tasks
-- [ ] **Token Economy Tooling** (no-cache Bedrock Sonnet, $40/day) → `workflows/build-plan-token-economy.md`. Planned + self-review APPROVED 2026-06-04. 3 independent tasks:
+- [x] **Token Economy Tooling** (no-cache Bedrock Sonnet, $40/day) → `workflows/build-plan-token-economy.md`. Planned + self-review APPROVED 2026-06-04. ALL 3 tasks complete 2026-06-05. 3 independent tasks:
   - [x] **Task 1:** `tools/budget-guard.sh` workday pacer + pace-aware statusline segment + `context/budget-discipline.md` + `.env.example` vars → `410392c` (plus `fe26b0d` verify.sh ugrep fix). Verified: all modes run, statusline renders budget line, doc passes verify.sh.
   - [x] **Task 2:** `/q:estimate` + `tools/estimate-plan.py` pre-flight plan cost forecaster → `15c2aa7`. Verified: runs plain + `--json` on real plans, measures real file sizes, low/expected/high range + cost-driver table + recs, ccusage ground-truth anchor, degrades w/o ccusage. status.md auto-discovers; registered in SKILL.md + README.
-  - [ ] **Task 3:** `/q:opus` model-tiered run + `context/model-tiers.md`.
+  - [x] **Task 3:** `/q:opus` model-tiered run + `context/model-tiers.md` → `8be8e1b`. Verified: model-tiers.md passes verify.sh, config resolves IDs from .env w/ env override + fallback, /q:opus registered (SKILL.md + README + auto-discover), .env.example documents Q_MODEL_THINK/BUILD/GRUNT. Namespace: used `execution` (plan said "orchestration", not a manifest namespace).
   - Run each remaining task as its own `/q:execute` (or spinjitsu) with `/clear` between.
 - [ ] **Stream A:** Review Gates (CEO/Eng/Design/PR + q-reviewer agent) → `workflows/build-plan-gstack-stream-a.md`
 - [x] **Stream B:** Ship + QA + Document-Release workflows → `workflows/build-plan-gstack-stream-b.md`
@@ -83,6 +83,15 @@ skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE E
 - (none yet)
 
 ## Session Log
+
+### Session 5 — 2026-06-05
+- What was done: Executed Token Economy Task 3 — `/q:opus` model-tiered orchestration skill +
+  `context/model-tiers.md` (THINK/BUILD/GRUNT routing) + `.env.example` tier vars. Committed
+  `8be8e1b`. This completes the Token Economy plan (all 3 tasks). Again hunk-staged SKILL.md to
+  keep the pre-existing voice WIP out of the commit.
+- What's next: Token Economy done. Open framework streams: gstack Stream A (Review Gates) and
+  Stream C (Safety/Retro/Multi-AI). Also: pre-existing voice + token-burn.py WIP still uncommitted.
+- Blockers: None.
 
 ### Session 4 — 2026-06-04
 - What was done: Executed Token Economy Task 2 — built `/q:estimate` + `tools/estimate-plan.py`
