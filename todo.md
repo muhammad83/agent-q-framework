@@ -8,7 +8,7 @@ skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE E
 ## Active Tasks
 - [ ] **Token Economy Tooling** (no-cache Bedrock Sonnet, $40/day) → `workflows/build-plan-token-economy.md`. Planned + self-review APPROVED 2026-06-04. 3 independent tasks:
   - [x] **Task 1:** `tools/budget-guard.sh` workday pacer + pace-aware statusline segment + `context/budget-discipline.md` + `.env.example` vars → `410392c` (plus `fe26b0d` verify.sh ugrep fix). Verified: all modes run, statusline renders budget line, doc passes verify.sh.
-  - [ ] **Task 2:** `/q:estimate` + `tools/estimate-plan.py` pre-flight plan cost forecaster.
+  - [x] **Task 2:** `/q:estimate` + `tools/estimate-plan.py` pre-flight plan cost forecaster → `15c2aa7`. Verified: runs plain + `--json` on real plans, measures real file sizes, low/expected/high range + cost-driver table + recs, ccusage ground-truth anchor, degrades w/o ccusage. status.md auto-discovers; registered in SKILL.md + README.
   - [ ] **Task 3:** `/q:opus` model-tiered run + `context/model-tiers.md`.
   - Run each remaining task as its own `/q:execute` (or spinjitsu) with `/clear` between.
 - [ ] **Stream A:** Review Gates (CEO/Eng/Design/PR + q-reviewer agent) → `workflows/build-plan-gstack-stream-a.md`
@@ -83,6 +83,14 @@ skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE E
 - (none yet)
 
 ## Session Log
+
+### Session 4 — 2026-06-04
+- What was done: Executed Token Economy Task 2 — built `/q:estimate` + `tools/estimate-plan.py`
+  (no-cache pre-flight cost forecaster mirroring token-burn.py's weighting). Committed `15c2aa7`.
+  Staged only Task-2 files (selective hunk-staging of SKILL.md) — left pre-existing WIP
+  (voice feature, token-burn.py edits, untracked build plans) untouched.
+- What's next: Task 3 (`/q:opus` model-tiered run) — run as its own `/q:execute` with `/clear` first.
+- Blockers: None. Note: voice/token-burn WIP still uncommitted in the tree (user's, not mine).
 
 ### Session 3 — 2026-03-23
 - What was done: Researched SuperClaude Framework, planned integration of best ideas (token-efficiency, modes, specialists), executed 2 parallel streams via Spin Jit Su subagent spawning, resolved merge conflicts, merged both streams into main
