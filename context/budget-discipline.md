@@ -56,21 +56,16 @@ statusline shows it live: `budget … under/on/over pace · ~$X eod`.
 - Defer non-essential reads/refactors to a fresh session tomorrow.
 - Re-check pace with `./tools/budget-guard.sh`.
 
+## Caching is off and stays off
+
+Prompt caching **cannot be enabled** on this setup — treat it as a fixed
+constraint, not a TODO. Every token in context is billed at full price on every
+turn, permanently. That makes context-minimization (rules 1–4 above) the only
+real lever; there is no infra change coming to soften it. Plan accordingly.
+
 ## Next Steps
 
-- [ ] **Confirm whether Bedrock prompt caching can be enabled** (see below) by
-      2026-06-11 — it would 5–10× the effective budget and make most of the above
-      far less painful.
-- [ ] Set real values in `.env` if your budget/workday/prices differ from defaults.
+- [ ] Set real values in `.env` if your budget/workday/prices differ from the
+      defaults ($40/day, 08:00–20:00, $3/$15 per M) before 2026-06-30.
 - [ ] Run `./tools/budget-guard.sh` at the start of each workday to set a baseline.
-
-### How to check / request prompt caching on Bedrock
-
-1. Caching support depends on the model + region + how the gateway calls Bedrock
-   (the request must send `cache_control` breakpoints on the system/prompt blocks).
-2. Ask infra: "Does our Bedrock gateway pass Anthropic `cache_control` breakpoints,
-   and is prompt caching enabled for Sonnet 4.6 in our region?"
-3. If the gateway strips or omits `cache_control`, no caching happens regardless of
-   model support — that's a gateway config change to request.
-4. If it can be enabled, re-run a representative session and compare `ccusage` daily
-   cost before/after to confirm the discount is landing.
+- [ ] Use `/q:estimate` on team plans before running them (Task 2, pending).
