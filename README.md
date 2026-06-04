@@ -112,6 +112,7 @@ your-project/
 ├── commands/              ← Slash commands (symlinked to projects)
 │   └── q/
 │       ├── plan.md        ← /q:plan — Reverse elicitation planning
+│       ├── estimate.md    ← /q:estimate — Forecast a plan's token + $ cost (pre-flight)
 │       ├── execute.md     ← /q:execute — Build from plan with deviation rules
 │       ├── verify.md      ← /q:verify — Verify work against plan
 │       ├── review.md      ← /q:review — 4-section code review
@@ -144,6 +145,7 @@ your-project/
 │   ├── verify.sh          ← Boolean pass/fail checks on output files
 │   ├── visual-brainstorm.cjs ← Zero-dep WebSocket server for visual brainstorming
 │   ├── spin-jit-su.sh     ← One-command parallel launcher (tmux)
+│   ├── estimate-plan.py   ← /q:estimate engine — pre-flight plan cost forecaster (no-cache)
 │   └── heartbeat.sh       ← Proactive monitoring (optional, cron-friendly)
 ├── docs/                  ← Generated documentation
 │   └── specs/             ← Spec documents from brainstorm sessions
