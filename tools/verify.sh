@@ -36,7 +36,7 @@ for check in "${CHECKS[@]}"; do
   LABEL="${check%%:::*}"
   PATTERN="${check##*:::}"
 
-  if grep -qE "$PATTERN" "$FILE" 2>/dev/null; then
+  if grep -qE -- "$PATTERN" "$FILE" 2>/dev/null; then
     echo "✅ $LABEL"
     ((PASS++))
   else
