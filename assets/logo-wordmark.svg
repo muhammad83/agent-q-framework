@@ -1,0 +1,55 @@
+<svg width="780" height="200" viewBox="0 0 780 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent Q">
+  <defs>
+    <linearGradient id="aqw-metal" x1="128" y1="58" x2="128" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBEFC8"/>
+      <stop offset="0.5" stop-color="#E6C36A"/>
+      <stop offset="1" stop-color="#B8893A"/>
+    </linearGradient>
+    <radialGradient id="aqw-iconbg" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0" stop-color="#14120D"/>
+      <stop offset="1" stop-color="#060504"/>
+    </radialGradient>
+    <linearGradient id="aqw-panel" x1="0" y1="0" x2="780" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0D0C08"/>
+      <stop offset="1" stop-color="#050504"/>
+    </linearGradient>
+    <linearGradient id="aqw-text" x1="214" y1="60" x2="214" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBEFC8"/>
+      <stop offset="1" stop-color="#D4AF52"/>
+    </linearGradient>
+    <linearGradient id="aqw-red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF3B3B"/>
+      <stop offset="1" stop-color="#C20E1C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- self-contained black panel (renders the same on light or dark) -->
+  <rect width="780" height="200" rx="28" fill="url(#aqw-panel)"/>
+  <rect x="1.5" y="1.5" width="777" height="197" rx="26.5" fill="none" stroke="#F6E2A8" stroke-opacity="0.10" stroke-width="3"/>
+
+  <!-- icon -->
+  <g transform="translate(28,22) scale(0.609)">
+    <rect width="256" height="256" rx="60" fill="url(#aqw-iconbg)"/>
+    <rect x="1.5" y="1.5" width="253" height="253" rx="58.5" fill="none" stroke="#F6E2A8" stroke-opacity="0.10" stroke-width="3"/>
+    <circle cx="128" cy="128" r="103" fill="none" stroke="#D9B96A" stroke-opacity="0.32" stroke-width="2"/>
+    <circle cx="128" cy="128" r="96" fill="none" stroke="#D9B96A" stroke-opacity="0.14" stroke-width="1.5"/>
+    <g stroke="url(#aqw-metal)" fill="none" stroke-linecap="round">
+      <circle cx="120" cy="122" r="50" stroke-width="18"/>
+      <path d="M150 152 L186 188" stroke-width="18"/>
+    </g>
+    <circle cx="192" cy="194" r="7" fill="url(#aqw-red)"/>
+    <g fill="#F4EACF">
+      <rect x="103" y="110" width="3" height="25" rx="1"/>
+      <rect x="109" y="110" width="2" height="25" rx="1"/>
+      <rect x="114" y="110" width="4" height="25" rx="1"/>
+      <rect x="121" y="110" width="2" height="25" rx="1"/>
+      <rect x="126" y="110" width="3" height="25" rx="1"/>
+      <rect x="132" y="110" width="2" height="25" rx="1"/>
+      <rect x="137" y="110" width="4" height="25" rx="1"/>
+    </g>
+  </g>
+
+  <!-- wordmark: tracked caps, gold spy-title feel -->
+  <text x="214" y="98" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="10" fill="url(#aqw-text)">AGENT Q</text>
+  <text x="216" y="140" font-family="ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-size="20" letter-spacing="1" fill="#8A8169"><tspan fill="#FF3B3B">/q:</tspan> build with AI agents, repeatably</text>
+</svg>

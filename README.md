@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo-wordmark.svg" alt="Agent Q" width="520"/>
+</p>
+
 # Agent Q Framework — Repeatable AI-Assisted Project Starter
 
 A deterministic, repeatable, tool-agnostic framework for building projects with AI coding agents.
