@@ -73,6 +73,8 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 | `/q:spinjitsu` | Launch parallel execution of multiple build plans | confirm | execution |
 | `/q:opus` | Model-tiered run — strongest model to think, cheaper model to do | confirm | execution |
 | `/q:ingest` | Ingest video/audio content for Agent Q context | confirm | dx |
+| `/q:voice` | Toggle voice (TTS) on/off, stop playback, or check status | auto | dx |
+| `/q:speak` | Replay the last TTS audio response | auto | dx |
 | `/q:status` | Show all available /q: commands with descriptions | auto | dx |
 
 ## Installation
