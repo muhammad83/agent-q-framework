@@ -43,6 +43,15 @@ Agent Q uses a two-tier "pass by reference" architecture. Instead of duplicating
 
 **shared_context/** contains project-specific domain knowledge: personas, analysis frameworks, industry-specific rules. These are unique to your project but shared across all AI tools.
 
+### Symlinked, not copied — lean and updatable
+
+The shared framework files — `context/` rules, the operational `workflows/` (debug, ship, review, pause/resume), `commands/`, and `hooks/` — are **symlinked** into each project from one central clone of this repo (this is what `setup.sh` does), not copied. That buys two things:
+
+- **No bloat.** Each project references one source of truth instead of carrying duplicate copies. The symlinks are `.gitignore`d, so they never enter the project's git history, diffs, or reviews — and the context an agent loads stays small: one canonical rule set, not N drifting forks of it.
+- **Update once, everywhere.** Improve a rule, workflow, or `/q:` command in the framework and every project that symlinks it picks up the change instantly — no re-copying, no version drift.
+
+Only **project-specific** files stay as real, tracked files: `CLAUDE.md`/`agent.md`, `todo.md`, `shared_context/`, and your own build plans under `workflows/build-plan-*.md`. Point your project's `.gitignore` at the framework symlinks (e.g. `context/`, the symlinked workflow SOPs, `.claude/`) while keeping your real build plans tracked — so the framework stays a live dependency, not a snapshot.
+
 ## How to Use This
 
 ### Starting a New Project
@@ -66,6 +75,7 @@ Agent Q uses a two-tier "pass by reference" architecture. Instead of duplicating
    mkdir -p your-project/.agent/rules && cp /tmp/agent-q/.agent/rules/agent-q.md your-project/.agent/rules/
    cp /tmp/agent-q/.env.example your-project/
    ```
+   **Recommended:** instead of copying, symlink the shared framework files (`ln -s`) — or just run `setup.sh`, which does it for you — so framework updates propagate and the files don't bloat your repo. See [Symlinked, not copied](#symlinked-not-copied--lean-and-updatable) above. The `cp` form above is the snapshot alternative for when you want a frozen copy.
 3. Copy `.env.example` to `.env` and add your API keys
 4. Start your AI tool and tell it: "This is an existing project. Read the codebase and fill in the config and todo.md based on what already exists."
 5. Use Phase 2B (Code Review) to review your existing code, or Phase 2A to plan new features
