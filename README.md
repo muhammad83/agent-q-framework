@@ -56,7 +56,7 @@ Only **project-specific** files stay as real, tracked files: `CLAUDE.md`/`agent.
 
 ### Starting a New Project
 
-1. Clone this repo: `git clone https://github.com/safqore/agent-q-framework.git my-project-name`
+1. Clone this repo: `git clone https://github.com/muhammad83/agent-q-framework.git my-project-name`
 2. Reset git: `cd my-project-name && rm -rf .git && git init`
 3. Copy `.env.example` to `.env` and add your API keys
 4. Start your AI tool and describe your project — it fills in the config and `todo.md` for you
@@ -64,7 +64,7 @@ Only **project-specific** files stay as real, tracked files: `CLAUDE.md`/`agent.
 
 ### Adding to an Existing Project
 
-1. Clone this repo somewhere temporary: `git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q`
+1. Clone this repo somewhere temporary: `git clone https://github.com/muhammad83/agent-q-framework.git /tmp/agent-q`
 2. Copy the framework files into your project:
    ```bash
    cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/agent.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
@@ -230,13 +230,13 @@ Agent Q is available as an installable skill for AI coding tools that support th
 ### Marketplace Install
 
 ```
-/plugin marketplace add safqore/agent-q-framework
+/plugin marketplace add muhammad83/agent-q-framework
 ```
 
 ### NPX Install
 
 ```bash
-npx skills add git@github.com:safqore/agent-q-framework.git
+npx skills add git@github.com:muhammad83/agent-q-framework.git
 ```
 
 ### Manual Install

@@ -1,6 +1,6 @@
 # Build Plan: gstack Extraction — Stream B (Ship + QA + Docs)
 _Created: 2026-03-24_
-_Parent plan: ~/.gstack/projects/safqore-agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
+_Parent plan: ~/.gstack/projects/agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
 
 ## Goal
 Extract the ship workflow, code-level QA workflow, and document-release workflow from

@@ -342,7 +342,7 @@ todo.md (state), workflows/ (SOPs), tools/ (scripts).
 **If SKIPPED (all-in-one — for solo hobby + ship fast):**
 
 Inline all selected rules directly into CLAUDE.md as numbered sections
-(same approach as the Safqore website CLAUDE.md). Structure:
+(same approach as a production website's CLAUDE.md). Structure:
 
 ```markdown
 # CLAUDE.md — [PROJECT NAME]

@@ -2,7 +2,7 @@
 name: agent-q
 description: A repeatable, tool-agnostic framework for building projects with AI coding agents
 version: 1.1.0
-author: Safqore
+author: Muhammad Qureshi
 provides:
   - planning
   - execution
@@ -84,13 +84,13 @@ Agent Q is a deterministic, repeatable, tool-agnostic framework for building pro
 Place the framework files in your project root. The `CLAUDE.md` file acts as the entry point. Commands are loaded from `.claude/commands/q/`.
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git my-project
+git clone https://github.com/muhammad83/agent-q-framework.git my-project
 ```
 
 Or install via the Agent Skills marketplace:
 
 ```
-/plugin marketplace add safqore/agent-q-framework
+/plugin marketplace add muhammad83/agent-q-framework
 ```
 
 ### Cursor
@@ -98,7 +98,7 @@ Or install via the Agent Skills marketplace:
 Install via the Cursor plugin system. The `.cursor-plugin/plugin.json` file provides skill discovery metadata:
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git ~/.cursor/extensions/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.cursor/extensions/agent-q
 ```
 
 See `.cursor-plugin/plugin.json` for activation triggers and command mapping.
@@ -108,7 +108,7 @@ See `.cursor-plugin/plugin.json` for activation triggers and command mapping.
 Copy the framework to your Codex skills directory:
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git ~/.codex/skills/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.codex/skills/agent-q
 ```
 
 The `agent.md` file in the repo root serves as the Codex entry point.
@@ -118,7 +118,7 @@ The `agent.md` file in the repo root serves as the Codex entry point.
 Clone to your OpenCode skills directory:
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git ~/.opencode/skills/agent-q/
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.opencode/skills/agent-q/
 ```
 
 ### Gemini CLI
@@ -126,7 +126,7 @@ git clone https://github.com/safqore/agent-q-framework.git ~/.opencode/skills/ag
 Clone to the Gemini CLI extensions directory. Note: Gemini CLI does not support subagent spawning, so `/q:orchestrate` and `/q:spinjitsu` fall back to inline execution.
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git ~/.gemini/extensions/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.gemini/extensions/agent-q
 export GEMINI_CLI=1
 ```
 
@@ -137,7 +137,7 @@ See `agents/gemini-cli-extension.md` for the full tool mapping and platform limi
 Clone the repo and copy the framework files into your project:
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git /tmp/agent-q
 cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/agent.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
 cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/
 cp -r /tmp/agent-q/workflows /tmp/agent-q/tools /tmp/agent-q/agents your-project/

@@ -14,7 +14,7 @@ Codex discovers skills via its skills directory. Symlink the framework there:
 
 ```bash
 # Clone the framework
-git clone https://github.com/safqore/agent-q-framework.git ~/.codex/skills/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.codex/skills/agent-q
 
 # Verify the symlink resolves
 ls ~/.codex/skills/agent-q/agent.md
@@ -25,7 +25,7 @@ ls ~/.codex/skills/agent-q/agent.md
 Copy the framework directly into your project:
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git /tmp/agent-q
 cp -r /tmp/agent-q/* your-project/
 rm -rf /tmp/agent-q
 ```

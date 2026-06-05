@@ -73,7 +73,7 @@ https://github.com/openai/whisper
 
 ### New Project
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git my-project-name
+git clone https://github.com/muhammad83/agent-q-framework.git my-project-name
 cd my-project-name
 rm -rf .git
 git init
@@ -83,7 +83,7 @@ cp .env.example .env   # add your real API keys
 ### Existing Project
 ```bash
 # Copy framework files into your project
-git clone https://github.com/safqore/agent-q-framework.git /tmp/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git /tmp/agent-q
 cp /tmp/agent-q/CLAUDE.md /tmp/agent-q/agent.md /tmp/agent-q/todo.md /tmp/agent-q/soul.md your-project/
 cp /tmp/agent-q/CHEATSHEET.md /tmp/agent-q/QUICKSTART.md your-project/
 cp -r /tmp/agent-q/context /tmp/agent-q/shared_context your-project/

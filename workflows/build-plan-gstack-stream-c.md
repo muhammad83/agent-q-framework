@@ -1,6 +1,6 @@
 # Build Plan: gstack Extraction — Stream C (Safety + Retro + Multi-AI)
 _Created: 2026-03-24_
-_Parent plan: ~/.gstack/projects/safqore-agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
+_Parent plan: ~/.gstack/projects/agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
 
 ## Goal
 Extract safety modes, retrospective workflow, and multi-AI verification protocol

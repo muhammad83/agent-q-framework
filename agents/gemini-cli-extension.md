@@ -15,7 +15,7 @@ This file maps Agent Q capabilities to Gemini CLI's native tool declaration form
 
 ```bash
 # Clone the framework into Gemini CLI's extensions directory
-git clone https://github.com/safqore/agent-q-framework.git ~/.gemini/extensions/agent-q
+git clone https://github.com/muhammad83/agent-q-framework.git ~/.gemini/extensions/agent-q
 
 # Set the environment variable for platform detection
 export GEMINI_CLI=1

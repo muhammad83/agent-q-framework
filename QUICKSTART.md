@@ -3,7 +3,7 @@
 ## Step 1: Clone and rename (30 seconds)
 
 ```bash
-git clone https://github.com/safqore/agent-q-framework.git my-project-name
+git clone https://github.com/muhammad83/agent-q-framework.git my-project-name
 cd my-project-name
 rm -rf .git
 git init

@@ -1,6 +1,6 @@
 # Build Plan: gstack Extraction — Stream A (Review Gates)
 _Created: 2026-03-24_
-_Parent plan: ~/.gstack/projects/safqore-agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
+_Parent plan: ~/.gstack/projects/agent-q-framework/ceo-plans/2026-03-24-gstack-extraction.md_
 
 ## Goal
 Extract the 4 review gate workflows from gstack into Agent Q's pass-by-reference

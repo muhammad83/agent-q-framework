@@ -18,7 +18,7 @@ printed as ground truth so you can sanity-check the scale.
 Usage:
     token-burn.py                       # analyze the most recent session in CWD's project
     token-burn.py <file.jsonl>          # analyze a specific session log
-    token-burn.py --project safqore     # most recent session whose project path matches
+    token-burn.py --project myapp     # most recent session whose project path matches
     token-burn.py --top 25              # show more rows
     token-burn.py --all                 # rank the heaviest sessions first, then pick one
 """

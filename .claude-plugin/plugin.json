@@ -2,8 +2,8 @@
   "name": "agent-q-framework",
   "version": "1.1.0",
   "description": "A repeatable, tool-agnostic framework for building projects with AI coding agents",
-  "author": "Safqore",
-  "homepage": "https://github.com/safqore/agent-q-framework",
+  "author": "Muhammad Qureshi",
+  "homepage": "https://github.com/muhammad83/agent-q-framework",
   "keywords": [
     "framework",
     "agents",
