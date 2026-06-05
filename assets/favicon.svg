@@ -1,0 +1,28 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent Q">
+  <defs>
+    <linearGradient id="f-gold" x1="128" y1="50" x2="128" y2="206" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBEFC8"/>
+      <stop offset="0.5" stop-color="#E6C36A"/>
+      <stop offset="1" stop-color="#B8893A"/>
+    </linearGradient>
+    <radialGradient id="f-bg" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="0" stop-color="#15130D"/>
+      <stop offset="1" stop-color="#070605"/>
+    </radialGradient>
+    <linearGradient id="f-red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF3B3B"/>
+      <stop offset="1" stop-color="#C20E1C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect width="256" height="256" rx="52" fill="url(#f-bg)"/>
+
+  <!-- bold Q: ring + short sharp tail (no barcode / rings / glow — legible at 16px) -->
+  <g stroke="url(#f-gold)" fill="none" stroke-linecap="round">
+    <circle cx="118" cy="120" r="62" stroke-width="28"/>
+    <path d="M150 152 L190 192" stroke-width="30"/>
+  </g>
+  <!-- red target accent -->
+  <circle cx="196" cy="198" r="12" fill="url(#f-red)"/>
+</svg>
