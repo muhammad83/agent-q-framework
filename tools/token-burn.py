@@ -30,6 +30,10 @@ from collections import defaultdict
 from glob import glob
 
 PROJECTS_DIR = os.path.expanduser("~/.claude/projects")
+CODEX_GLOBS = [
+    os.path.expanduser("~/.codex/sessions/**/*.jsonl"),
+    os.path.expanduser("~/.codex/archived_sessions/*.jsonl"),
+]
 
 # ── ANSI (matches the HUD palette) ──────────────────────────────
 def _c(r, g, b):
@@ -92,9 +96,29 @@ def server_of(mcp_tool):
     return parts[1] if len(parts) >= 2 else mcp_tool
 
 
+def _select(files, args, label):
+    if not files:
+        sys.exit(f"No {label} session logs found")
+    if args.all:
+        ranked = sorted(files, key=lambda f: os.path.getsize(f), reverse=True)
+        print(f"{BOLD}Heaviest {label} session logs (by file size):{RESET}")
+        for f in ranked[:12]:
+            print(f"  {fmt_tok(os.path.getsize(f)):>6}b  {DIM}{f}{RESET}")
+        print()
+        return ranked[0]
+    return max(files, key=os.path.getmtime)
+
+
 def find_session(args):
     if args.file:
         return args.file
+    if getattr(args, "codex", False):
+        files = []
+        for g in CODEX_GLOBS:
+            files += glob(g, recursive=True)
+        if args.project:
+            files = [f for f in files if args.project.lower() in f.lower()]
+        return _select(files, args, "Codex")
     pattern = os.path.join(PROJECTS_DIR, "**", "*.jsonl")
     files = [f for f in glob(pattern, recursive=True) if "/subagents/" not in f]
     if args.project:
@@ -104,16 +128,109 @@ def find_session(args):
         match = [f for f in files if cwd_key in f]
         if match:
             files = match
-    if not files:
-        sys.exit(f"No session logs found (projects dir: {PROJECTS_DIR})")
-    if args.all:
-        ranked = sorted(files, key=lambda f: os.path.getsize(f), reverse=True)
-        print(f"{BOLD}Heaviest session logs (by file size):{RESET}")
-        for f in ranked[:12]:
-            print(f"  {fmt_tok(os.path.getsize(f)):>6}b  {DIM}{f}{RESET}")
-        print()
-        return ranked[0]
-    return max(files, key=os.path.getmtime)
+    return _select(files, args, "Claude")
+
+
+def detect_format(path):
+    """Sniff the first JSON line: Codex rollouts are {payload, type, timestamp}."""
+    try:
+        with open(path, errors="replace") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                obj = json.loads(line)
+                if isinstance(obj, dict) and "payload" in obj and "timestamp" in obj:
+                    return "codex"
+                return "claude"
+    except (OSError, json.JSONDecodeError):
+        pass
+    return "claude"
+
+
+def short_label_codex(name, args):
+    if name == "exec_command" and isinstance(args, dict):
+        cmd = (args.get("cmd") or "").strip().split()
+        head = " ".join(cmd[:2]) if cmd else ""
+        return f"exec({head})" if head else "exec_command"
+    if name == "apply_patch" and isinstance(args, dict):
+        return f"apply_patch({os.path.basename(args.get('path',''))})" if args.get("path") else "apply_patch"
+    return name or "(tool)"
+
+
+def analyze_codex(path):
+    """Codex rollout parser — same output shape as analyze() for report()."""
+    parsed = []
+    with open(path, "r", errors="replace") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                e = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            p = e.get("payload") or {}
+            parsed.append((e.get("type"), p.get("type"), p))
+
+    # Pass 1: count model turns (one token_count per model call) and grab cumulative usage.
+    total_turns = 0
+    usage = {"input": 0, "output": 0, "cache_read": 0, "cache_create": 0}
+    for t, pt, p in parsed:
+        if t == "event_msg" and pt == "token_count":
+            total_turns += 1
+            info = (p.get("info") or {}).get("total_token_usage") or {}
+            cached = info.get("cached_input_tokens", 0)
+            # Codex input_tokens is cumulative and *includes* the cached portion;
+            # split it so report()'s real = cache_read + input + output stays correct.
+            usage["cache_read"] = cached
+            usage["input"] = max(info.get("input_tokens", 0) - cached, 0)
+            usage["output"] = info.get("output_tokens", 0) + info.get("reasoning_output_tokens", 0)
+
+    # Pass 2: attribute tool outputs, weighting by turns they stay in context.
+    seen = 0
+    calls = {}
+    by_tool = defaultdict(lambda: {"calls": 0, "raw": 0, "weighted": 0})
+    by_label = defaultdict(lambda: {"calls": 0, "raw": 0, "weighted": 0})
+    mcp_calls = defaultdict(int)
+    rows = []
+
+    def add(name, label, chars):
+        toks = chars / 4.0
+        exposure = max(total_turns - seen, 0)
+        weighted = toks * (exposure + 1)
+        by_tool[name]["calls"] += 1
+        by_tool[name]["raw"] += toks
+        by_tool[name]["weighted"] += weighted
+        by_label[label]["calls"] += 1
+        by_label[label]["raw"] += toks
+        by_label[label]["weighted"] += weighted
+        rows.append((weighted, toks, exposure, label, name))
+
+    for t, pt, p in parsed:
+        if t == "event_msg" and pt == "token_count":
+            seen += 1
+        elif pt in ("function_call", "custom_tool_call"):
+            args = p.get("arguments") if "arguments" in p else p.get("input")
+            if isinstance(args, str):
+                try:
+                    args = json.loads(args)
+                except json.JSONDecodeError:
+                    args = {"_raw": args}
+            calls[p.get("call_id")] = (p.get("name", "?"), args)
+        elif pt in ("function_call_output", "custom_tool_call_output"):
+            name, args = calls.get(p.get("call_id"), ("(unknown)", {}))
+            add(name, short_label_codex(name, args), content_chars(p.get("output", "")))
+        elif t == "event_msg" and pt == "mcp_tool_call_end":
+            inv = p.get("invocation") or {}
+            srv = inv.get("server") or "mcp"
+            mcp_calls[srv] += 1
+            add(f"mcp__{srv}", f"mcp:{srv}.{inv.get('tool', '')}", content_chars(p.get("result", "")))
+
+    return {
+        "path": path, "turns": total_turns, "usage": usage,
+        "by_tool": by_tool, "by_label": by_label, "mcp_calls": mcp_calls, "rows": rows,
+    }
 
 
 def analyze(path):
@@ -237,7 +354,7 @@ def report(data, top):
     else:
         print(f"\n{DIM}No MCP tools were called this session.{RESET}")
 
-    print(f"\n{DIM}Lever: at {int((u['cache_read']/real*100) if real else 0)}% cache re-reads, "
+    print(f"\n{DIM}Lever: at {round((u['cache_read']/real*100) if real else 0)}% cache re-reads, "
           f"the cheapest win is shorter sessions — /clear or /compact once a task is done.{RESET}")
 
 
@@ -247,9 +364,11 @@ def main():
     ap.add_argument("--project", help="substring to match a project path")
     ap.add_argument("--top", type=int, default=15, help="rows to show (default 15)")
     ap.add_argument("--all", action="store_true", help="list heaviest sessions, analyze the biggest")
+    ap.add_argument("--codex", action="store_true", help="analyze OpenAI Codex logs (~/.codex) instead of Claude Code")
     args = ap.parse_args()
     path = find_session(args)
-    report(analyze(path), args.top)
+    fmt = "codex" if args.codex else detect_format(path)
+    report(analyze_codex(path) if fmt == "codex" else analyze(path), args.top)
 
 
 if __name__ == "__main__":
