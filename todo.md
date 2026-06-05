@@ -85,13 +85,22 @@ skills into Agent Q's pass-by-reference architecture. CEO plan approved (SCOPE E
 ## Session Log
 
 ### Session 5 — 2026-06-05
-- What was done: Executed Token Economy Task 3 — `/q:opus` model-tiered orchestration skill +
-  `context/model-tiers.md` (THINK/BUILD/GRUNT routing) + `.env.example` tier vars. Committed
-  `8be8e1b`. This completes the Token Economy plan (all 3 tasks). Again hunk-staged SKILL.md to
-  keep the pre-existing voice WIP out of the commit.
-- What's next: Token Economy done. Open framework streams: gstack Stream A (Review Gates) and
-  Stream C (Safety/Retro/Multi-AI). Also: pre-existing voice + token-burn.py WIP still uncommitted.
-- Blockers: None.
+- What was done:
+  - **Token Economy Task 3** — `/q:opus` model-tiered orchestration skill + `context/model-tiers.md`
+    (THINK/BUILD/GRUNT routing) + `.env.example` tier vars → `8be8e1b`. Completes the Token Economy
+    plan (all 3 tasks). Committed the plan itself too → `3ef7160`.
+  - **Cleared pre-existing WIP** (hunk-staged so nothing got mixed): voice feature `/q:voice` +
+    `/q:speak` (voice.sh) → `aa199ed`; token-burn.py Codex log support → `6fec0c6`; QUICK-GUIDE.md
+    (Agent Q + gstack) → `f67ac0f`.
+  - **Homed 6 external build plans** into the repos they target: 5 tracker plans (activity-durations,
+    meal-periods, responsive-layout, theme, ux-overhaul) → `Muhammads-tracker` (un-ignored its
+    `/workflows/`, committed all 8 plans, kept debug/ship framework symlinks ignored) → `d46e08e`;
+    penfold-preview-cleanup → `infrastructure-as-code` @ `penfold` → `e81719a`.
+  - **Pushed all three repos to origin** — agent-q-framework `main` (12 commits), Muhammads-tracker
+    `main`, infrastructure-as-code `penfold`. All in sync.
+  - (Aside: a `/q:execute task 2` was first mis-run against `nexa-voice-agent-vapi`; reverted fully.)
+- What's next: Open framework streams — gstack Stream A (Review Gates) and Stream C (Safety/Retro/Multi-AI).
+- Blockers: None. (Untouched WIP left for the user: infra's 6 penfold files, tracker's todo.md.)
 
 ### Session 4 — 2026-06-04
 - What was done: Executed Token Economy Task 2 — built `/q:estimate` + `tools/estimate-plan.py`
