@@ -22,7 +22,7 @@ Control voice (text-to-speech) playback for Claude responses.
 
 2. Run the voice control script:
    ```bash
-   bash /Users/muhammadqureshi/Documents/Projects/agent-q-framework/tools/voice.sh $ARGUMENTS
+   bash ./tools/voice.sh $ARGUMENTS
    ```
 
 3. Report the result to the user in one line.
